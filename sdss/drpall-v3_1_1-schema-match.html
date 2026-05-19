@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AstroDB Schema Match — drpall-v3_1_1.fits</title>
+  <style>
+    body { font-family: sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+    th, td { padding: 8px 12px; border: 1px solid #ddd; vertical-align: top; }
+    code.input { background: #e8edf2; border-radius: 4px; padding: 2px 6px; font-family: monospace; }
+    code.field { background: #e8f4e8; border-radius: 4px; padding: 2px 6px; font-family: monospace; }
+    .db-table { font-weight: 600; }
+    .notes { font-size: 0.82rem; color: #555; }
+    thead th { background: #2c3e50; color: #ffffff; position: sticky; top: 0; }
+    tr.high { background: #f0fff0; }
+    tr.medium { background: #fffbea; }
+    tr.low { background: #fff3f0; }
+    tr.unmatched { background: #f5f5f5; }
+    .checklist-header { background: #f0a500; color: white; }
+    .unit-header { background: #2980b9; color: white; }
+    .unit-in { color: #c0392b; }
+    .unit-out { color: #27ae60; }
+  </style>
+</head>
+<body>
+
+<h1>AstroDB Schema Match</h1>
+<p><strong>Source:</strong> drpall-v3_1_1.fits · 2025-03-17</p>
+<p><strong>Legend:</strong> Blue-gray chip = input column name (from source file). Green chip = AstroDB field name (schema destination). Row color = confidence level (green = High, yellow = Medium, salmon = Low, gray = Unmatched).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Input Column</th>
+      <th>Description</th>
+      <th>Units</th>
+      <th>DB Table</th>
+      <th>DB Field</th>
+      <th>Confidence</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="unmatched"><td><code class="input">plate</code></td><td>Plate number</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">ifudsgn</code></td><td>IFU design ID</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="high"><td><code class="input">plateifu</code></td><td>Plate-IFU identifier</td><td>—</td><td>→ Names</td><td><code class="field">other_name</code></td><td>🟢 High</td><td class="notes">Alternate identifier</td></tr>
+    <tr class="high"><td><code class="input">mangaid</code></td><td>MaNGA ID</td><td>—</td><td>→ Sources</td><td><code class="field">source</code></td><td>🟢 High</td><td class="notes">Primary identifier</td></tr>
+    <tr class="unmatched"><td><code class="input">versdrp2</code></td><td>DRP version 2</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Version metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">versdrp3</code></td><td>DRP version 3</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Version metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">verscore</code></td><td>Core version</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Version metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">versutil</code></td><td>Utility version</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Version metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">versprim</code></td><td>Primary version</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Version metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">platetyp</code></td><td>Plate type</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">srvymode</code></td><td>Survey mode</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="high"><td><code class="input">objra</code></td><td>Object right ascension</td><td>deg</td><td>→ Sources</td><td><code class="field">ra_deg</code></td><td>🟢 High</td><td class="notes">RA in decimal degrees</td></tr>
+    <tr class="high"><td><code class="input">objdec</code></td><td>Object declination</td><td>deg</td><td>→ Sources</td><td><code class="field">dec_deg</code></td><td>🟢 High</td><td class="notes">Dec in decimal degrees</td></tr>
+    <tr class="unmatched"><td><code class="input">ifuglon</code></td><td>IFU Galactic longitude</td><td>deg</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">No AstroDB Galactic coord field</td></tr>
+    <tr class="unmatched"><td><code class="input">ifuglat</code></td><td>IFU Galactic latitude</td><td>deg</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">No AstroDB Galactic coord field</td></tr>
+    <tr class="medium"><td><code class="input">ifura</code></td><td>IFU right ascension</td><td>deg</td><td>→ Positions</td><td><code class="field">ra_deg</code></td><td>🟡 Medium</td><td class="notes">IFU center; needs Positions row</td></tr>
+    <tr class="medium"><td><code class="input">ifudec</code></td><td>IFU declination</td><td>deg</td><td>→ Positions</td><td><code class="field">dec_deg</code></td><td>🟡 Medium</td><td class="notes">IFU center</td></tr>
+    <tr class="medium"><td><code class="input">ebvgal</code></td><td>Galactic E(B-V) reddening</td><td>mag</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟡 Medium</td><td class="notes">parameter=ebv_galactic, unit=mag</td></tr>
+    <tr class="unmatched"><td><code class="input">nexp</code></td><td>Number of exposures</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">exptime</code></td><td>Total exposure time</td><td>s</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">drp3qual</code></td><td>DRP3 quality flag</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Quality code; use for row filtering</td></tr>
+    <tr class="unmatched"><td><code class="input">bluesn2</code></td><td>Blue channel S/N squared</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">redsn2</code></td><td>Red channel S/N squared</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">harname</code></td><td>Hardware name</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Instrument metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">frlplug</code></td><td>Fiber plug</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Instrument metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">cartid</code></td><td>Cart ID</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Instrument metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">designid</code></td><td>Design ID</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">cenra</code></td><td>Central right ascension</td><td>deg</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redundant with objra</td></tr>
+    <tr class="unmatched"><td><code class="input">cendec</code></td><td>Central declination</td><td>deg</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redundant with objdec</td></tr>
+    <tr class="unmatched"><td><code class="input">airmsmin</code></td><td>Minimum airmass</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">airmsmed</code></td><td>Median airmass</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">airmsmax</code></td><td>Maximum airmass</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">seemin</code></td><td>Minimum seeing</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">seemed</code></td><td>Median seeing</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">seemax</code></td><td>Maximum seeing</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">transmin</code></td><td>Minimum transparency</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">transmed</code></td><td>Median transparency</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">transmax</code></td><td>Maximum transparency</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">mjdmin</code></td><td>Minimum MJD</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">mjdmed</code></td><td>Median MJD</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">mjdmax</code></td><td>Maximum MJD</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">gfwhm</code></td><td>g-band FWHM</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">rfwhm</code></td><td>r-band FWHM</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">ifwhm</code></td><td>i-band FWHM</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">zfwhm</code></td><td>z-band FWHM</td><td>arcsec</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Observation metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">mngtarg1</code></td><td>MaNGA target bitmask 1</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Target selection; use for filtering</td></tr>
+    <tr class="unmatched"><td><code class="input">mngtarg2</code></td><td>MaNGA target bitmask 2</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Target selection</td></tr>
+    <tr class="unmatched"><td><code class="input">mngtarg3</code></td><td>MaNGA target bitmask 3</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Target selection</td></tr>
+    <tr class="unmatched"><td><code class="input">catidnum</code></td><td>Catalog ID number</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">plttarg</code></td><td>Plate target</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">manga_tileid</code></td><td>MaNGA tile ID</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey metadata</td></tr>
+    <tr class="high"><td><code class="input">nsa_iauname</code></td><td>NSA IAU name</td><td>—</td><td>→ Names</td><td><code class="field">other_name</code></td><td>🟢 High</td><td class="notes">IAU designation</td></tr>
+    <tr class="unmatched"><td><code class="input">ifudesignsize</code></td><td>IFU design size</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Instrument metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">ifutargetsize</code></td><td>IFU target size</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Instrument metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">ifudesignwrongsize</code></td><td>IFU design wrong size flag</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Quality flag</td></tr>
+    <tr class="high"><td><code class="input">z</code></td><td>Redshift</td><td>dimensionless</td><td>→ RadialVelocities</td><td><code class="field">rv_kms</code></td><td>🟢 High</td><td class="notes">Convert: z × 299792.458</td></tr>
+    <tr class="unmatched"><td><code class="input">zmin</code></td><td>Redshift minimum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">zmax</code></td><td>Redshift maximum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">szmin</code></td><td>Stellar redshift minimum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">szmax</code></td><td>Stellar redshift maximum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">ezmin</code></td><td>Emission redshift minimum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">ezmax</code></td><td>Emission redshift maximum</td><td>dimensionless</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Redshift range</td></tr>
+    <tr class="unmatched"><td><code class="input">probs</code></td><td>Probability</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">pweight</code></td><td>Primary weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">psweight</code></td><td>Primary-secondary weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">psrweight</code></td><td>Primary-secondary ratio weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">sweight</code></td><td>Secondary weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">srweight</code></td><td>Secondary ratio weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">eweight</code></td><td>Enhanced weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">esweight</code></td><td>Enhanced secondary weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">esrweight</code></td><td>Enhanced secondary ratio weight</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Survey weight</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_field</code></td><td>NSA field</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">NSA catalog metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_run</code></td><td>NSA run</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">NSA catalog metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_camcol</code></td><td>NSA camcol</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">NSA catalog metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_version</code></td><td>NSA version</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">NSA catalog metadata</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_nsaid</code></td><td>NSA ID</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Could be Names.other_name if desired</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_nsaid_v1b</code></td><td>NSA ID v1b</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">NSA catalog metadata</td></tr>
+    <tr class="medium"><td><code class="input">nsa_z</code></td><td>NSA redshift</td><td>dimensionless</td><td>→ RadialVelocities</td><td><code class="field">rv_kms</code></td><td>🟡 Medium</td><td class="notes">Alternative to z; same conversion</td></tr>
+    <tr class="medium"><td><code class="input">nsa_zdist</code></td><td>NSA redshift distance</td><td>Mpc</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟡 Medium</td><td class="notes">parameter=redshift_distance, unit=Mpc</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_sersic_absmag</code></td><td>NSA Sérsic absolute magnitude</td><td>mag</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Absolute mag; Photometry stores apparent only. Use ModeledParameters or skip</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_elpetro_absmag</code></td><td>NSA elliptical Petrosian absolute magnitude</td><td>mag</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Absolute mag; same as above</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_elpetro_amivar</code></td><td>NSA elliptical Petrosian magnitude inverse variance</td><td>mag^-2</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Inverse variance, not direct photometry</td></tr>
+    <tr class="high"><td><code class="input">nsa_sersic_mass</code></td><td>NSA Sérsic stellar mass</td><td>solMass</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟢 High</td><td class="notes">parameter=stellar_mass_sersic, unit=M☉</td></tr>
+    <tr class="high"><td><code class="input">nsa_elpetro_mass</code></td><td>NSA elliptical Petrosian stellar mass</td><td>solMass</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟢 High</td><td class="notes">parameter=stellar_mass_elpetro, unit=M☉</td></tr>
+    <tr class="medium"><td><code class="input">nsa_elpetro_ba</code></td><td>NSA elliptical Petrosian axis ratio b/a</td><td>—</td><td>→ Morphology</td><td><code class="field">ellipticity</code></td><td>🟡 Medium</td><td class="notes">ellipticity = 1 − b/a</td></tr>
+    <tr class="high"><td><code class="input">nsa_elpetro_phi</code></td><td>NSA elliptical Petrosian position angle</td><td>deg</td><td>→ Morphology</td><td><code class="field">position_angle_deg</code></td><td>🟢 High</td><td class="notes">PA in degrees</td></tr>
+    <tr class="medium"><td><code class="input">nsa_extinction</code></td><td>NSA extinction</td><td>mag</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟡 Medium</td><td class="notes">parameter=extinction, unit=mag</td></tr>
+    <tr class="high"><td><code class="input">nsa_elpetro_th50_r</code></td><td>NSA elliptical Petrosian 50% light radius (r-band)</td><td>arcsec</td><td>→ Morphology</td><td><code class="field">half_light_radius_arcmin</code></td><td>🟢 High</td><td class="notes">Convert arcsec → arcmin (÷60)</td></tr>
+    <tr class="medium"><td><code class="input">nsa_petro_th50</code></td><td>NSA Petrosian 50% light radius</td><td>arcsec</td><td>→ Morphology</td><td><code class="field">half_light_radius_arcmin</code></td><td>🟡 Medium</td><td class="notes">Same conversion; may duplicate th50_r</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_petro_flux</code></td><td>NSA Petrosian flux</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Petrosian flux; not apparent mag</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_petro_flux_ivar</code></td><td>NSA Petrosian flux inverse variance</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Flux uncertainty</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_elpetro_flux</code></td><td>NSA elliptical Petrosian flux</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Petrosian flux</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_elpetro_flux_ivar</code></td><td>NSA elliptical Petrosian flux inverse variance</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Flux uncertainty</td></tr>
+    <tr class="medium"><td><code class="input">nsa_sersic_ba</code></td><td>NSA Sérsic axis ratio b/a</td><td>—</td><td>→ Morphology</td><td><code class="field">ellipticity</code></td><td>🟡 Medium</td><td class="notes">ellipticity = 1 − b/a; may duplicate elpetro_ba</td></tr>
+    <tr class="high"><td><code class="input">nsa_sersic_n</code></td><td>NSA Sérsic index</td><td>—</td><td>→ ModeledParameters</td><td><code class="field">value</code></td><td>🟢 High</td><td class="notes">parameter=sersic_index, unit=dimensionless</td></tr>
+    <tr class="medium"><td><code class="input">nsa_sersic_phi</code></td><td>NSA Sérsic position angle</td><td>deg</td><td>→ Morphology</td><td><code class="field">position_angle_deg</code></td><td>🟡 Medium</td><td class="notes">May duplicate elpetro_phi</td></tr>
+    <tr class="high"><td><code class="input">nsa_sersic_th50</code></td><td>NSA Sérsic 50% light radius</td><td>arcsec</td><td>→ Morphology</td><td><code class="field">half_light_radius_arcmin</code></td><td>🟢 High</td><td class="notes">Convert arcsec → arcmin (÷60)</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_sersic_flux</code></td><td>NSA Sérsic flux</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Sérsic flux</td></tr>
+    <tr class="unmatched"><td><code class="input">nsa_sersic_flux_ivar</code></td><td>NSA Sérsic flux inverse variance</td><td>—</td><td>—</td><td>—</td><td>Unmatched</td><td class="notes">Flux uncertainty</td></tr>
+  </tbody>
+</table>
+
+<h2>Lookup Table Checklist</h2>
+<p>The following lookup tables need entries added before ingestion. Rows in data tables reference these by foreign key — inserting a row that references a missing lookup value will fail.</p>
+
+<h3>ParameterList</h3>
+<table>
+  <thead><tr class="checklist-header"><th>parameter</th><th>description</th></tr></thead>
+  <tbody>
+    <tr><td>ebv_galactic</td><td>Galactic E(B-V) reddening</td></tr>
+    <tr><td>redshift_distance</td><td>Redshift-derived distance (Mpc)</td></tr>
+    <tr><td>stellar_mass_sersic</td><td>Stellar mass from Sérsic fit</td></tr>
+    <tr><td>stellar_mass_elpetro</td><td>Stellar mass from elliptical Petrosian</td></tr>
+    <tr><td>extinction</td><td>Extinction (mag)</td></tr>
+    <tr><td>sersic_index</td><td>Sérsic index n</td></tr>
+  </tbody>
+</table>
+<p><em style="color:#aaa">These parameters are MaNGA/NSA-specific. Verify they exist in ParameterList or add them before ingestion.</em></p>
+
+<h2>Unit Conversions</h2>
+<p>These columns require conversion before ingestion — the DB field expects different units than the source data provides.</p>
+<table>
+  <thead><tr class="unit-header"><th>Column</th><th>Input Units</th><th>DB Field</th><th>Required Units</th><th>Conversion Formula</th></tr></thead>
+  <tbody>
+    <tr><td><code class="input">z</code></td><td class="unit-in">dimensionless</td><td>RadialVelocities.rv_kms</td><td class="unit-out">km/s</td><td>value × 299792.458</td></tr>
+    <tr><td><code class="input">nsa_z</code></td><td class="unit-in">dimensionless</td><td>RadialVelocities.rv_kms</td><td class="unit-out">km/s</td><td>value × 299792.458</td></tr>
+    <tr><td><code class="input">nsa_elpetro_th50_r</code></td><td class="unit-in">arcsec</td><td>Morphology.half_light_radius_arcmin</td><td class="unit-out">arcmin</td><td>value ÷ 60</td></tr>
+    <tr><td><code class="input">nsa_petro_th50</code></td><td class="unit-in">arcsec</td><td>Morphology.half_light_radius_arcmin</td><td class="unit-out">arcmin</td><td>value ÷ 60</td></tr>
+    <tr><td><code class="input">nsa_sersic_th50</code></td><td class="unit-in">arcsec</td><td>Morphology.half_light_radius_arcmin</td><td class="unit-out">arcmin</td><td>value ÷ 60</td></tr>
+  </tbody>
+</table>
+
+<h2>Unmatched Columns</h2>
+<ul>
+  <li><code class="input">plate</code>, <code class="input">ifudsgn</code>, <code class="input">versdrp2</code>–<code class="input">versprim</code>, <code class="input">platetyp</code>, <code class="input">srvymode</code> — Survey/version metadata. No AstroDB field. Use for filtering or store in Sources.comments.</li>
+  <li><code class="input">ifuglon</code>, <code class="input">ifuglat</code> — Galactic coordinates. No AstroDB field for Galactic lon/lat.</li>
+  <li><code class="input">nexp</code>, <code class="input">exptime</code>, <code class="input">drp3qual</code>, <code class="input">bluesn2</code>, <code class="input">redsn2</code>, <code class="input">harname</code>, <code class="input">frlplug</code>, <code class="input">cartid</code>, <code class="input">designid</code>, <code class="input">cenra</code>, <code class="input">cendec</code> — Observation/instrument metadata. Use for filtering or skip.</li>
+  <li><code class="input">airmsmin</code>–<code class="input">transmax</code>, <code class="input">mjdmin</code>–<code class="input">mjdmax</code>, <code class="input">gfwhm</code>–<code class="input">zfwhm</code> — Observing conditions. No AstroDB field.</li>
+  <li><code class="input">mngtarg1</code>–<code class="input">mngtarg3</code>, <code class="input">catidnum</code>, <code class="input">plttarg</code>, <code class="input">manga_tileid</code> — Target selection metadata. Use for row filtering.</li>
+  <li><code class="input">ifudesignsize</code>, <code class="input">ifutargetsize</code>, <code class="input">ifudesignwrongsize</code> — Instrument metadata. Skip.</li>
+  <li><code class="input">zmin</code>, <code class="input">zmax</code>, <code class="input">szmin</code>, <code class="input">szmax</code>, <code class="input">ezmin</code>, <code class="input">ezmax</code> — Redshift ranges. Could go to ModeledParameters if needed.</li>
+  <li><code class="input">probs</code>, <code class="input">pweight</code>, <code class="input">psweight</code>, etc. — Survey weights. No AstroDB field.</li>
+  <li><code class="input">nsa_field</code>, <code class="input">nsa_run</code>, <code class="input">nsa_camcol</code>, <code class="input">nsa_version</code>, <code class="input">nsa_nsaid</code>, <code class="input">nsa_nsaid_v1b</code> — NSA catalog metadata. nsa_nsaid could be Names.other_name if desired.</li>
+  <li><code class="input">nsa_sersic_absmag</code>, <code class="input">nsa_elpetro_absmag</code> — Absolute magnitudes. Photometry stores apparent only. Options: ModeledParameters (parameter="absolute_magnitude_&lt;band&gt;", unit="mag") or skip.</li>
+  <li><code class="input">nsa_elpetro_amivar</code> — Magnitude inverse variance. Not direct photometry. Skip or ModeledParameters.</li>
+  <li><code class="input">nsa_petro_flux</code>, <code class="input">nsa_petro_flux_ivar</code>, <code class="input">nsa_elpetro_flux</code>, <code class="input">nsa_elpetro_flux_ivar</code>, <code class="input">nsa_sersic_flux</code>, <code class="input">nsa_sersic_flux_ivar</code> — Petrosian/Sérsic fluxes. Not apparent magnitudes. ModeledParameters or skip.</li>
+</ul>
+
+<h2>Ingestion Notes</h2>
+<ul>
+  <li><strong>Source identifier:</strong> <code class="input">mangaid</code> maps to Sources.source. Ensure each row gets a unique source value.</li>
+  <li><strong>Duplicate columns:</strong> <code class="input">z</code> and <code class="input">nsa_z</code> both map to RadialVelocities.rv_kms — pick one. <code class="input">nsa_elpetro_ba</code> and <code class="input">nsa_sersic_ba</code> both map to Morphology.ellipticity — pick one or store both as separate ModeledParameters. <code class="input">nsa_elpetro_phi</code> and <code class="input">nsa_sersic_phi</code> both map to position_angle_deg — pick one. <code class="input">nsa_elpetro_th50_r</code>, <code class="input">nsa_petro_th50</code>, <code class="input">nsa_sersic_th50</code> all map to half_light_radius_arcmin — pick one or use ModeledParameters for extras.</li>
+  <li><strong>Positions table:</strong> <code class="input">ifura</code>/<code class="input">ifudec</code> map to Positions. Each row needs a reference. Add SDSS/MaNGA reference to Publications first.</li>
+  <li><strong>ModeledParameters:</strong> Requires model name and reference. Define a model (e.g. "NSA") and reference before ingestion.</li>
+</ul>
+
+</body>
+</html>

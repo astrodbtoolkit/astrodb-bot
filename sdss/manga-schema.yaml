@@ -1,0 +1,395 @@
+---
+name: manga
+"@id": "#manga"
+description: "MaNGA drpall catalog schema for SDSS-IV Mapping Nearby Galaxies at Apache Point Observatory"
+version: "1.0"
+tables:
+  - name: Publications
+    "@id": "#Publications"
+    description: Publication references; stub for FK constraints
+    primaryKey:
+      - "#Publications.reference"
+    columns:
+      - name: reference
+        "@id": "#Publications.reference"
+        datatype: string
+        length: 30
+        description: Publication short identifier
+        ivoa:ucd: meta.ref;meta.main
+        nullable: false
+    indexes:
+      - name: PK_Publications
+        "@id": "#PK_Publications"
+        description: Primary key for Publications table
+        columns:
+          - "#Publications.reference"
+
+  - name: ParameterList
+    "@id": "#ParameterList"
+    description: Parameter names for ModeledParameters
+    primaryKey:
+      - "#ParameterList.parameter"
+    columns:
+      - name: parameter
+        "@id": "#ParameterList.parameter"
+        datatype: string
+        length: 30
+        description: Short name for a parameter
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: description
+        "@id": "#ParameterList.description"
+        datatype: string
+        length: 100
+        description: Description of the parameter
+        ivoa:ucd: meta.note
+    indexes:
+      - name: PK_ParameterList
+        "@id": "#PK_ParameterList"
+        description: Primary key for ParameterList table
+        columns:
+          - "#ParameterList.parameter"
+
+  - name: Sources
+    "@id": "#Sources"
+    description: MaNGA sources with coordinates from drpall
+    primaryKey:
+      - "#Sources.source"
+    columns:
+      - name: source
+        "@id": "#Sources.source"
+        datatype: string
+        length: 50
+        description: MaNGA ID (mangaid)
+        ivoa:ucd: meta.id;src;meta.main
+        nullable: false
+      - name: ra_deg
+        "@id": "#Sources.ra_deg"
+        datatype: double
+        description: Right ascension (objra)
+        fits:tunit: deg
+        ivoa:ucd: pos.eq.ra;meta.main
+      - name: dec_deg
+        "@id": "#Sources.dec_deg"
+        datatype: double
+        description: Declination (objdec)
+        fits:tunit: deg
+        ivoa:ucd: pos.eq.dec;meta.main
+      - name: reference
+        "@id": "#Sources.reference"
+        datatype: string
+        length: 30
+        description: Discovery reference; links to Publications table
+        ivoa:ucd: meta.ref;meta.main
+        nullable: false
+    indexes:
+      - name: PK_Sources
+        "@id": "#PK_Sources"
+        description: Primary key for Sources table
+        columns:
+          - "#Sources.source"
+    constraints:
+      - name: Sources_reference_Publications_reference
+        "@type": "ForeignKey"
+        "@id": "#FK_Sources_reference_Publications_reference"
+        description: Link Sources reference to Publications table
+        columns:
+          - "#Sources.reference"
+        referencedColumns:
+          - "#Publications.reference"
+
+  - name: Names
+    "@id": "#Names"
+    description: Alternate identifiers (plateifu, nsa_iauname)
+    primaryKey:
+      - "#Names.source"
+      - "#Names.other_name"
+    columns:
+      - name: source
+        "@id": "#Names.source"
+        datatype: string
+        length: 50
+        description: Source identifier; links to Sources table
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: other_name
+        "@id": "#Names.other_name"
+        datatype: string
+        length: 100
+        description: Alternate identifier (plateifu or nsa_iauname)
+        ivoa:ucd: meta.id
+        nullable: false
+    indexes:
+      - name: PK_Names
+        "@id": "#PK_Names"
+        description: Primary key for Names table
+        columns:
+          - "#Names.source"
+          - "#Names.other_name"
+    constraints:
+      - name: Names_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_Names_source_Sources_source"
+        description: Link Names source to Sources table
+        columns:
+          - "#Names.source"
+        referencedColumns:
+          - "#Sources.source"
+
+  - name: Positions
+    "@id": "#Positions"
+    description: IFU center positions (ifura, ifudec)
+    primaryKey:
+      - "#Positions.source"
+      - "#Positions.reference"
+    columns:
+      - name: source
+        "@id": "#Positions.source"
+        datatype: string
+        length: 50
+        description: Source identifier; links to Sources table
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: ra_deg
+        "@id": "#Positions.ra_deg"
+        datatype: double
+        description: IFU right ascension
+        fits:tunit: deg
+        ivoa:ucd: pos.eq.ra;meta.main
+      - name: dec_deg
+        "@id": "#Positions.dec_deg"
+        datatype: double
+        description: IFU declination
+        fits:tunit: deg
+        ivoa:ucd: pos.eq.dec;meta.main
+      - name: reference
+        "@id": "#Positions.reference"
+        datatype: string
+        length: 30
+        description: Reference; links to Publications table
+        ivoa:ucd: meta.ref
+        nullable: false
+    indexes:
+      - name: PK_Positions
+        "@id": "#PK_Positions"
+        description: Primary key for Positions table
+        columns:
+          - "#Positions.source"
+          - "#Positions.reference"
+    constraints:
+      - name: Positions_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_Positions_source_Sources_source"
+        description: Link Positions source to Sources table
+        columns:
+          - "#Positions.source"
+        referencedColumns:
+          - "#Sources.source"
+      - name: Positions_reference_Publications_reference
+        "@type": "ForeignKey"
+        "@id": "#FK_Positions_reference_Publications_reference"
+        description: Link Positions reference to Publications table
+        columns:
+          - "#Positions.reference"
+        referencedColumns:
+          - "#Publications.reference"
+
+  - name: RadialVelocities
+    "@id": "#RadialVelocities"
+    description: Radial velocity from redshift (z or nsa_z; convert z × 299792.458 km/s)
+    primaryKey:
+      - "#RadialVelocities.source"
+      - "#RadialVelocities.reference"
+    columns:
+      - name: source
+        "@id": "#RadialVelocities.source"
+        datatype: string
+        length: 50
+        description: Source identifier; links to Sources table
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: rv_kms
+        "@id": "#RadialVelocities.rv_kms"
+        datatype: double
+        description: Radial velocity in km/s (from redshift)
+        fits:tunit: km/s
+        ivoa:ucd: spect.dopplerVeloc.opt
+        nullable: false
+      - name: reference
+        "@id": "#RadialVelocities.reference"
+        datatype: string
+        length: 30
+        description: Reference; links to Publications table
+        ivoa:ucd: meta.ref
+        nullable: false
+    indexes:
+      - name: PK_RadialVelocities
+        "@id": "#PK_RadialVelocities"
+        description: Primary key for RadialVelocities table
+        columns:
+          - "#RadialVelocities.source"
+          - "#RadialVelocities.reference"
+    constraints:
+      - name: RadialVelocities_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_RadialVelocities_source_Sources_source"
+        description: Link RadialVelocities source to Sources table
+        columns:
+          - "#RadialVelocities.source"
+        referencedColumns:
+          - "#Sources.source"
+      - name: RadialVelocities_reference_Publications_reference
+        "@type": "ForeignKey"
+        "@id": "#FK_RadialVelocities_reference_Publications_reference"
+        description: Link RadialVelocities reference to Publications table
+        columns:
+          - "#RadialVelocities.reference"
+        referencedColumns:
+          - "#Publications.reference"
+
+  - name: ModeledParameters
+    "@id": "#ModeledParameters"
+    description: Derived parameters (ebv_galactic, stellar mass, sersic index, etc.)
+    primaryKey:
+      - "#ModeledParameters.source"
+      - "#ModeledParameters.model"
+      - "#ModeledParameters.parameter"
+      - "#ModeledParameters.reference"
+    columns:
+      - name: source
+        "@id": "#ModeledParameters.source"
+        datatype: string
+        length: 50
+        description: Source identifier; links to Sources table
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: model
+        "@id": "#ModeledParameters.model"
+        datatype: string
+        length: 30
+        description: Model name (e.g. NSA, DRP)
+        ivoa:ucd: meta.id
+      - name: parameter
+        "@id": "#ModeledParameters.parameter"
+        datatype: string
+        length: 30
+        description: Parameter name; links to ParameterList table
+        ivoa:ucd: meta.id
+        nullable: false
+      - name: value
+        "@id": "#ModeledParameters.value"
+        datatype: double
+        description: Parameter value
+        ivoa:ucd: stat.value;meta.modelled
+        nullable: false
+      - name: unit
+        "@id": "#ModeledParameters.unit"
+        datatype: string
+        length: 30
+        description: Unit (mag, Msun, Mpc, dimensionless)
+        ivoa:ucd: meta.unit
+        nullable: false
+      - name: reference
+        "@id": "#ModeledParameters.reference"
+        datatype: string
+        length: 30
+        description: Reference; links to Publications table
+        ivoa:ucd: meta.ref
+        nullable: false
+    indexes:
+      - name: PK_ModeledParameters
+        "@id": "#PK_ModeledParameters"
+        description: Primary key for ModeledParameters table
+        columns:
+          - "#ModeledParameters.source"
+          - "#ModeledParameters.model"
+          - "#ModeledParameters.parameter"
+          - "#ModeledParameters.reference"
+    constraints:
+      - name: ModeledParameters_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_ModeledParameters_source_Sources_source"
+        description: Link ModeledParameters source to Sources table
+        columns:
+          - "#ModeledParameters.source"
+        referencedColumns:
+          - "#Sources.source"
+      - name: ModeledParameters_reference_Publications_reference
+        "@type": "ForeignKey"
+        "@id": "#FK_ModeledParameters_reference_Publications_reference"
+        description: Link ModeledParameters reference to Publications table
+        columns:
+          - "#ModeledParameters.reference"
+        referencedColumns:
+          - "#Publications.reference"
+      - name: ModeledParameters_parameter_ParameterList_parameter
+        "@type": "ForeignKey"
+        "@id": "#FK_ModeledParameters_parameter_ParameterList_parameter"
+        description: Link ModeledParameters parameter to ParameterList table
+        columns:
+          - "#ModeledParameters.parameter"
+        referencedColumns:
+          - "#ParameterList.parameter"
+
+  - name: Morphology
+    "@id": "#Morphology"
+    description: Morphological parameters (ellipticity=1-b/a, position_angle, half_light_radius)
+    primaryKey:
+      - "#Morphology.source"
+      - "#Morphology.reference"
+    columns:
+      - name: source
+        "@id": "#Morphology.source"
+        datatype: string
+        length: 50
+        description: Source identifier; links to Sources table
+        ivoa:ucd: meta.id;meta.main
+        nullable: false
+      - name: position_angle_deg
+        "@id": "#Morphology.position_angle_deg"
+        datatype: double
+        description: Position angle (nsa_elpetro_phi or nsa_sersic_phi)
+        fits:tunit: deg
+        ivoa:ucd: pos.posAng
+      - name: ellipticity
+        "@id": "#Morphology.ellipticity"
+        datatype: double
+        description: Ellipticity = 1 - b/a (from nsa_elpetro_ba or nsa_sersic_ba)
+        ivoa:ucd: phys.size.axisRatio
+      - name: half_light_radius_arcmin
+        "@id": "#Morphology.half_light_radius_arcmin"
+        datatype: double
+        description: Half-light radius (convert arcsec to arcmin, divide by 60)
+        fits:tunit: arcmin
+        ivoa:ucd: phys.size
+      - name: reference
+        "@id": "#Morphology.reference"
+        datatype: string
+        length: 30
+        description: Reference; links to Publications table
+        ivoa:ucd: meta.ref
+        nullable: false
+    indexes:
+      - name: PK_Morphology
+        "@id": "#PK_Morphology"
+        description: Primary key for Morphology table
+        columns:
+          - "#Morphology.source"
+          - "#Morphology.reference"
+    constraints:
+      - name: Morphology_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_Morphology_source_Sources_source"
+        description: Link Morphology source to Sources table
+        columns:
+          - "#Morphology.source"
+        referencedColumns:
+          - "#Sources.source"
+      - name: Morphology_reference_Publications_reference
+        "@type": "ForeignKey"
+        "@id": "#FK_Morphology_reference_Publications_reference"
+        description: Link Morphology reference to Publications table
+        columns:
+          - "#Morphology.reference"
+        referencedColumns:
+          - "#Publications.reference"
