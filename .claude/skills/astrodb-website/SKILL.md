@@ -67,7 +67,22 @@ Alternatively, you can run it manually with:
 uv run uvicorn astro_web.main:app --reload --port 8000
 ```
 
-## Step 4: Report Success
+## Step 4: Verify the Website
+
+After starting the server, verify that the `/browse` endpoint is accessible and returns the expected content. You should run the server in the background or use a separate command to check it.
+
+```bash
+# Verify the browse endpoint
+curl -s http://localhost:8000/browse | grep -i "<table"
+```
+
+Verify that:
+1. The response is valid HTML.
+2. It contains a `<table>` (the sources list).
+
+If the verification fails, check the server logs and verify your `.env` configuration.
+
+## Step 5: Report Success
 
 Inform the user that the website is running at **http://localhost:8000**.
 Remind them they can stop the server with `Ctrl+C`.

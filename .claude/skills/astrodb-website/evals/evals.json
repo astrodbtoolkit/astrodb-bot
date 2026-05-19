@@ -5,7 +5,12 @@
       "id": 0,
       "name": "basic-setup",
       "prompt": "I have an AstroDB database at .claude/skills/astrodb-website/evals/data/astrodb-template.sqlite. I want to see the data in a web interface.",
-      "expected_output": "The model should clone the Astro-Web repository, verify the database schema using sqlite3, run the setup_website.py script with the discovered ra_deg and dec_deg columns, and provide instructions to start the server.",
+      "expected_output": "The model should clone the Astro-Web repository, verify the database schema using sqlite3, run the setup_website.py script with the discovered ra_deg and dec_deg columns, start the server, and verify the /browse endpoint using curl.",
+      "expectations": [
+        "The output includes verification of the /browse endpoint using curl",
+        "The model clones the Astro-Web repository",
+        "The model runs setup_website.py with ra_deg and dec_deg"
+      ],
       "files": [
         ".claude/skills/astrodb-website/evals/data/astrodb-template.sqlite",
         ".claude/skills/astrodb-website/evals/data/database.toml"
@@ -15,7 +20,11 @@
       "id": 1,
       "name": "custom-columns",
       "prompt": "Please set up the AstroDB website for the database at .claude/skills/astrodb-website/evals/data/astrodb-template.sqlite. I know the RA column is ra_deg and Dec is dec_deg. The primary table is Sources.",
-      "expected_output": "The model should clone the repository, run the setup_website.py script using the provided ra_deg, dec_deg, and Sources table arguments, and explain how to start the website.",
+      "expected_output": "The model should clone the repository, run the setup_website.py script using the provided ra_deg, dec_deg, and Sources table arguments, start the server, and verify the /browse endpoint using curl.",
+      "expectations": [
+        "The output includes verification of the /browse endpoint using curl",
+        "The model runs setup_website.py with provided ra_deg, dec_deg, and Sources"
+      ],
       "files": [
         ".claude/skills/astrodb-website/evals/data/astrodb-template.sqlite"
       ]
