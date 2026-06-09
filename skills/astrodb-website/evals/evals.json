@@ -1,0 +1,61 @@
+{
+  "skill_name": "astrodb-website",
+  "evals": [
+    {
+      "id": 0,
+      "name": "basic-setup",
+      "prompt": "I have an AstroDB database at .agents/skills/astrodb-website/evals/data/astrodb-template.sqlite. I want to see the data in a web interface.",
+      "expected_output": "The model should clone the Astro-Web repository, verify the database schema using sqlite3, run the setup_website.py script with the discovered ra_deg and dec_deg columns, start the server, and verify the /browse endpoint using curl.",
+      "expectations": [
+        "The output includes verification of the /browse endpoint using curl",
+        "The model clones the Astro-Web repository",
+        "The model runs setup_website.py with ra_deg and dec_deg"
+      ],
+      "files": [
+        ".agents/skills/astrodb-website/evals/data/astrodb-template.sqlite",
+        ".agents/skills/astrodb-website/evals/data/database.toml"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "custom-columns",
+      "prompt": "Please set up the AstroDB website for the database at .agents/skills/astrodb-website/evals/data/astrodb-template.sqlite. I know the RA column is ra_deg and Dec is dec_deg. The primary table is Sources.",
+      "expected_output": "The model should clone the repository, run the setup_website.py script using the provided ra_deg, dec_deg, and Sources table arguments, start the server, and verify the /browse endpoint using curl.",
+      "expectations": [
+        "The output includes verification of the /browse endpoint using curl",
+        "The model runs setup_website.py with provided ra_deg, dec_deg, and Sources"
+      ],
+      "files": [
+        ".agents/skills/astrodb-website/evals/data/astrodb-template.sqlite"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "custom-galaxies",
+      "prompt": "I have an AstroDB database at .agents/skills/astrodb-website/evals/data/galaxies-db.sqlite and its configuration database.toml at .agents/skills/astrodb-website/evals/data/galaxy.toml. I want to see the data in a web interface. The primary sources table is called Galaxies, and the primary/foreign key columns should be called galaxy. Please set up the website for me.",
+      "expected_output": "The model should clone the Astro-Web repository, run setup_website.py with Galaxies as the primary table and discovered coordinate columns, configure the .env to use Galaxies and galaxy as the primary/foreign key column, start the server, and verify the /browse endpoint using curl.",
+      "files": [
+        ".agents/skills/astrodb-website/evals/data/galaxies-db.sqlite",
+        ".agents/skills/astrodb-website/evals/data/galaxy.toml"
+      ],
+      "assertions": [
+        {
+          "text": "Clones the Astro-Web repository to website/",
+          "type": "file_exists"
+        },
+        {
+          "text": "Runs setup_website.py with Galaxies primary table and ra_deg/dec_deg coordinate columns",
+          "type": "output_contains"
+        },
+        {
+          "text": "Configures website/.env to use Galaxies as the primary table, and galaxy as the primary/foreign key column",
+          "type": "output_contains"
+        },
+        {
+          "text": "Runs the website server and verifies the browse endpoint using curl",
+          "type": "output_contains"
+        }
+      ]
+    }
+  ]
+}
