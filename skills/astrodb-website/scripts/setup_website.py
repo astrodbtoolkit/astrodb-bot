@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-"""Setup script for Astro-Web skill.
+"""Setup script for astrodb-website skill.
 
-Generates a .env file for Astro-Web based on a provided database path.
+Generates a .env file for astrodb-web based on a provided database path.
 """
 
 import argparse
@@ -14,7 +14,7 @@ import tomllib
 def main():
     parser = argparse.ArgumentParser(description="Setup Astro-Web .env file")
     parser.add_argument("--db-path", required=True, help="Path to the SQLite database")
-    parser.add_argument("--website-dir", required=True, help="Directory where Astro-Web is cloned")
+    parser.add_argument("--website-dir", required=True, help="Directory where astrodb-web is cloned")
     parser.add_argument("--toml-path", help="Path to database.toml (optional)")
     parser.add_argument("--ra-col", default="ra", help="Name of the RA column (default: ra)")
     parser.add_argument("--dec-col", default="dec", help="Name of the Dec column (default: dec)")
