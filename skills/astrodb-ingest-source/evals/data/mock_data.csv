@@ -1,0 +1,4 @@
+object_name,ra_deg,dec_deg,discovery_ref
+NGC 1234,45.678,-12.345,GalCat2021
+NGC 5678,123.456,67.890,GalCat2021
+UGC 999,200.001,-30.000,GalCat2021

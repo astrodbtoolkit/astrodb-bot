@@ -1,0 +1,54 @@
+{
+    "skill_name": "astrodb-ingest-source",
+    "evals": [
+      {
+        "id": 1,
+        "prompt": "I have a FITS file at evals/data/NearbyGalaxies_Jan2021_PUBLIC.fits and a database.toml. Please ingest the sources from this file into my astrodb-template-db database.",
+        "expected_output": "A Python script is written to tmp/ingest_NearbyGalaxies_Jan2021_PUBLIC_sources.py, a dry run is executed showing how many rows were ingested vs skipped, and the user is asked to confirm before saving.",
+        "files": ["evals/data/NearbyGalaxies_Jan2021_PUBLIC.fits"],
+        "expectations": [
+          "A script is written to a tmp/ directory named after the input file",
+          "The script uses build_db_from_json with a settings_file parameter, not SCHEMA_PATH/DB_NAME",
+          "SAVE_DB is set to False for the dry run",
+          "The script's SOURCE_COL, REFERENCE_COL, RA_COL, DEC_COL are filled with actual column names from the file (not placeholder strings)",
+          "The user is shown a summary of rows ingested vs skipped before being asked to confirm saving",
+          "ra_col_name and dec_col_name are set to 'ra_deg' and 'dec_deg' for astrodb-template-db"
+        ]
+      },
+      {
+        "id": 2,
+        "prompt": "Ingest sources from evals/data/mock_data.csv into my database. The database.toml is in the project root. The CSV has columns: object_name, ra_deg, dec_deg, discovery_ref.",
+        "expected_output": "Script written to tmp/ingest_mock_data_sources.py with correct column mappings, dry run executed, summary shown.",
+        "files": ["evals/data/mock_data.csv"],
+        "expectations": [
+          "SOURCE_COL is set to 'object_name'",
+          "REFERENCE_COL is set to 'discovery_ref'",
+          "RA_COL is set to 'ra_deg' and DEC_COL is set to 'dec_deg'",
+          "Script is placed in tmp/ directory",
+          "Dry run is executed and row counts are reported"
+        ]
+      },
+      {
+        "id": 3,
+        "prompt": "I want to add sources to my database from NearbyGalaxies_Jan2021_PUBLIC.fits, but the reference 'GalCat2021' doesn't exist in my Publications table yet.",
+        "expected_output": "The skill detects the missing publication and either offers to ingest it first or guides the user to do so before proceeding.",
+        "files": ["evals/data/NearbyGalaxies_Jan2021_PUBLIC.fits"],
+        "expectations": [
+          "The skill identifies that the reference is missing from Publications",
+          "The skill offers to run ingest_publication before continuing, rather than just failing",
+          "Source ingestion does not proceed until the publication issue is resolved"
+        ]
+      },
+      {
+        "id": 4,
+        "prompt": "Ingest sources from evals/data/mock_data.csv. The database is SIMPLE-db, not astrodb-template-db.",
+        "expected_output": "Script uses ra, dec, epoch (SIMPLE-db column names) instead of ra_deg, dec_deg, epoch_year.",
+        "files": ["evals/data/mock_data.csv"],
+        "expectations": [
+          "RA_COL_NAME is set to 'ra' (not 'ra_deg')",
+          "DEC_COL_NAME is set to 'dec' (not 'dec_deg')",
+          "EPOCH_COL_NAME is set to 'epoch' (not 'epoch_year')"
+        ]
+      }
+    ]
+  }
