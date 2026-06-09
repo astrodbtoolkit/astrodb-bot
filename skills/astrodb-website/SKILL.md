@@ -16,7 +16,8 @@ This skill sets up a FastAPI web interface ([Astro-Web](https://github.com/astro
 
 ## Step 1: Clone the Astro-Web Repository
 
-The website should be set up in a directory named `website/` (or similar) in your project root. If it doesn't exist, clone it:
+The website should be set up in a directory named `website/` (or similar). 
+If it doesn't exist, clone it:
 
 ```bash
 git clone https://github.com/astrodbtoolkit/Astro-Web website
