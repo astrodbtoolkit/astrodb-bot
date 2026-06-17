@@ -1,0 +1,20 @@
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update pyproject.toml version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: bump version to ${{ github.event.release.tag_name }}"
+          file_pattern: pyproject.toml
