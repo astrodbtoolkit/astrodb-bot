@@ -114,6 +114,11 @@ Each `evals/evals.json` has `skill_name` and an array of `evals`, each with:
 - `files` — data files the eval depends on (paths relative to the skill's `evals/` dir)
 - `assertions` (or `expectations`) — specific checkable claims about the response
 
+### Workspace Directories
+
+ `skills/astrodb-build-schema-match-workspace/` and `skills/astrodb-setup-workspace/` are **not deployable skills** — they contain iteration and eval history from skill development. They have no top-level `SKILL.md`. Do not include them when installing skills into an agent.
+ If any `*-workspace/` directories are added under `skills/`, they are **not deployable skills** — they may contain iteration/eval history and may have no top-level `SKILL.md`. Do not include workspace directories when installing skills into an agent.
+
 ### External Dependencies
 
 - [`astrodb-template-db`](https://github.com/astrodbtoolkit/astrodb-template-db) — the canonical AstroDB schema and directory layout that skills target
