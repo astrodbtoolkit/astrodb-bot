@@ -28,14 +28,18 @@ To install this in another agent, you can copy the `skills/` directory to whatev
 ## Requirements
 
 - an AI skill runner that reads `.agents/skills/` (or the appropriate directory for your agent)
-- `uv` or `pip` to install Python packages
-- Python 3.11+
+- `uv` to install Python packages
+- Python 3.13+
   - `astropy`
   - `pandas` for fallback table parsing
   - `lsst-felis`
   - `astrodbkit`
   - `astrodb_utils`
   - `pytest`
+
+## Releases
+
+Versioned releases are available on the [Releases page](../../releases). Use a tagged release when installing skills into a project so you can pin to a known-good version.
 
 ## License
 

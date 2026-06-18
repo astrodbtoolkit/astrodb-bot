@@ -35,6 +35,5 @@ env/
 *.swo
 
 
-uv.lock
 main.py
 website/
