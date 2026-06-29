@@ -12,6 +12,18 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
+**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
+
+### Step 0: Create the artifact folder
+
+Run this before anything else:
+
+```bash
+mkdir -p astrodb-build-artifacts
+```
+
+If this fails, stop and tell the user you cannot create the output directory.
+
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
 Work through these options in order — stop at the first one that succeeds:

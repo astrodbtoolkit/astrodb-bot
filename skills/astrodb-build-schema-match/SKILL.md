@@ -12,6 +12,14 @@ metadata:
 Map columns from an astronomical data table to the AstroDB template database schema, so you know
 exactly which table and field each column belongs to before ingesting data.
 
+**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files:
+
+```bash
+mkdir -p astrodb-build-artifacts
+```
+
+If this fails, stop and tell the user you cannot create the output directory.
+
 ## Input
 
 Accept input in either form:
@@ -101,7 +109,12 @@ proposal as its starting point.
 
 ## Output
 
-Output the results as a markdown table, adding columns onto the output from `astrodb-build-parse-table` for the matched AstroDB Table, AstroDB Field, Confidence level, and Notes on the match. 
+Output the results as a markdown table, adding columns onto the output from `astrodb-build-parse-table` for the matched AstroDB Table, AstroDB Field, Confidence level, and Notes on the match.
+
+Write both output files inside `astrodb-build-artifacts/`, in a subdirectory named after the input file's base name with a `-schema-match` suffix. **Do not overwrite an existing directory** — if it already exists, append `-1`, `-2`, etc. until a free name is found. For example, if the input is `data/catalog.fits`, write:
+
+- `astrodb-build-artifacts/catalog-schema-match/catalog-schema-match.md`
+- `astrodb-build-artifacts/catalog-schema-match/catalog-schema-match.html`
 
 Also write the results to an HTML file using the `Write` tool. Follow the full visual spec in `references/html-output.md` — read it now before writing the file.
 
@@ -117,7 +130,7 @@ After writing the file, give a short plain-text summary in the chat (2–4 sente
 many columns matched at each confidence level and flagging anything critical. If there are
 proposed schema additions, mention that running `astrodb-build-schema-generate` next can turn them
 into `schema.yaml` changes.
-Tell the user the file path to both the markdown table and the html file.  
+Tell the user the exact file paths to both the markdown table and the HTML file inside `astrodb-build-artifacts/`.
 
 **Confidence levels:**
 - **High**: Name clearly matches a known pattern, or name + units together are unambiguous
