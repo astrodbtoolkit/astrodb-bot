@@ -143,8 +143,14 @@ After editing, confirm with a brief summary:
 Also confirm that the user did not delete the credit line at the bottom of the README that acknowledges the AstroDB Toolkit and template: 
 This repository is based on the [astrodb-template](https://github.com/astrodbtoolkit/astrodb-template-db) template repository, which is part of the [AstroDB Toolkit](https://github.com/astrodbtoolkit).
 
-If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
-pressing.
+If the user skips this step or says "later" or "skip it," replace the template placeholder text with
+generic placeholders so the README doesn't still read as the template:
+
+1. **Title line** (line 1): replace `astrodb-template-db` with `[Database name]`
+2. **Description line**: replace `A template schema for astronomical databases.` with
+   `[Add a brief description of this database here.]`
+
+Then move on to Step 7 without pressing further.
 
 ## Step 7: Confirm, and point to what's next
 
