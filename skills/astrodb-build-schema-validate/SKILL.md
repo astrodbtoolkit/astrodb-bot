@@ -96,7 +96,9 @@ Save the script to `astrodb-build-artifacts/validate_mapping.py` and run it to g
 
 ## Step 3: Produce the validation report
 
-See `references/validation-report.md` for the exact report structure to use.
+Follow the exact report structure in `references/validation-report.md`, and write the full report
+to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool — the same
+`astrodb-build-artifacts/` directory the Step 2 script went to. Tell the user the path.
 
 ## Edge cases to handle gracefully
 
@@ -120,4 +122,4 @@ explicitly waived by the user — first.
 - [ ] You ran a script (saved to `astrodb-build-artifacts/validate_mapping.py`) that, for each mapped column, counted null/missing values — including FITS masked values and empty strings for non-nullable string fields — and read its dtype.
 - [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
-- [ ] You produced the validation report following `references/validation-report.md`.
+- [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
