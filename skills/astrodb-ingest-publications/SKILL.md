@@ -14,6 +14,34 @@ references for sources, photometry, spectra, parallaxes, etc.) must exist as a r
 Read `references/ingest_publication_api.md` before starting — it has the full function
 signatures, ADS token setup, the reference naming convention, and common warnings.
 
+## Reference naming convention
+
+Every entry in `Publications` has a `reference` shortname. Always construct it as:
+
+**First four letters of the first author's last name + two-digit year**
+
+| Author | Year | Shortname |
+|--------|------|-----------|
+| Smith et al. | 2020 | `Smit20` |
+| Bonaca et al. | 2020 | `Bona20` |
+| Wu & Xi | 2021 | `WuXi21` (or `Wu__21` for very short names) |
+
+**Disambiguation** — if two papers would share the same first-author/year shortname, append
+the last 4 characters of the DOI to the shortname of the conflicting paper as a suffix:
+
+| Author | Year | DOI | Shortname |
+|--------|------|-----|-----------|
+| Bonaca et al. | 2020 | `10.3847/2041-8213/ab800c` | `Bona20` (first) |
+| Bonaca et al. | 2020 | `10.3847/1538-4357/aba51a` | `Bona20.a51a` (second) |
+
+Use a `.` separator between the base shortname and the 4-character DOI suffix (e.g.
+`Bona20.800c`). Apply the suffix to whichever paper is encountered second — leave the
+first paper's shortname unchanged.
+
+**Never use `a` / `b` / `c` letter suffixes** (e.g. `Bona20a`). When ADS is available it
+generates a compliant shortname automatically; when using `ignore_ads=True`, construct it
+yourself with this rule.
+
 ## Critical constraint: `ingest_publication` requires a DOI or bibcode
 
 `ingest_publication` queries NASA ADS with a DOI or bibcode to fill in metadata. It
@@ -109,7 +137,7 @@ anything:
 
    | reference | title | DOI | bibcode | context |
    |-----------|-------|-----|---------|---------|
-   | Bonaca2020 | High-resolution Spectroscopy of the GD-1 Stream... | 10.3847/2041-8213/ab800c | 2020ApJ...892L..37B | GD-1 stream |
+   | Bona20 | High-resolution Spectroscopy of the GD-1 Stream... | 10.3847/2041-8213/ab800c | 2020ApJ...892L..37B | GD-1 stream |
 
 ## Step 3: Deduplicate with `find_publication`
 

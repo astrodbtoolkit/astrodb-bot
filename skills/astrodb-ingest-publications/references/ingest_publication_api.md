@@ -134,8 +134,11 @@ last name + two-digit year:
 
 - Smith et al. 2020 → `Smit20`
 - Short last names: use first-name initials or underscores → `WuXi21` or `Wu__21`
-- Multiple papers, same first-author/year: append the last digits of the DOI/bibcode →
-  `Smit20.123`. Avoid `abc` suffixes.
+- Multiple papers, same first-author/year: the **second paper does not get a variant
+  shortname**. Instead, cite it in the `comments` field of the data row that references it
+  (e.g. `Parallaxes.comments`, `Sources.comments`), using the last 4 characters of its DOI
+  as a concise identifier — e.g. `see also 800c`. **Never use `a`, `b`, `c` letter
+  suffixes** (`Smit20a`) and never append a DOI suffix to the shortname (`Smit20.800c`).
 
 When ADS is available it generates this for you. When using `ignore_ads=True`, construct it
 yourself with this rule (or use the shortname already present in the user's table).

@@ -4,12 +4,13 @@
     {
       "id": 1,
       "prompt": "Add the discovery paper for the GD-1 stellar stream by Bonaca et al. 2020 to my Publications table. database.toml is in the project root.",
-      "expected_output": "No DOI is given, so the skill searches Google Scholar/ADS/Crossref using the GD-1 stream as disambiguating context, resolves DOI 10.3847/2041-8213/ab800c (bibcode 2020ApJ...892L..37B), shows the resolved paper for user confirmation, then writes it with a find_publication dedup check and SAVE_DB=False.",
+      "expected_output": "No DOI is given, so the skill searches Google Scholar/ADS/Crossref using the GD-1 stream as disambiguating context, resolves DOI 10.3847/2041-8213/ab800c (bibcode 2020ApJ...892L..37B), assigns shortname Bona20 (first 4 letters of Bonaca + 2-digit year), shows the resolved paper for user confirmation, then writes it with a find_publication dedup check and SAVE_DB=False.",
       "files": [],
       "expectations": [
         "Recognizes that NO DOI was provided and searches Google Scholar, NASA ADS, or Crossref — does NOT call ingest_publication with a bare author+year string",
         "Resolves to the CORRECT paper: 'High-resolution Spectroscopy of the GD-1 Stellar Stream...', DOI 10.3847/2041-8213/ab800c, bibcode 2020ApJ...892L..37B — not some other Bonaca 2020 paper",
         "Uses the GD-1 stream as disambiguating context and verifies author/year/title match before writing",
+        "Assigns shortname Bona20 (first 4 letters of 'Bonaca' + two-digit year '20') — does NOT use Bonaca2020 or Bona20a",
         "Shows the resolved reference->title->DOI/bibcode table to the user and waits for confirmation before ingesting",
         "find_publication dedup is called before ingest_publication, SAVE_DB is False, and the user is asked to confirm before saving"
       ]
