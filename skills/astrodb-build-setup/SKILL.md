@@ -40,7 +40,7 @@ to — cleaner than forking or copying files by hand.
 
 The same-name suggestion is a nice-to-have, not a gate: if the user already made their repo under a
 different name, or gives you both the database name and repo URL in one message, just take both and move
-on. Don't mention the mismatch upfront — wait until Step 7 (after setup is complete) to raise it.
+on. Don't mention the mismatch upfront — wait until Step 8 (after setup is complete) to raise it.
 
 Hold on to the database name for Step 4. Wait until you have a repo URL before continuing to Step 2; if
 the user hasn't made the repo yet, walk them through the three steps above and pause until they do.
@@ -56,7 +56,7 @@ git clone <user-repo-url>
 Do this without asking the user where to put it or what working directory to use — `git clone` creates a
 new folder named after the repo right where you already are, which is exactly what's wanted. There's
 nothing meaningful to ask about directories yet, since `<repo-dir>` doesn't exist until this command
-finishes; that conversation belongs in Step 7, once it does.
+finishes; that conversation belongs in Step 8, once it does.
 
 If `git` isn't available or the clone fails (e.g. no network, or a private repo you can't access), don't
 fake it or work around it — tell the user plainly, and if it's an access problem point them at making the
