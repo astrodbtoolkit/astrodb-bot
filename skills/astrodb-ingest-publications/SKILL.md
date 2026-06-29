@@ -179,3 +179,14 @@ writing anything. Only after confirmation, fill:
 
 Backfill is idempotent: skip references whose metadata is already populated. When done,
 verify zero rows still have NULL `bibcode`/`doi`/`description`.
+
+## Completion Checklist
+
+Before telling the user publications are ingested, confirm every item below. Anything unmet must be done —
+or explicitly confirmed by the user — first.
+
+- [ ] Every reference was resolved to the *specific, verified* paper (DOI or bibcode), disambiguated by context — a bare shortname or author+year was never passed to `ingest_publication`. When you had to look a paper up (rather than being given a DOI/bibcode directly), you showed the resolved table and waited for the user's confirmation before writing.
+- [ ] `find_publication` was called before each `ingest_publication`, and references already present were reported as such rather than re-ingested.
+- [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{LABEL}_publications.py` contains only real resolved values (no placeholders), with `IGNORE_ADS` set correctly and `SAVE_DB = False`.
+- [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
+- [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.

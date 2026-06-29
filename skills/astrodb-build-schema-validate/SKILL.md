@@ -109,3 +109,15 @@ See `references/validation-report.md` for the exact report structure to use.
 - **FITS masked arrays**: treat masked values as nulls.
 - **String columns with empty strings**: count `""` as effectively null for non-nullable
   string fields — empty strings often slip through where None would be caught.
+
+## Completion Checklist
+
+Before telling the user validation is done, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first.
+
+- [ ] You had the mapping table, the data file path, and the schema.yaml path — asking the user for any that were missing rather than guessing.
+- [ ] You parsed schema.yaml for each field's datatype, nullable flag, and length.
+- [ ] You ran a script (saved to `astrodb-build-artifacts/validate_mapping.py`) that, for each mapped column, counted null/missing values — including FITS masked values and empty strings for non-nullable string fields — and read its dtype.
+- [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
+- [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
+- [ ] You produced the validation report following `references/validation-report.md`.

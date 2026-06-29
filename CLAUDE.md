@@ -105,6 +105,7 @@ Skills are designed to chain in order:
 - **`astrodb-build-artifacts/`** holds build outputs: parsed table results, generated schema YAML. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
 - **`uv run`** is preferred over bare `python` to ensure the correct virtual environment.
 - **Database loading**: JSON-layout databases (astrodb-template-db) use `build_db_from_json(settings_file="database.toml")`; standalone `.sqlite` files use a direct connection.
+- **Completion checklist**: every `SKILL.md` ends with a `## Completion Checklist` — a blocking self-verification gate the agent must satisfy (or have the user explicitly waive) before reporting the skill done. Items are phrased as verifiable outcomes, and user-dependent ones as "prompted and honored the user's choice (or they declined)," never as a forced action that could tempt fabrication. When you add or restructure a skill's steps, update its checklist in the same edit.
 
 ### Evals Format
 

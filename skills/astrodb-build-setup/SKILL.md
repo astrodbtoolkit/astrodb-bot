@@ -195,3 +195,16 @@ separate skill:
 > later.
 
 Only raise this if there is an actual mismatch. If the names already match, skip this entirely.
+
+## Completion Checklist
+
+Before telling the user setup is complete, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Never tick a box by inventing a value (e.g. a name the user never
+gave) or by claiming a check you didn't actually run.
+
+- [ ] The user's repo is cloned, and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
+- [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
+- [ ] **README** — you prompted for a description and updated the title + description (or the user explicitly skipped). The astrodb-utils line is removed, and the ERD image plus the bottom credit line acknowledging the AstroDB Toolkit/template are still intact.
+- [ ] **LICENSE** — you showed the current copyright line and acted on the user's choice: new name(s) on the BSD 3-Clause copyright, or a different license with the year and name filled in (no placeholder left behind) — or the user explicitly declined. You never put a name on it that the user didn't give.
+- [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
+- [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
