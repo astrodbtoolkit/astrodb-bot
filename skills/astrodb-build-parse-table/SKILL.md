@@ -12,9 +12,16 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
+### Step 0: Check for a directions document
+
+Before doing anything else, check whether `artifacts/directions.md` exists in the current working
+directory. If it does, read it now — it captures dataset-specific decisions (columns to skip, how
+to handle edge cases, schema choices) that should guide your interpretation throughout this skill.
+If it doesn't exist, proceed without it.
+
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
 
-### Step 0: Create the artifact folder
+### Step 1: Create the artifact folder
 
 Run this before anything else:
 

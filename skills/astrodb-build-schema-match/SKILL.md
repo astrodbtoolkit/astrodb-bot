@@ -12,6 +12,13 @@ metadata:
 Map columns from an astronomical data table to the AstroDB template database schema, so you know
 exactly which table and field each column belongs to before ingesting data.
 
+## Directions Document
+
+Before matching, check whether `artifacts/directions.md` exists in the current working directory.
+If it does, read it now — it contains dataset-specific decisions (which columns go where, what to
+ignore, custom tables, known edge cases) that should directly inform how you map columns. Honor any
+explicit direction over the default matching heuristics.
+
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files:
 
 ```bash
