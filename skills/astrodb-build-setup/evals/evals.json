@@ -28,7 +28,7 @@
     {
       "id": 2,
       "prompt": "I made my repo from the template, it's at https://github.com/kelle/test-astrodb . Call the database BdSurvey and get it set up.",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', and tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', creates an artifacts/ directory, and creates artifacts/directions.md (populated or as a template). Tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
       "files": [],
       "assertions": [
         {
@@ -46,6 +46,14 @@
         {
           "id": "eval2_updates_db_name",
           "text": "Updates database.toml so db_name is set to the user-provided name (BdSurvey)"
+        },
+        {
+          "id": "eval2_creates_artifacts_dir",
+          "text": "Creates an artifacts/ directory inside the cloned repo"
+        },
+        {
+          "id": "eval2_creates_directions_md",
+          "text": "Creates artifacts/directions.md (either populated from user input or as a template to fill in)"
         },
         {
           "id": "eval2_asks_readme_description",

@@ -132,7 +132,31 @@ This repository is based on the [astrodb-template](https://github.com/astrodbtoo
 If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
 pressing.
 
-## Step 6: Confirm, and point to what's next
+## Step 6: Create an artifacts directory and directions document
+
+Create an `artifacts/` directory in the cloned repo to hold reproducibility artifacts:
+
+```bash
+mkdir -p <repo-dir>/artifacts
+```
+
+A **directions document** lives at `artifacts/directions.md` and captures dataset-specific decisions,
+known issues, and ingestion notes. It is read automatically by subsequent skills
+(`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) to guide their decisions — so filling
+it in now saves time and prevents inconsistencies later.
+
+Read `references/directions_example.md` now, then show it to the user and explain what each section
+captures. Ask:
+
+> Would you like to fill in a directions document now? It's the best place to record notes about your
+> data — columns to skip, how to handle tricky cases, schema decisions you've already made. You can
+> always add to it later.
+
+If the user wants to fill it in now, help them write one based on their notes and save it to
+`<repo-dir>/artifacts/directions.md`. If they'd rather do it later, copy the example to
+`<repo-dir>/artifacts/directions.md` with a comment at the top marking it as a template to fill in.
+
+## Step 7: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
 `db_name` is set. This is also the natural point to bring up `<repo-dir>` as their project directory going
