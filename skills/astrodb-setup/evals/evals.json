@@ -24,7 +24,7 @@
     {
       "id": 2,
       "prompt": "I made my repo from the template, it's at https://github.com/jdoe/bd-survey-db . Call the database BdSurvey and get it set up.",
-      "expected_output": "Clones https://github.com/jdoe/bd-survey-db into the working directory, verifies the cloned repo has the template structure (a data/ directory, a database.toml, and a schema.yaml), removes the template's pre-generated schema files (schema_erd.png and docs/schema/*.md), and updates database.toml so db_name is 'BdSurvey'. Does not handle a data file.",
+      "expected_output": "Clones https://github.com/jdoe/bd-survey-db into the working directory, verifies the cloned repo has the template structure (a data/ directory, a database.toml, and a schema.yaml), removes the template's pre-generated schema files (schema_erd.png and docs/schema/*.md), updates database.toml so db_name is 'BdSurvey', creates an artifacts/ directory, and creates an artifacts/directions.md file (populated or as a template). Does not handle a data file.",
       "files": [],
       "assertions": [
         {
@@ -46,6 +46,14 @@
         {
           "id": "eval2_removes_docs_schema_md",
           "text": "Removes the .md files in docs/schema/ from the cloned repo"
+        },
+        {
+          "id": "eval2_creates_artifacts_dir",
+          "text": "Creates an artifacts/ directory inside the cloned repo"
+        },
+        {
+          "id": "eval2_creates_directions_md",
+          "text": "Creates artifacts/directions.md (either populated from user input or as a template to fill in)"
         },
         {
           "id": "eval2_no_datafile",

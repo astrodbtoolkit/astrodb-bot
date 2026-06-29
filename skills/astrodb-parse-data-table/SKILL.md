@@ -12,6 +12,13 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
+### Step 0: Check for a directions document
+
+Before doing anything else, check whether `artifacts/directions.md` exists in the current working
+directory. If it does, read it now — it captures dataset-specific decisions (columns to skip, how
+to handle edge cases, schema choices) that should guide your interpretation throughout this skill.
+If it doesn't exist, proceed without it.
+
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
 Work through these options in order — stop at the first one that succeeds:

@@ -100,12 +100,38 @@ grep '^db_name' <repo-dir>/database.toml   # confirm it now reads the user's nam
 Editing the line by hand is fine too — the point is that `db_name` ends up matching the user's chosen
 name.
 
-## Step 7: Confirm, and point to what's next
+## Step 7: Create an artifacts directory and directions document
 
-Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
-`db_name` is set. Then name the next step, `astro-parse-data-table`, without doing it — adding a data table to parse and map into
-this schema is a separate skill:
+Create an `artifacts/` directory in the cloned repo to hold reproducibility artifacts:
 
-> Your AstroDB repo is cloned into `<repo-dir>`, the structure matches the template, and `db_name` is set
-> to `<new-name>`. The next step is to bring in a data table and run the `astro-parse-data-table` skill — let me know when you have one and we'll
-> parse it into this database.
+```bash
+mkdir -p <repo-dir>/artifacts
+```
+
+A **directions document** lives at `artifacts/directions.md` and captures dataset-specific decisions,
+known issues, and ingestion notes. It is read automatically by subsequent skills
+(`astrodb-parse-data-table`, `astrodb-match-schema`, etc.) to guide their decisions — so filling it
+in now saves time and prevents inconsistencies later.
+
+Read `references/directions_example.md` now, then show it to the user and explain what each section
+captures. Ask:
+
+> Would you like to fill in a directions document now? It's the best place to record notes about your
+> data — columns to skip, how to handle tricky cases, schema decisions you've already made. You can
+> always add to it later.
+
+If the user wants to fill it in now, help them write one based on their notes and save it to
+`<repo-dir>/artifacts/directions.md`. If they'd rather do it later, copy the example to
+`<repo-dir>/artifacts/directions.md` with a comment at the top marking it as a template to fill in.
+
+## Step 8: Confirm, and point to what's next
+
+Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, that
+`db_name` is set, and that an `artifacts/directions.md` has been created. Then name the next step,
+`astrodb-parse-data-table`, without doing it — adding a data table to parse and map into this schema
+is a separate skill:
+
+> Your AstroDB repo is cloned into `<repo-dir>`, the structure matches the template, `db_name` is set
+> to `<new-name>`, and a directions document is waiting at `artifacts/directions.md`. The next step is
+> to bring in a data table and run the `astrodb-parse-data-table` skill — let me know when you have
+> one and we'll parse it into this database.
