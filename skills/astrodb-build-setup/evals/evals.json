@@ -28,7 +28,7 @@
     {
       "id": 2,
       "prompt": "I made my repo from the template, it's at https://github.com/kelle/test-astrodb . Call the database BdSurvey and get it set up.",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', asks for a README description, and prompts the user to update the LICENSE — putting their own name(s) on the copyright or choosing a different license, since none was given — then tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', asks for a README description, and prompts the user to update the LICENSE — putting their own name(s) on the copyright or choosing a different license, since none was given. In Step 6, offers to help write a directions document but does not automatically create an artifacts/ directory or write a directions.md file. Tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
       "files": [],
       "assertions": [
         {
@@ -54,6 +54,10 @@
         {
           "id": "eval2_updates_db_name",
           "text": "Updates database.toml so db_name is set to the user-provided name (BdSurvey)"
+        },
+        {
+          "id": "eval2_offers_directions_doc",
+          "text": "Offers to help the user write a directions document, or explains it can be provided later as a path to downstream skills — does not automatically create an artifacts/ directory or write a directions.md file"
         },
         {
           "id": "eval2_asks_readme_description",
@@ -257,6 +261,30 @@
         },
         {
           "id": "eval8_no_datafile",
+          "text": "Does not ask for or handle a data file"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Set up a new astrodb called StreamDB from https://github.com/kelle/test-astrodb . I already have a directions doc at /Users/me/notes/stream_directions.md .",
+      "expected_output": "Clones the repo, verifies structure, sets db_name to StreamDB. In Step 6 (directions document), reads /Users/me/notes/stream_directions.md immediately — since the user already provided a path — and acknowledges it without re-asking whether to write one. Does not create an artifacts/ directory or copy the file anywhere automatically. Continues to README and LICENSE steps and wraps up.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval9_reads_provided_path",
+          "text": "Reads the directions document from the user-provided path (/Users/me/notes/stream_directions.md) rather than asking the user to write a new one"
+        },
+        {
+          "id": "eval9_no_recreate_prompt",
+          "text": "Does not ask the user whether they want to write a directions document — they already supplied one"
+        },
+        {
+          "id": "eval9_updates_db_name",
+          "text": "Updates database.toml so db_name is set to StreamDB"
+        },
+        {
+          "id": "eval9_no_datafile",
           "text": "Does not ask for or handle a data file"
         }
       ]

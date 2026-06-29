@@ -184,7 +184,31 @@ Act on their answer with the `Edit` tool (not `sed`), leaving the rest of the fi
 
 If the user says "skip," "later," or "leave it," that's fine — move on to Step 7 without pressing.
 
-## Step 8: Confirm, and point to what's next
+## Step 8: Directions document (optional input)
+
+A **directions document** captures dataset-specific decisions, known issues, and ingestion notes.
+Downstream skills (`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) accept it as an
+optional input — either as a user-provided file path, or from `astrodb-build-artifacts/directions.md`
+if it was saved there in a prior run.
+
+**If the user already provided a path** to a directions document at the start of this skill (e.g.
+as part of their initial message), read it now and acknowledge it. No need to ask — proceed to
+Step 9.
+
+**Otherwise**, read `references/directions_example.md` and show the user what a directions document
+covers. Ask:
+
+> Would you like to write a directions document now? It's the best place to record notes about your
+> data — columns to skip, how to handle tricky cases, schema decisions you've already made. You can
+> always add to it later, or pass the path to a downstream skill when you're ready.
+
+If the user wants to write one now, help them draft it based on their notes. Save it wherever they
+tell you to save it — do not prescribe a location.
+
+If they'd rather skip, that's fine — they can provide the path to a directions document when running
+downstream skills.
+
+## Step 9: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
 `db_name` is set (along with any README and LICENSE edits they made). This is also the natural point to
