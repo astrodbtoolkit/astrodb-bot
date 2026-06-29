@@ -28,7 +28,7 @@
         },
         {
           "id": "eval1_report_written",
-          "text": "A validation report file is written to /tmp/ and the path is given to the user"
+          "text": "A validation report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
         },
         {
           "id": "eval1_summary_section",
@@ -94,7 +94,7 @@
         },
         {
           "id": "eval3_report_written",
-          "text": "A report file is written to /tmp/ and the path is given to the user"
+          "text": "A report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
         }
       ]
     }

@@ -40,7 +40,7 @@ to — cleaner than forking or copying files by hand.
 
 The same-name suggestion is a nice-to-have, not a gate: if the user already made their repo under a
 different name, or gives you both the database name and repo URL in one message, just take both and move
-on. Don't mention the mismatch upfront — wait until Step 5 (after setup is complete) to raise it.
+on. Don't mention the mismatch upfront — wait until Step 7 (after setup is complete) to raise it.
 
 Hold on to the database name for Step 4. Wait until you have a repo URL before continuing to Step 2; if
 the user hasn't made the repo yet, walk them through the three steps above and pause until they do.
@@ -56,7 +56,7 @@ git clone <user-repo-url>
 Do this without asking the user where to put it or what working directory to use — `git clone` creates a
 new folder named after the repo right where you already are, which is exactly what's wanted. There's
 nothing meaningful to ask about directories yet, since `<repo-dir>` doesn't exist until this command
-finishes; that conversation belongs in Step 5, once it does.
+finishes; that conversation belongs in Step 7, once it does.
 
 If `git` isn't available or the clone fails (e.g. no network, or a private repo you can't access), don't
 fake it or work around it — tell the user plainly, and if it's an access problem point them at making the
@@ -152,11 +152,44 @@ generic placeholders so the README doesn't still read as the template:
 
 Then move on to Step 7 without pressing further.
 
-## Step 7: Confirm, and point to what's next
+## Step 7: Update the LICENSE
+
+The cloned repo's `LICENSE` (BSD 3-Clause) still carries the template authors' copyright — the people who
+wrote the AstroDB template, not whoever now owns this database. Like the README, this is the moment to
+make it theirs.
+
+Show the copyright line as it currently stands so they can see whose names are on it:
+
+```bash
+grep 'Copyright (c)' <repo-dir>/LICENSE
+```
+
+If there's no `LICENSE` file, say so and offer to add one — don't invent attribution.
+
+Then ask:
+
+> Your `LICENSE` still lists the template's authors:
+> `<the copyright line you just printed>`
+> You can put your own name(s) on it — added alongside those authors or replacing them — or switch to a
+> different license entirely (MIT, Apache-2.0, …). The simplest is to add your name alongside. Whose
+> name(s) should this database be under, and which license?
+
+Act on their answer with the `Edit` tool (not `sed`), leaving the rest of the file intact:
+
+- **Same license, new names** — change only the names in the `Copyright (c) <year>, …` line, adding or
+  replacing as they asked. Leave the year as-is unless they want it updated.
+- **A different license** — replace the whole `LICENSE` with the standard text of the license they chose,
+  filling in the current year and their name in its copyright line. Don't leave a placeholder year or
+  name behind. If they're unsure which to pick, point them to https://choosealicense.com.
+
+If the user says "skip," "later," or "leave it," that's fine — move on to Step 7 without pressing.
+
+## Step 8: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
-`db_name` is set. This is also the natural point to bring up `<repo-dir>` as their project directory going
-forward — every other astrodb-* skill looks for `database.toml`, `schema.yaml`, etc. in the current
+`db_name` is set (along with any README and LICENSE edits they made). This is also the natural point to
+bring up `<repo-dir>` as their project directory going forward — every other astrodb-* skill looks for
+`database.toml`, `schema.yaml`, etc. in the current
 directory, so they'll want to be inside `<repo-dir>` for the next step. Then name that next step,
 `astro-parse-data-table`, without doing it — adding a data table to parse and map into this schema is a
 separate skill:
@@ -182,3 +215,16 @@ separate skill:
 > later.
 
 Only raise this if there is an actual mismatch. If the names already match, skip this entirely.
+
+## Completion Checklist
+
+Before telling the user setup is complete, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Never tick a box by inventing a value (e.g. a name the user never
+gave) or by claiming a check you didn't actually run.
+
+- [ ] The user's repo is cloned, and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
+- [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
+- [ ] **README** — you prompted for a description and updated the title + description (or the user explicitly skipped). The astrodb-utils line is removed, and the ERD image plus the bottom credit line acknowledging the AstroDB Toolkit/template are still intact.
+- [ ] **LICENSE** — you showed the current copyright line and acted on the user's choice: new name(s) on the BSD 3-Clause copyright, or a different license with the year and name filled in (no placeholder left behind) — or the user explicitly declined. You never put a name on it that the user didn't give.
+- [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
+- [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
