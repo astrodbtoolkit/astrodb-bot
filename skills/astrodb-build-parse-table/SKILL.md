@@ -12,6 +12,18 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
+**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
+
+### Step 0: Create the artifact folder
+
+Run this before anything else:
+
+```bash
+mkdir -p astrodb-build-artifacts
+```
+
+If this fails, stop and tell the user you cannot create the output directory.
+
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
 Work through these options in order — stop at the first one that succeeds:
@@ -198,3 +210,15 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 ### Step 6: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+
+## Completion Checklist
+
+Before telling the user the table is parsed, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Don't claim a value you didn't actually extract.
+
+- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV).
+- [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
+- [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
+- [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
+- [ ] The sidecar `astrodb-build-artifacts/astrodb-parse-result.json` was written and then updated with the output file paths.
+- [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.

@@ -149,3 +149,15 @@ After a successful dry run, ask the user:
 > Would you like to save these changes to the database? (Re-runs with `SAVE_DB = True`)
 
 **Never set `SAVE_DB = True` automatically** — only on explicit user confirmation.
+
+## Completion Checklist
+
+Before telling the user sources are ingested, confirm every item below. Anything unmet must be done —
+or explicitly confirmed by the user — first.
+
+- [ ] `database.toml` was located (you asked the user rather than inventing one when it wasn't found).
+- [ ] Every discovery reference already exists in `Publications` — and for any that were missing, you offered to run `ingest_publication` as a sub-step rather than just telling the user to do it.
+- [ ] You showed the user the data table's column names, dtypes, and a 3-row preview, and confirmed both the input-file column roles and the target database's schema column names (`ra`/`dec`/`epoch` variants) — asking which database when unsure.
+- [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{REF}_sources.py` uses the user's real column names and paths, includes only optional columns that are actually present, uses the correct DB column names, and sets `SAVE_DB = False`.
+- [ ] A dry run was executed, and you reported how many sources were ingested / skipped (with warnings) and that the database was not saved.
+- [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.

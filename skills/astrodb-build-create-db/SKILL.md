@@ -193,3 +193,15 @@ Next steps:
   1. Add JSON data files to data/source/ and run your ingestion scripts.
   2. Update the count assertions in tests/test_contents_*.py to match your data.
 ```
+
+## Completion Checklist
+
+Before telling the user the database is created, confirm every item below. Anything unmet must be done
+first.
+
+- [ ] You located the schema.yaml and confirmed `felis validate` passes on it — if it doesn't, you stopped rather than building from a broken schema.
+- [ ] The database name was read from the schema's top-level `name:` field.
+- [ ] `data/reference/` and `data/source/` exist, the validated schema.yaml is at the project root, and `database.toml` exists (created only if absent — an existing one was not overwritten).
+- [ ] The empty SQLite database was created with `scripts/create_db.py`, and you verified the `.sqlite` file exists and is non-empty.
+- [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
+- [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.

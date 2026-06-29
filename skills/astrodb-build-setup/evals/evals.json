@@ -28,7 +28,7 @@
     {
       "id": 2,
       "prompt": "I made my repo from the template, it's at https://github.com/kelle/test-astrodb . Call the database BdSurvey and get it set up.",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', personalizes the README and CLAUDE.md so they describe the BdSurvey database instead of the template, and tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, updates db_name to 'BdSurvey', asks for a README description, and prompts the user to update the LICENSE — putting their own name(s) on the copyright or choosing a different license, since none was given — then tells the user the cloned directory is their project directory. At the end — after setup is complete — notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
       "files": [],
       "assertions": [
         {
@@ -44,6 +44,14 @@
           "text": "Verifies the cloned repo has the template directory structure: a data/ directory, a database.toml file, and a schema.yaml file"
         },
         {
+          "id": "eval2_removes_schema_erd",
+          "text": "Removes schema_erd.png from the cloned repo"
+        },
+        {
+          "id": "eval2_removes_docs_schema_md",
+          "text": "Removes the .md files in docs/schema/ from the cloned repo"
+        },
+        {
           "id": "eval2_updates_db_name",
           "text": "Updates database.toml so db_name is set to the user-provided name (BdSurvey)"
         },
@@ -56,8 +64,8 @@
           "text": "Updates README.md: replaces the template title (astrodb-template-db) with the database name (BdSurvey) and replaces the generic description with the user-provided one"
         },
         {
-          "id": "eval2_updates_claudemd",
-          "text": "Updates CLAUDE.md so it describes the BdSurvey database instead of the template — rewrites the 'What this is' framing away from 'a template schema for astronomical databases', reusing the database name and description rather than re-asking for them"
+          "id": "eval2_prompts_license",
+          "text": "Prompts the user to update the LICENSE copyright with their own name(s), or to choose a different license — since no name was given, does not silently leave it or claim to have set names the user never provided"
         },
         {
           "id": "eval2_mentions_project_dir_after",
@@ -136,7 +144,7 @@
     {
       "id": 5,
       "prompt": "Here's my repo for a new astrodb: https://github.com/kelle/test-astrodb . Can you set it up?",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it or what working directory/folder to use, verifies the template structure, then asks for a database name (since none was given). When asking, suggests the user consider naming the database to match the repo (test-astrodb / TestAstrodb) or notes that if they pick a different name they may want to rename the repo. Sets db_name once the name is provided, and in the final wrap-up tells the user the cloned repo directory is now their project directory for next steps.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it or what working directory/folder to use, verifies the template structure, then asks for a database name (since none was given). When asking, suggests the user consider naming the database to match the repo (test-astrodb / TestAstrodb) or notes that if they pick a different name they may want to rename the repo. Sets db_name once the name is provided, asks for a README description, and prompts the user to update the LICENSE (put their own name(s) on the copyright, or choose a different license). In the final wrap-up, tells the user the cloned repo directory is now their project directory for next steps.",
       "files": [],
       "assertions": [
         {
@@ -160,6 +168,10 @@
           "text": "After cloning and updating db_name, asks the user for a description of their database to use in the README"
         },
         {
+          "id": "eval5_prompts_license",
+          "text": "Prompts the user to update the LICENSE copyright with their own name(s), or to choose a different license — since no name was given, does not silently leave it or claim to have set names the user never provided"
+        },
+        {
           "id": "eval5_mentions_project_dir_after",
           "text": "In the wrap-up (after cloning), tells the user the cloned repo directory is now their project directory for subsequent steps"
         }
@@ -168,7 +180,7 @@
     {
       "id": 6,
       "prompt": "I want to set up a new astrodb called BrownDwarfs. My repo is https://github.com/kelle/test-astrodb . It's a catalog of nearby brown dwarf systems with spectral types, photometry, and parallaxes — for studying the L/T transition.",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb without asking where to put it, verifies the template structure, updates database.toml so db_name is BrownDwarfs. For the README step, uses the description the user already provided ('a catalog of nearby brown dwarf systems with spectral types, photometry, and parallaxes — for studying the L/T transition') — or something very close — to update the README title and description without re-asking. Shows or confirms what was changed in the README. It also retargets CLAUDE.md to describe BrownDwarfs as the database (not the template), reusing the same description. In the wrap-up, tells the user the repo directory is their project directory and points to the next step.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb without asking where to put it, verifies the template structure, updates database.toml so db_name is BrownDwarfs. For the README step, uses the description the user already provided ('a catalog of nearby brown dwarf systems with spectral types, photometry, and parallaxes — for studying the L/T transition') — or something very close — to update the README title and description without re-asking. Shows or confirms what was changed in the README. Prompts the user to update the LICENSE — their own name(s) on the copyright, or a different license — since no name was given in the prompt. In the wrap-up, tells the user the repo directory is their project directory and points to the next step.",
       "files": [],
       "assertions": [
         {
@@ -188,8 +200,8 @@
           "text": "Updates README.md description to reflect the brown dwarf / L-T transition science the user described — does not leave the generic 'A template schema for astronomical databases' text"
         },
         {
-          "id": "eval6_updates_claudemd",
-          "text": "Updates CLAUDE.md to describe BrownDwarfs as the database rather than the template, reflecting the brown dwarf / L-T transition science, without re-asking for the description"
+          "id": "eval6_prompts_license",
+          "text": "Prompts the user to update the LICENSE copyright with their own name(s), or to choose a different license — since no name was given, does not silently leave it or claim to have set names the user never provided"
         },
         {
           "id": "eval6_no_redundant_description_ask",
@@ -198,6 +210,54 @@
         {
           "id": "eval6_mentions_project_dir_after",
           "text": "In the wrap-up, tells the user the cloned repo directory is now their project directory for subsequent steps"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Set up a new astrodb called CoolStars from my repo https://github.com/kelle/test-astrodb . Put my name, Jane Astronomer, on it.",
+      "expected_output": "Clones the repo, verifies structure, sets db_name to CoolStars, asks for a README description, and — because the user gave a name — updates the LICENSE copyright line so it credits Jane Astronomer (added alongside the existing template authors, or replacing them). Uses the Edit tool to change only the copyright line, keeping the rest of the BSD 3-Clause text intact; does not silently skip the license or leave the template authors as the only names.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval7_updates_db_name",
+          "text": "Updates database.toml so db_name is set to CoolStars"
+        },
+        {
+          "id": "eval7_updates_license_name",
+          "text": "Updates the LICENSE copyright line to credit the user-provided name (Jane Astronomer), rather than leaving the template authors as the only names"
+        },
+        {
+          "id": "eval7_keeps_license_intact",
+          "text": "Edits only the copyright line and keeps the license as BSD 3-Clause (no other license was requested) — does not rewrite or corrupt the rest of the LICENSE text"
+        },
+        {
+          "id": "eval7_no_datafile",
+          "text": "Does not ask for or handle a data file"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "I'm setting up an astrodb called OpenCatalog at https://github.com/kelle/test-astrodb . Please put it under the MIT license, under my name Sam Researcher.",
+      "expected_output": "Clones the repo, verifies structure, sets db_name to OpenCatalog, asks for a README description, and replaces the LICENSE file with the standard MIT License text — filling in the current year and 'Sam Researcher' in the copyright line. Does not leave a placeholder year or name, and does not leave the original BSD 3-Clause text in place.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval8_updates_db_name",
+          "text": "Updates database.toml so db_name is set to OpenCatalog"
+        },
+        {
+          "id": "eval8_swaps_to_mit",
+          "text": "Replaces the LICENSE contents with standard MIT License text, not the original BSD 3-Clause license"
+        },
+        {
+          "id": "eval8_fills_year_and_name",
+          "text": "The new MIT LICENSE has the user's name (Sam Researcher) and a real year filled into the copyright line — no leftover placeholder like <year>, [year], or [name]"
+        },
+        {
+          "id": "eval8_no_datafile",
+          "text": "Does not ask for or handle a data file"
         }
       ]
     }

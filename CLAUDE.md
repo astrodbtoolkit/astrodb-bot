@@ -83,7 +83,7 @@ Skills are designed to chain in order:
 
 #### Build
 
-1. **`astrodb-build-setup`** — Clone a user's repo from the astrodb-template-db GitHub template; set `db_name` in `database.toml`, and personalize the inherited template `README.md` and `CLAUDE.md` so they describe the new database instance rather than the template. No data involved.
+1. **`astrodb-build-setup`** — Clone a user's repo from the astrodb-template-db GitHub template; set `db_name` in `database.toml`; personalize the README and LICENSE (new authors, or a different license). No data involved.
 2. **`astrodb-build-parse-table`** — Read FITS/CSV/ECSV/etc. with astropy or pandas; extract column names, descriptions, units, types. Writes output to `astrodb-build-artifacts/` for downstream skills.
 3. **`astrodb-build-schema-match`** — Map parsed columns to AstroDB template schema tables/fields. Reads `references/schema.md`, `references/column-patterns.md`, `references/photometry-filters.md`.
 4. **`astrodb-build-schema-validate`** — Check for nullable violations and type mismatches between data and schema.yaml.
@@ -105,6 +105,7 @@ Skills are designed to chain in order:
 - **`astrodb-build-artifacts/`** holds build outputs: parsed table results, generated schema YAML. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
 - **`uv run`** is preferred over bare `python` to ensure the correct virtual environment.
 - **Database loading**: JSON-layout databases (astrodb-template-db) use `build_db_from_json(settings_file="database.toml")`; standalone `.sqlite` files use a direct connection.
+- **Completion checklist**: every `SKILL.md` ends with a `## Completion Checklist` — a blocking self-verification gate the agent must satisfy (or have the user explicitly waive) before reporting the skill done. Items are phrased as verifiable outcomes, and user-dependent ones as "prompted and honored the user's choice (or they declined)," never as a forced action that could tempt fabrication. When you add or restructure a skill's steps, update its checklist in the same edit.
 
 ### Evals Format
 
