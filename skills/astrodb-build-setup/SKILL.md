@@ -78,7 +78,21 @@ If any of the three is missing, the repo probably wasn't created from the astrod
 user what's absent and have them confirm they used **Use this template** on astrodb-template-db before
 going on.
 
-## Step 4: Set the database name in database.toml
+## Step 4: Remove generated schema representations from the template
+
+The template ships with pre-generated schema files that reflect the *template* schema, not the user's
+new database. Delete them now so they don't mislead anyone and so they can be regenerated fresh once
+the user's real schema is in place:
+
+```bash
+rm -f <repo-dir>/schema_erd.png
+rm -f <repo-dir>/docs/schema/*.md
+```
+
+Both removals are safe even if the files don't exist (`-f` suppresses errors). Don't skip this step —
+leaving these stale files in place is the bug this step fixes.
+
+## Step 5: Set the database name in database.toml
 
 Update the cloned `database.toml` so `db_name` is the name from Step 1. It ships as
 `db_name = "astrodb-template"`; change only that value and leave the rest of the file (and the trailing
@@ -92,7 +106,7 @@ grep '^db_name' <repo-dir>/database.toml   # confirm it now reads the user's nam
 Editing the line by hand is fine too — the point is that `db_name` ends up matching the user's chosen
 name.
 
-## Step 5: Update the README
+## Step 6: Update the README
 
 The cloned repo still has the template's generic README. Now that the database has a name and the user
 knows what it's for, it's a good moment to make the README theirs.
@@ -132,7 +146,7 @@ This repository is based on the [astrodb-template](https://github.com/astrodbtoo
 If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
 pressing.
 
-## Step 6: Confirm, and point to what's next
+## Step 7: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
 `db_name` is set. This is also the natural point to bring up `<repo-dir>` as their project directory going
