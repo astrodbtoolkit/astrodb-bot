@@ -59,6 +59,81 @@ Show the user the **column names**, **dtypes**, and a **3-row preview** so they 
 | `\|S12` | fixed-length string |
 
 ---
+## Step 1.5: Validate source names against SESAME / SIMBAD
+
+After identifying the source name column, query SESAME for every name **before** writing the ingest script. This catches unresolvable names and surfaces preferred canonical names early, so the user can fix them before they land in the database.
+
+Use **SESAME first** (https://cds.unistra.fr/cgi-bin/Sesame/SNVA), which queries SIMBAD, NED, and VizieR in one call. If SESAME is unreachable or returns no result, fall back to **SIMBAD directly** (via `astroquery`).
+
+```python
+import requests
+from astroquery.simbad import Simbad
+
+def query_sesame(name):
+    """Primary: query SESAME for a source name. Returns preferred name or None."""
+    url = f"https://cdsweb.u-strasbg.fr/cgi-bin/nph-sesame/-ox?{name}"
+    try:
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200 and "<oname>" in r.text:
+            start = r.text.index("<oname>") + len("<oname>")
+            end = r.text.index("</oname>")
+            return r.text[start:end].strip()
+    except Exception:
+        pass
+    return None
+
+unresolvable = []
+name_suggestions = {}  # {input_name: preferred_name}
+
+for raw in data[SOURCE_COL]:
+    name = str(raw).strip()
+    resolved = None
+
+    # Try SESAME first
+    resolved = query_sesame(name)
+
+    # Fall back to SIMBAD if SESAME returned nothing
+    if resolved is None:
+        try:
+            result = Simbad.query_object(name)
+            if result is not None:
+                resolved = result["MAIN_ID"][0].strip()
+        except Exception:
+            pass
+
+    if resolved is None:
+        unresolvable.append(name)
+    elif resolved != name:
+        name_suggestions[name] = resolved
+
+print(f"Unresolvable in SESAME/SIMBAD: {len(unresolvable)}")
+print(f"Name suggestions: {len(name_suggestions)}")
+```
+
+### How to handle results
+
+**Unresolvable names** — warn the user:
+> ⚠️ **X source(s) could not be resolved in SESAME or SIMBAD:**
+> `Source_A`, `Source_B`, ...
+> These may be newly discovered objects not yet in any public catalog.
+> Ingestion can still proceed — just confirm you want to continue.
+
+**Preferred name suggestions** — offer to swap, but never force it:
+> ℹ️ **A preferred name was found for Y source(s):**
+>
+> | Your name | Preferred name (SESAME/SIMBAD) |
+> |-----------|-------------------------------|
+> | `NGC 1234` | `NGC  1234` |
+> | `UGC 999` | `UGC  0999` |
+>
+> Would you like to use the preferred names instead? (Recommended for consistency,
+> but skip if these are the names already used in your database.)
+
+**All names resolve cleanly** — just confirm and move on:
+> ✅ All X source names resolved with no name mismatches.
+
+**If internet is unavailable**, skip this step entirely and note:
+> ℹ️ SESAME/SIMBAD check skipped — no internet connection. Proceeding with names as-is.---
 
 ## Step 2: Confirm column mappings
 Ask the user to confirm two things: **(A) input file columns** and **(B) DB schema column names**.
