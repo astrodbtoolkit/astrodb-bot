@@ -174,11 +174,11 @@ Once they give you a description, update `README.md` in two places:
 2. **Description line**: replace `A template schema for astronomical databases.` with the user's
    description.
 
-Remove the text that refers to the astrodb-utils package.
+Remove the text that refers to the astrodb-utils package. Also remove the entity relationship diagram (ERD) image link — it points to the template's `schema_erd.png`, which Step 4 deleted, so the link would now be broken.
 
-Keep the link to the entity relationship diagram (ERD) image, and the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
+Keep the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
 
-Do this with the `Edit` tool (not `sed`) so the rest of the file — badges, links, the ERD image — stays
+Do this with the `Edit` tool (not `sed`) so the rest of the file — badges, links, the credit line — stays
 intact.
 
 After editing, confirm with a brief summary:
@@ -293,7 +293,7 @@ gave) or by claiming a check you didn't actually run.
 
 - [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
 - [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
-- [ ] **README** — you prompted for a description and updated the title + description (or the user explicitly skipped). The astrodb-utils line is removed, and the ERD image plus the bottom credit line acknowledging the AstroDB Toolkit/template are still intact.
+- [ ] **README** — you prompted for a description and updated the title + description (or the user explicitly skipped). Removed: the astrodb-utils line and the template ERD image link. Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
 - [ ] **LICENSE** — you showed the current copyright line and acted on the user's choice: new name(s) on the BSD 3-Clause copyright, or a different license with the year and name filled in (no placeholder left behind) — or the user explicitly declined. You never put a name on it that the user didn't give.
 - [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
 - [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
