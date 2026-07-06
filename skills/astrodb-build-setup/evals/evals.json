@@ -288,6 +288,62 @@
           "text": "Does not ask for or handle a data file"
         }
       ]
+    },
+    {
+      "id": 10,
+      "prompt": "I already cloned the astrodb template into this folder and I'm inside it now. Set up my astrodb called TransitHosts.",
+      "expected_output": "Recognizes it is already inside a cloned template repo (Path B): does NOT run git clone and does NOT ask for a repo URL, since the repo is already present. Verifies the template structure in the current directory, sets db_name to TransitHosts, removes the generated schema representations, asks for a README description, and prompts the user to update the LICENSE — it still runs the full personalization checklist rather than skipping it. Tells the user the current directory is their project directory and points to the next step.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval10_no_clone",
+          "text": "Does not run git clone — the repo is already cloned into the current directory"
+        },
+        {
+          "id": "eval10_no_repo_url_ask",
+          "text": "Does not ask the user for a repo URL or to create a repo from the template — one already exists locally"
+        },
+        {
+          "id": "eval10_verifies_structure",
+          "text": "Verifies the current directory has the template structure (data/ directory, database.toml, schema.yaml)"
+        },
+        {
+          "id": "eval10_updates_db_name",
+          "text": "Updates database.toml so db_name is set to TransitHosts"
+        },
+        {
+          "id": "eval10_asks_readme_description",
+          "text": "Asks the user for a description of their database to use in the README"
+        },
+        {
+          "id": "eval10_prompts_license",
+          "text": "Prompts the user to update the LICENSE copyright with their own name(s), or to choose a different license — does not silently skip the README/LICENSE personalization checklist"
+        },
+        {
+          "id": "eval10_mentions_project_dir",
+          "text": "Tells the user the current directory is their project directory for subsequent steps"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Set up my astrodb here. (This folder is already a working astrodb repo: database.toml has db_name = \"BrownDwarfs\", the README is already titled BrownDwarfs with a real description, and data/ and schema.yaml are present.)",
+      "expected_output": "The current directory is an ALREADY-PERSONALIZED astrodb repo — db_name in database.toml is no longer 'astrodb-template' and the README no longer has the template title. Because every downstream astrodb skill also runs inside a repo with this same data/ + database.toml + schema.yaml structure, the skill must NOT re-run setup: it recognizes setup already appears complete, does not re-clone, does not overwrite db_name, README, or LICENSE, and instead tells the user setup is already done and points them at the next step (parse a data table).",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval11_no_rerun",
+          "text": "Does not re-run setup: does not clone, does not overwrite db_name, README, or LICENSE"
+        },
+        {
+          "id": "eval11_recognizes_done",
+          "text": "Recognizes the repo has already been set up (db_name is not 'astrodb-template' and the README is already personalized)"
+        },
+        {
+          "id": "eval11_points_next_step",
+          "text": "Tells the user setup already appears complete and points them to the next step (parse a data table)"
+        }
+      ]
     }
   ]
 }
