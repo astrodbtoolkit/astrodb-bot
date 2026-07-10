@@ -92,10 +92,12 @@ grep '^db_name' <repo-dir>/database.toml   # confirm it now reads the user's nam
 Editing the line by hand is fine too — the point is that `db_name` ends up matching the user's chosen
 name.
 
-## Step 5: Update the README
+## Step 5: Update the README and CLAUDE.md
 
-The cloned repo still has the template's generic README. Now that the database has a name and the user
-knows what it's for, it's a good moment to make the README theirs.
+The cloned repo still has the template's generic descriptions. Now that the database has a name and the
+user knows what it's for, update everything in one pass.
+
+### 5a: Ask for the database description
 
 Show the user the first few lines of the current README so they can see what's there:
 
@@ -106,10 +108,14 @@ head -12 <repo-dir>/README.md
 Then ask:
 
 > The README still has the template's placeholder text. What's a one- or two-sentence description of
-> this database — what does it contain, and what science does it support? I'll update the title and
-> description so it reflects your work.
+> this database — what does it contain, and what science does it support? I'll update the title,
+> description, and CLAUDE.md so they all reflect your work.
 
-Once they give you a description, update `README.md` in two places:
+Once they give you a description, apply it in the places below.
+
+### 5b: Update README.md
+
+Update `README.md` in two places:
 
 1. **Title line** (line 1): replace `astrodb-template-db` with the database name from Step 1.
 2. **Description line**: replace `A template schema for astronomical databases.` with the user's
@@ -117,17 +123,41 @@ Once they give you a description, update `README.md` in two places:
 
 Remove the text that refers to the astrodb-utils package.
 
-Keep the link to the entity relationship diagram (ERD) image, and the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
+Keep the link to the entity relationship diagram (ERD) image, and the credit line at the bottom that
+acknowledges the AstroDB Toolkit and template.
 
-Do this with the `Edit` tool (not `sed`) so the rest of the file — badges, links, the ERD image — stays
-intact.
+Do this with the `Edit` tool (not `sed`) so the rest of the file stays intact.
+
+**Also scan for template-specific boilerplate in other sections** — look for mentions of surveys,
+instruments, or projects the user's database has nothing to do with (e.g. WISeREP, ZTF, a specific
+telescope name). If you find any, show them to the user and ask:
+
+> I see the Acknowledgments section mentions [WISeREP / X]. Should I remove that, or does your
+> database relate to it?
+
+Remove anything the user confirms is leftover template text. Do not silently delete anything
+without showing it first.
 
 After editing, confirm with a brief summary:
 
 > README updated — title is now `<new-name>` and the description reflects your database.
 
-Also confirm that the user did not delete the credit line at the bottom of the README that acknowledges the AstroDB Toolkit and template: 
-This repository is based on the [astrodb-template](https://github.com/astrodbtoolkit/astrodb-template-db) template repository, which is part of the [AstroDB Toolkit](https://github.com/astrodbtoolkit).
+Verify the credit line at the bottom still acknowledges the AstroDB Toolkit and template:
+`This repository is based on the [astrodb-template](https://github.com/astrodbtoolkit/astrodb-template-db) template repository, which is part of the [AstroDB Toolkit](https://github.com/astrodbtoolkit).`
+
+### 5c: Update CLAUDE.md (if present)
+
+Check whether `CLAUDE.md` exists in the cloned repo:
+
+```bash
+ls <repo-dir>/CLAUDE.md
+```
+
+If it does, read it and look for a project description section — typically a line like
+`A template schema for astronomical databases, part of the astrodbtoolkit ecosystem.`
+Replace it with the same description the user gave for the README. Use the `Edit` tool.
+
+If `CLAUDE.md` does not exist, skip this sub-step.
 
 If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
 pressing.

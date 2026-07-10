@@ -56,6 +56,16 @@ Use Python or shell to extract it:
 python -c "import yaml; d=yaml.safe_load(open('<schema-path>')); print(d['name'])"
 ```
 
+**If the extracted name is `astrodb_template`, `astrodb-template`, or `template`, stop.**
+Do not create a database with the template placeholder name — it will be committed as
+`astrodb-template.sqlite` and every test will reference the wrong name. Tell the user:
+
+> The schema `name:` is still the template default (`astrodb_template`). Please open
+> `schema.yaml`, update the top-level `name:` and `"@id":` to your actual dataset name
+> (e.g. `mirion`), re-run `felis validate`, and then re-run this skill.
+
+Wait for the user to fix the schema before proceeding.
+
 ## Step 4: Determine the project root
 
 The project root is the directory where the new database will live — typically the current working
