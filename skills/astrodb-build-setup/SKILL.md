@@ -19,6 +19,46 @@ repository. The right way to begin is not to clone that template directly — it
 their *own* repository from it (so they own the history and can push their work), and then we clone
 that. Work through the steps in order.
 
+## Step 0: Decide which path you're on (do this first, explicitly)
+
+Before anything else, consciously decide whether you still need to stand up a repo, or you are **already
+inside one**. Do not drift past this — if you skip it, you will wrongly treat an already-cloned repo as
+"mostly done" and skip the personalization checklist below (README, LICENSE, `db_name`). That is the bug
+this step prevents.
+
+Look at the current working directory:
+
+```bash
+# Is the current directory already a template-db repo, and has it been personalized yet?
+for p in data database.toml schema.yaml; do [ -e "$p" ] && echo "✓ $p" || echo "✗ $p"; done
+grep '^db_name' database.toml 2>/dev/null   # still "astrodb-template" => not yet personalized
+git remote -v 2>/dev/null | grep '^origin'  # secondary signal only
+```
+
+Now branch on **unpersonalized state**, not merely on structure being present:
+
+- **Path A — fresh start (default).** The current directory is *not* a cloned template DB (no
+  `database.toml`/`schema.yaml`/`data/` here). You need to stand the repo up: go to **Step 1** and work
+  through 1 → 9 in order.
+
+- **Path B — already inside a cloned template repo.** The current directory already has the template
+  structure (`data/`, `database.toml`, `schema.yaml`) **and** it is still unpersonalized —
+  `db_name` in `database.toml` still reads `astrodb-template`, and/or the README still has the template
+  title. The user cloned it themselves (their own repo, or the template directly) and started Claude
+  inside it. **Skip the create-and-clone work in Steps 1–3** — you already have the repo — but do **not**
+  skip anything else. Run the Step 3 structure verification against the current directory (`<repo-dir>` is
+  `.`), then continue from **Step 4** through Step 9. You still need a database name: if the user gave one,
+  use it; if not, ask for it (Step 1's naming prompt) before setting `db_name` in Step 5.
+
+- **Don't run setup — already personalized.** If `db_name` is already something other than
+  `astrodb-template` *and* the README no longer has the template title, this repo has already been set up.
+  Every downstream astrodb skill also runs inside a repo with this same structure, so do **not** re-run
+  setup. Tell the user setup already appears complete and point them at the next step (parse a data table)
+  instead.
+
+Whichever path you take, you must still satisfy the **full Completion Checklist** at the bottom before
+reporting setup done — the checklist is identical for Path A and Path B.
+
 ## Step 1: Ask for a database name, then have the user create their repo from the template
 
 Ask what they want to call the database — this becomes `db_name` in `database.toml` and names the
@@ -40,10 +80,14 @@ to — cleaner than forking or copying files by hand.
 
 The same-name suggestion is a nice-to-have, not a gate: if the user already made their repo under a
 different name, or gives you both the database name and repo URL in one message, just take both and move
-on. Don't mention the mismatch upfront — wait until Step 5 (after setup is complete) to raise it.
+on. Don't mention the mismatch upfront — wait until Step 8 (after setup is complete) to raise it.
 
 Hold on to the database name for Step 4. Wait until you have a repo URL before continuing to Step 2; if
 the user hasn't made the repo yet, walk them through the three steps above and pause until they do.
+
+(This wait-for-a-URL gate applies only to **Path A**. On **Path B** — already inside a cloned repo — there
+is no URL to wait for and no repo to create; you only need the database name, so ask for it if the user
+didn't give one, then jump straight to Step 3's verification against the current directory.)
 
 ## Step 2: Clone the user's repo
 
@@ -56,7 +100,7 @@ git clone <user-repo-url>
 Do this without asking the user where to put it or what working directory to use — `git clone` creates a
 new folder named after the repo right where you already are, which is exactly what's wanted. There's
 nothing meaningful to ask about directories yet, since `<repo-dir>` doesn't exist until this command
-finishes; that conversation belongs in Step 5, once it does.
+finishes; that conversation belongs in Step 8, once it does.
 
 If `git` isn't available or the clone fails (e.g. no network, or a private repo you can't access), don't
 fake it or work around it — tell the user plainly, and if it's an access problem point them at making the
@@ -64,8 +108,9 @@ repo public or setting up credentials, then re-run.
 
 ## Step 3: Verify the structure matches the template
 
-Confirm the clone really came from the template by checking it has the expected pieces — a `data/`
-directory, a `database.toml`, and a `schema.yaml`:
+Confirm the repo really came from the template by checking it has the expected pieces — a `data/`
+directory, a `database.toml`, and a `schema.yaml`. On Path A `<repo-dir>` is the folder you just cloned;
+on Path B it is the current directory (`.`):
 
 ```bash
 cd <repo-dir>
@@ -78,7 +123,21 @@ If any of the three is missing, the repo probably wasn't created from the astrod
 user what's absent and have them confirm they used **Use this template** on astrodb-template-db before
 going on.
 
-## Step 4: Set the database name in database.toml
+## Step 4: Remove generated schema representations from the template
+
+The template ships with pre-generated schema files that reflect the *template* schema, not the user's
+new database. Delete them now so they don't mislead anyone and so they can be regenerated fresh once
+the user's real schema is in place:
+
+```bash
+rm -f <repo-dir>/schema_erd.png
+rm -f <repo-dir>/docs/schema/*.md
+```
+
+Both removals are safe even if the files don't exist (`-f` suppresses errors). Don't skip this step —
+leaving these stale files in place is the bug this step fixes.
+
+## Step 5: Set the database name in database.toml
 
 Update the cloned `database.toml` so `db_name` is the name from Step 1. It ships as
 `db_name = "astrodb-template"`; change only that value and leave the rest of the file (and the trailing
@@ -92,7 +151,7 @@ grep '^db_name' <repo-dir>/database.toml   # confirm it now reads the user's nam
 Editing the line by hand is fine too — the point is that `db_name` ends up matching the user's chosen
 name.
 
-## Step 5: Update the README
+## Step 6: Update the README
 
 The cloned repo still has the template's generic README. Now that the database has a name and the user
 knows what it's for, it's a good moment to make the README theirs.
@@ -115,11 +174,11 @@ Once they give you a description, update `README.md` in two places:
 2. **Description line**: replace `A template schema for astronomical databases.` with the user's
    description.
 
-Remove the text that refers to the astrodb-utils package.
+Remove the text that refers to the astrodb-utils package. Also remove the entity relationship diagram (ERD) image link — it points to the template's `schema_erd.png`, which Step 4 deleted, so the link would now be broken.
 
-Keep the link to the entity relationship diagram (ERD) image, and the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
+Keep the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
 
-Do this with the `Edit` tool (not `sed`) so the rest of the file — badges, links, the ERD image — stays
+Do this with the `Edit` tool (not `sed`) so the rest of the file — badges, links, the credit line — stays
 intact.
 
 After editing, confirm with a brief summary:
@@ -129,44 +188,77 @@ After editing, confirm with a brief summary:
 Also confirm that the user did not delete the credit line at the bottom of the README that acknowledges the AstroDB Toolkit and template: 
 This repository is based on the [astrodb-template](https://github.com/astrodbtoolkit/astrodb-template-db) template repository, which is part of the [AstroDB Toolkit](https://github.com/astrodbtoolkit).
 
-If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
-pressing.
+If the user skips this step or says "later" or "skip it," replace the template placeholder text with
+generic placeholders so the README doesn't still read as the template:
 
-## Step 6: Create an artifacts directory and directions document
+1. **Title line** (line 1): replace `astrodb-template-db` with `[Database name]`
+2. **Description line**: replace `A template schema for astronomical databases.` with
+   `[Add a brief description of this database here.]`
 
-Create an `artifacts/` directory in the cloned repo to hold reproducibility artifacts:
+Then move on to Step 7 without pressing further.
+
+## Step 7: Update the LICENSE
+
+The cloned repo's `LICENSE` (BSD 3-Clause) still carries the template authors' copyright — the people who
+wrote the AstroDB template, not whoever now owns this database. Like the README, this is the moment to
+make it theirs.
+
+Show the copyright line as it currently stands so they can see whose names are on it:
 
 ```bash
-mkdir -p <repo-dir>/artifacts
+grep 'Copyright (c)' <repo-dir>/LICENSE
 ```
 
-A **directions document** lives at `artifacts/directions.md` and captures dataset-specific decisions,
-known issues, and ingestion notes. It is read automatically by subsequent skills
-(`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) to guide their decisions — so filling
-it in now saves time and prevents inconsistencies later.
+If there's no `LICENSE` file, say so and offer to add one — don't invent attribution.
 
-Read `references/directions_example.md` now, then show it to the user and explain what each section
-captures. Ask:
+Then ask:
 
-> Would you like to fill in a directions document now? It's the best place to record notes about your
+> Your `LICENSE` still lists the template's authors:
+> `<the copyright line you just printed>`
+> You can put your own name(s) on it — added alongside those authors or replacing them — or switch to a
+> different license entirely (MIT, Apache-2.0, …). The simplest is to add your name alongside. Whose
+> name(s) should this database be under, and which license?
+
+Act on their answer with the `Edit` tool (not `sed`), leaving the rest of the file intact:
+
+- **Same license, new names** — change only the names in the `Copyright (c) <year>, …` line, adding or
+  replacing as they asked. Leave the year as-is unless they want it updated.
+- **A different license** — replace the whole `LICENSE` with the standard text of the license they chose,
+  filling in the current year and their name in its copyright line. Don't leave a placeholder year or
+  name behind. If they're unsure which to pick, point them to https://choosealicense.com.
+
+If the user says "skip," "later," or "leave it," that's fine — move on to Step 7 without pressing.
+
+## Step 10: Directions document (optional input)
+
+A **directions document** captures dataset-specific decisions, known issues, and ingestion notes.
+Downstream skills (`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) accept it as an
+optional input — either as a user-provided file path, or from `astrodb-build-artifacts/directions.md`
+if it was saved there in a prior run.
+
+**If the user already provided a path** to a directions document at the start of this skill (e.g.
+as part of their initial message), read it now and acknowledge it. No need to ask — proceed to
+Step 9.
+
+**Otherwise**, read `references/directions_example.md` and show the user what a directions document
+covers. Ask:
+
+> Would you like to write a directions document now? It's the best place to record notes about your
 > data — columns to skip, how to handle tricky cases, schema decisions you've already made. You can
-> always add to it later.
+> always add to it later, or pass the path to a downstream skill when you're ready.
 
-If the user wants to fill it in now, help them write one based on their notes and save it to
-`<repo-dir>/artifacts/directions.md`. If they'd rather do it later, copy the example to
-`<repo-dir>/artifacts/directions.md` with a comment at the top marking it as a template to fill in.
+If the user wants to write one now, help them draft it based on their notes. Save it wherever they
+tell you to save it — do not prescribe a location.
 
-After the directions document is handled, initialize the workflow log. Read
-`references/astrodb-directions.md` for the full convention. Create `workflow.md` in the
-repo root (using the standard header from `references/astrodb-directions.md`), then append
-a setup entry recording: the database name chosen, the GitHub repo URL, the README
-description provided, and whether a directions document was completed now or deferred.
+If they'd rather skip, that's fine — they can provide the path to a directions document when running
+downstream skills.
 
-## Step 7: Confirm, and point to what's next
+## Step 11: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
-`db_name` is set. This is also the natural point to bring up `<repo-dir>` as their project directory going
-forward — every other astrodb-* skill looks for `database.toml`, `schema.yaml`, etc. in the current
+`db_name` is set (along with any README and LICENSE edits they made). This is also the natural point to
+bring up `<repo-dir>` as their project directory going forward — every other astrodb-* skill looks for
+`database.toml`, `schema.yaml`, etc. in the current
 directory, so they'll want to be inside `<repo-dir>` for the next step. Then name that next step,
 `astro-parse-data-table`, without doing it — adding a data table to parse and map into this schema is a
 separate skill:
@@ -192,3 +284,16 @@ separate skill:
 > later.
 
 Only raise this if there is an actual mismatch. If the names already match, skip this entirely.
+
+## Completion Checklist
+
+Before telling the user setup is complete, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Never tick a box by inventing a value (e.g. a name the user never
+gave) or by claiming a check you didn't actually run.
+
+- [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
+- [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
+- [ ] **README** — you prompted for a description and updated the title + description (or the user explicitly skipped). Removed: the astrodb-utils line and the template ERD image link. Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
+- [ ] **LICENSE** — you showed the current copyright line and acted on the user's choice: new name(s) on the BSD 3-Clause copyright, or a different license with the year and name filled in (no placeholder left behind) — or the user explicitly declined. You never put a name on it that the user didn't give.
+- [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
+- [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.

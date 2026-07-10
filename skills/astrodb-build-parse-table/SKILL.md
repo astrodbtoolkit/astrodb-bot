@@ -12,22 +12,8 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Read context documents
-
-Before doing anything else:
-
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it now
-   to carry forward context and decisions from prior skills.
-3. Check whether `artifacts/directions.md` exists in the current working directory. If it does,
-   read it now — it captures dataset-specific decisions (columns to skip, how to handle edge
-   cases, schema choices) that should guide your interpretation throughout this skill.
-
-If neither file exists, proceed without them.
-
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
 
-### Step 1: Create the artifact folder
 
 Run this before anything else:
 
@@ -37,7 +23,7 @@ mkdir -p astrodb-build-artifacts
 
 If this fails, stop and tell the user you cannot create the output directory.
 
-### Step 1: Make sure Python is installed and the necessary libraries are available
+### Step 2: Make sure Python is installed and the necessary libraries are available
 
 Work through these options in order — stop at the first one that succeeds:
 
@@ -70,7 +56,7 @@ If that fails, tell the user Python 3.11 or greater is required and ask them to 
 
 If none of the above work, tell the user you're unable to install the required libraries and ask them to run in an environment that has either `uv` or `pip` available.
 
-### Step 2: Read the file
+### Step 3: Read the file
 
 Use `astropy.table.Table.read()` first, which handles most formats automatically. Fall back to `pandas` if needed:
 
@@ -123,7 +109,7 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 
 See `references/file-formats.md` for the full list of supported formats.
 
-### Step 3: Extract column information
+### Step 4: Extract column information
 
 For each column, extract:
 - **Column name**
@@ -163,7 +149,7 @@ If you can't infer a description confidently, leave it as "—".
 
 When a column has no units in the file metadata, consult `references/units-inference.md` for the lookup table and uncertainty-column inheritance logic.
 
-### Step 4: Ask the user to fill in any remaining gaps
+### Step 5: Ask the user to fill in any remaining gaps
 
 After exhausting file metadata and inference, if there are still columns with missing descriptions or units, ask the user to fill them in — but only if the number is manageable (fewer than 10). Present each missing column one at a time and wait for the user's response before moving to the next.
 
@@ -174,7 +160,7 @@ For example:
 
 If there are 10 or more columns still missing descriptions or units, output the table as-is with "—" placeholders and note at the end how many are missing, so the user can address them separately.
 
-### Step 5: Output the results
+### Step 6: Output the results
 
 Create a new output directory inside `astrodb-build-artifacts/`, named after the input file's base name with a `-parsed-data-table` suffix. **Do not overwrite an existing directory** — if the directory already exists, append `-1`, `-2`, etc. until a free name is found. For example, if the input is `data/catalog.fits`, create `astrodb-build-artifacts/catalog-parsed-data-table/` and save:
 - `astrodb-build-artifacts/catalog-parsed-data-table/catalog-parsed-data-table.md`
@@ -220,14 +206,18 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump(sidecar, f)
 ```
 
-### Step 6: Iterate as needed
+### Step 7: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
 
-### Step 7: Update `workflow.md`
+## Completion Checklist
 
-Follow the convention in `references/astrodb-directions.md`. Append one new entry to
-`workflow.md` in the current working directory (create it with the standard header if it
-doesn't exist yet). Record the key decisions from this run: which file was parsed, which
-reader was used and why, any column descriptions or units that were inferred, what the user
-confirmed or changed during the gap-filling step, and any columns still missing metadata.
+Before telling the user the table is parsed, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Don't claim a value you didn't actually extract.
+
+- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV).
+- [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
+- [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
+- [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
+- [ ] The sidecar `astrodb-build-artifacts/astrodb-parse-result.json` was written and then updated with the output file paths.
+- [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.

@@ -169,7 +169,7 @@
         },
         {
           "id": "eval4_F_flag_unmatched",
-          "text": "Column 'F' (flag, int16) is marked Unmatched and the output asks the user what to do with it (options like pre-ingestion filtering or Sources.comments)"
+          "text": "Column 'F' (flag, int16) is marked Unmatched and the output asks the user what to do with it (options like pre-ingestion filtering, a proposed Misc table, or ignoring it) — it is NOT dumped into Sources.comments"
         },
         {
           "id": "eval4_ra_dec_conversion_noted",
@@ -197,7 +197,7 @@
         },
         {
           "id": "eval5_nasa_link_unmatched",
-          "text": "Column 'NASA Link' is marked Unmatched and the output asks the user what to do with the URL (options like Sources.comments, Spectra.access_url, or skip)"
+          "text": "Column 'NASA Link' is marked Unmatched and the output asks the user what to do with the URL (options like Spectra.access_url if it's a spectrum, a proposed Misc table, or skip) — it is NOT dumped into Sources.comments as the default"
         },
         {
           "id": "eval5_quality_code_unmatched",
@@ -206,6 +206,70 @@
         {
           "id": "eval5_unmatched_count",
           "text": "At least 3 of the 8 columns are marked Unmatched or flagged with strong caveats — this is a solar system catalog and most columns fall outside AstroDB's stellar schema"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Here's the astrodb-parse-data-table output for my Gaia ultracool dwarf sample. Map each column to the right AstroDB table and field — Sources should stay bare.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| gucds_name | Canonical GUCDS source name | — | str |\n| gucds_shortname | GUCDS short-form name | — | str |\n| twomass_designation | 2MASS designation | — | str |\n| wise_designation | WISE designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| pmra | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| pmdec | Proper motion in declination | mas/yr | float64 |\n| rv | Radial velocity | km/s | float64 |\n| survey_flag | Internal survey membership flag | — | int16 |\n| vizier_url | Link to the VizieR catalog page | — | str |",
+      "expected_output": "Exactly one column (gucds_name) becomes Sources.source; gucds_shortname, twomass_designation, and wise_designation all map to Names.other_name (High confidence), NOT to Sources. pmra/pmdec map to ProperMotions and rv to RadialVelocities — never to Sources. Sources receives only source, ra_deg, dec_deg. survey_flag and vizier_url are marked Unmatched and routed to a proposed Misc table (or ignored), not dumped into Sources.comments.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval6_one_canonical_source",
+          "text": "Exactly one column (gucds_name) is mapped to Sources.source as the canonical primary identifier"
+        },
+        {
+          "id": "eval6_shortname_to_names",
+          "text": "Column 'gucds_shortname' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_twomass_to_names",
+          "text": "Column 'twomass_designation' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_wise_to_names",
+          "text": "Column 'wise_designation' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_pm_not_sources",
+          "text": "Columns 'pmra' and 'pmdec' are mapped to ProperMotions (pm_ra / pm_dec), not to Sources"
+        },
+        {
+          "id": "eval6_rv_not_sources",
+          "text": "Column 'rv' is mapped to RadialVelocities.rv_kms, not to Sources"
+        },
+        {
+          "id": "eval6_sources_stays_bare",
+          "text": "The only columns mapped to the Sources table are gucds_name (source), ra_deg, and dec_deg — no names, measurements, flags, or URLs are placed in Sources"
+        },
+        {
+          "id": "eval6_misc_not_sources_comments",
+          "text": "Columns 'survey_flag' and 'vizier_url' are marked Unmatched and offered a proposed Misc table (or ignore) — they are NOT dumped into Sources.comments and NOT proposed as new fields on the Sources table"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Map this parsed table into AstroDB. Note the boolean flag columns.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| source | Source identifier | — | str |\n| plx | Parallax | mas | float64 |\n| e_plx | Parallax uncertainty | mas | float64 |\n| plx_is_adopted | Whether this parallax is the adopted value for the source | — | bool |\n| rv | Radial velocity | km/s | float64 |\n| e_rv | Radial velocity uncertainty | km/s | float64 |\n| teff_adopted | Adopted effective temperature | K | float64 |",
+      "expected_output": "plx → Parallaxes.parallax_mas, e_plx → Parallaxes.parallax_error, and the genuine boolean plx_is_adopted → Parallaxes.adopted. The continuous column teff_adopted must NOT be mapped to any 'adopted' field (adopted is boolean-only) — it goes to ModeledParameters. No continuous or string column is mapped onto an adopted field.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval7_plx_parallaxes",
+          "text": "Column 'plx' is mapped to Parallaxes.parallax_mas"
+        },
+        {
+          "id": "eval7_bool_flag_to_adopted",
+          "text": "The boolean column 'plx_is_adopted' is mapped to Parallaxes.adopted (a genuine boolean flag is the only valid mapping target for adopted)"
+        },
+        {
+          "id": "eval7_teff_not_adopted",
+          "text": "Column 'teff_adopted' (a continuous temperature value) is NOT mapped to any 'adopted' field — it is mapped to ModeledParameters instead"
+        },
+        {
+          "id": "eval7_no_continuous_to_adopted",
+          "text": "No continuous or string column anywhere in the mapping is assigned to an 'adopted' field — adopted is treated as boolean-only"
         }
       ]
     }

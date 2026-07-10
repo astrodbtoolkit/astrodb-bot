@@ -1,9 +1,36 @@
 # Column Name Matching Patterns
 
+## Guiding principle: `Sources` is deliberately minimal — never a catch-all
+
+The `Sources` table holds **only** these fields: `source`, `ra_deg`, `dec_deg`, `epoch_year`,
+`equinox`, `reference`, `other_references`, `comments`. That is the entire table. It is a thin
+identity-and-position record, **not** a landing spot for leftover columns. Before you map anything
+to `Sources`, confirm it is genuinely one of those eight fields.
+
+Concretely, this means:
+- **Alternate names, shortnames, and survey/catalog designations do not go in `Sources`** — they go
+  in `Names.other_name` (see Identifiers below). Only the single canonical identifier becomes
+  `Sources.source`.
+- **Measured quantities never go in `Sources`** — proper motions → `ProperMotions`, radial
+  velocities → `RadialVelocities`, parallaxes → `Parallaxes`, photometry → `Photometry`, etc. If a
+  value has its own table, it belongs there, not in `Sources`.
+- **Miscellaneous / bookkeeping columns do not get dumped into `Sources.comments`.** Genuinely
+  leftover columns fall through to **Unmatched** and are routed to a proposed **`Misc`** table or
+  ignored — see "Columns that typically end up Unmatched" below. Do not use `Sources.comments` as a
+  default drawer for URLs, flags, or survey metadata.
+
+When in doubt, a column does **not** belong in `Sources`.
+
 ## Layer 1: Column name patterns (strongest signal)
 
 **Identifiers:**
-- `source`, `name`, `id`, `designation`, `target`, `obj`, `object` → `Sources.source` (primary identifier) or `Names.other_name` (alternate name).
+- Exactly **one** column becomes the canonical `Sources.source` primary identifier. Candidates:
+  `source`, `name`, `id`, `designation`, `target`, `obj`, `object`.
+- **Every other name-like column → `Names.other_name` (High confidence), not `Sources`.** This
+  includes survey/catalog shortnames and secondary designations such as `shortname`,
+  `gucds_shortname`, `alt_name`, `alternate_name`, `2MASS`, `2MASS_name`, `WISEA`, `SDSS_name`,
+  `Gaia_designation`, `common_name`, `other_id`, `catalog_id`, and the like. A column being a name
+  is a strong, High-confidence signal for `Names.other_name` — do not park these in `Sources`.
 - If the table has multiple name-like columns and it's not obvious which is the canonical primary
   identifier (e.g., `Number`, `Name`, and `Designation` all present), **ask the user** which
   column should become `Sources.source`. List the candidates with a brief description of each and
@@ -121,18 +148,62 @@ When you identify that a column is an uncertainty on a value you've already mapp
 - Upper bound / `+` suffix / `_upper` / `_plus` → `<field>_error_upper`
 - Lower bound / `-` suffix / `_lower` / `_minus` → `<field>_error_lower`
 
+## The `adopted` flag is boolean-only — not a mapping target
+
+Several data tables (`Parallaxes`, `RadialVelocities`, `ProperMotions`, `RotationalParameters`,
+`Morphology`, `Associations`, `SourceTypes`) have an `adopted` field. It is a **boolean** that marks,
+among several measurements of the same quantity for a source, which one is the preferred/adopted
+value. It is set at ingestion time, not carried in from a data column.
+
+- **Never map a continuous, string, or measurement column onto `adopted`.** A column of parallax
+  values maps to `parallax_mas`, never to `adopted`; a spectral-type string maps to `source_type`,
+  never to `adopted`.
+- Only map an input column to `adopted` if that column is itself a genuine boolean/flag (0/1,
+  True/False, "adopted"/"") indicating the preferred value — which is rare in source tables.
+
 ## Catch-all tables for unmapped physical parameters
 
 If a column clearly represents a physical quantity but doesn't fit any specific table field:
 - Fitted or modeled parameters (effective temperature `Teff`, luminosity `L`, mass `M`, radius `R`, surface gravity `logg`, metallicity `[Fe/H]`, age) → `ModeledParameters` (using the generic `value` + `unit` fields; put the parameter name in `parameter`)
 - Companion-derived measurements → `CompanionParameters`
 
+## The `Misc` table (proposed) — for genuine non-physical leftovers
+
+For columns that are neither identity/position, nor a measured quantity with a home table, nor a
+physical parameter (which goes to `ModeledParameters`) — e.g. survey bookkeeping, generic URLs,
+quality flags, internal notes — **do not dump them into `Sources.comments`.** Instead, route them to
+a dedicated **`Misc`** table.
+
+`Misc` is **not** part of the current template schema, so it is always a **proposed new table**
+(confidence `Proposed (new table)`), flowing through the "Add new table" path in SKILL.md and the
+**Proposed Schema Additions** section of the HTML output. Its suggested minimal shape is a generic
+key/value store:
+
+| Field | Purpose |
+|---|---|
+| `source` | FK to `Sources.source` (which object the value belongs to) |
+| `parameter` | the original column name / what the value is |
+| `value` | the value itself (stored as text) |
+| `comments` | optional note |
+| `reference` | provenance, when known |
+
+Do not work out Felis-level details (nullability, primary keys) here — `astrodb-build-schema-generate`
+finalizes those from the proposal.
+
+**Fallback ordering (so `Misc` doesn't cannibalize real homes).** Try these in order before
+proposing `Misc`:
+1. Identifiers / alternate names → `Names.other_name`
+2. Physical / modeled parameters → `ModeledParameters` (or `CompanionParameters` for companion data)
+3. Row numbers, internal indices, and other truly disposable columns → **Ignore**
+4. Only genuine non-physical leftovers (URLs, survey flags, bookkeeping) → **`Misc`** (proposed)
+
 ## Columns that typically end up Unmatched
 
 The following column types commonly fall through all three matching layers. When you reach the
 **Resolving Unmatched Columns** step in SKILL.md, use the explanation and suggested options
 below as the reason/suggestions for these columns in the combined prompt to the user — don't
-ask about them separately.
+ask about them separately. **None of these should default to `Sources.comments`** — `Sources` is
+not a catch-all (see the guiding principle at the top of this file).
 
 **Absolute magnitude columns** (`H`, `absolute_magnitude`, `abs_mag`, `M_V`, `M_B`, etc. when
 clearly absolute and not apparent magnitude):
@@ -141,11 +212,11 @@ in `ModeledParameters` (parameter="absolute_magnitude_<band>", unit="mag"), or i
 
 **Generic URL / link columns** (`url`, `link`, `webpage`, `nasa_link`, `href`, etc. that are not
 clearly spectrum access URLs):
-No direct AstroDB field. Suggest mapping to the existing `Sources.comments` field, mapping to
-`Spectra.access_url` if the link points to a spectrum, or ignoring it.
+No direct AstroDB field. Suggest mapping to `Spectra.access_url` if the link points to a spectrum,
+routing it to the proposed **`Misc`** table (default) if it's generic metadata, or ignoring it.
 
 **Quality codes and observation flags** (`flag`, `flags`, `quality`, `qual`, `qflag`,
 `quality_code`, `f_flag`, numeric quality scores, etc.):
 No AstroDB field. Suggest using these for pre-ingestion row filtering (e.g. keep only
-quality=1 rows) and ignoring them for the schema mapping, or mapping representative values to
-the existing `Sources.comments` field.
+quality=1 rows) and ignoring them for the schema mapping, or — if the user wants to keep them —
+routing them to the proposed **`Misc`** table.
