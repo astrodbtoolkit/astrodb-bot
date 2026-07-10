@@ -102,7 +102,7 @@ Skills are designed to chain in order:
 ### Key Conventions Across Skills
 
 - **`SAVE_DB = False` by default** in all ingestion scripts. Skills always do a dry run first and require explicit user confirmation before setting `SAVE_DB = True`.
-- **`astrodb-build-artifacts/`** holds build outputs: parsed table results, generated schema YAML. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
+- **`astrodb-build-artifacts/`** holds build outputs written **flat** (no subdirectories): `<basename>-parsed-data-table.md/.html`, `<basename>-schema-match.md/.html`, `<name>-schema.yaml`, `astrodb-parse-result.json`, `validate_mapping.py`. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
 - **`uv run`** is preferred over bare `python` to ensure the correct virtual environment.
 - **Database loading**: JSON-layout databases (astrodb-template-db) use `build_db_from_json(settings_file="database.toml")`; standalone `.sqlite` files use a direct connection.
 

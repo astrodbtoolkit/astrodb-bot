@@ -118,10 +118,13 @@ proposal as its starting point.
 
 Output the results as a markdown table, adding columns onto the output from `astrodb-build-parse-table` for the matched AstroDB Table, AstroDB Field, Confidence level, and Notes on the match.
 
-Write both output files inside `astrodb-build-artifacts/`, in a subdirectory named after the input file's base name with a `-schema-match` suffix. **Do not overwrite an existing directory** — if it already exists, append `-1`, `-2`, etc. until a free name is found. For example, if the input is `data/catalog.fits`, write:
+Write both output files directly inside `astrodb-build-artifacts/` — no subdirectory. Name them
+after the input file's base name with a `-schema-match` suffix. **Do not overwrite existing
+files** — if the file already exists, append `-1`, `-2`, etc. to the base name until a free name
+is found. For example, if the input is `data/catalog.fits`, write:
 
-- `astrodb-build-artifacts/catalog-schema-match/catalog-schema-match.md`
-- `astrodb-build-artifacts/catalog-schema-match/catalog-schema-match.html`
+- `astrodb-build-artifacts/catalog-schema-match.md`
+- `astrodb-build-artifacts/catalog-schema-match.html`
 
 Also write the results to an HTML file using the `Write` tool. Follow the full visual spec in `references/html-output.md` — read it now before writing the file.
 
