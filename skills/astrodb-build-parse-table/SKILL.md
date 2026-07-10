@@ -12,12 +12,18 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Check for a directions document
+### Step 0: Read context documents
 
-Before doing anything else, check whether `artifacts/directions.md` exists in the current working
-directory. If it does, read it now — it captures dataset-specific decisions (columns to skip, how
-to handle edge cases, schema choices) that should guide your interpretation throughout this skill.
-If it doesn't exist, proceed without it.
+Before doing anything else:
+
+1. Read `references/astrodb-directions.md` for the workflow.md convention.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it now
+   to carry forward context and decisions from prior skills.
+3. Check whether `artifacts/directions.md` exists in the current working directory. If it does,
+   read it now — it captures dataset-specific decisions (columns to skip, how to handle edge
+   cases, schema choices) that should guide your interpretation throughout this skill.
+
+If neither file exists, proceed without them.
 
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
 
@@ -217,3 +223,11 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 ### Step 6: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+
+### Step 7: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record the key decisions from this run: which file was parsed, which
+reader was used and why, any column descriptions or units that were inferred, what the user
+confirmed or changed during the gap-filling step, and any columns still missing metadata.

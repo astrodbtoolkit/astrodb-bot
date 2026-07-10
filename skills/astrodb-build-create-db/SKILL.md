@@ -10,6 +10,12 @@ Take a Felis-validated `schema.yaml` and create an empty SQLite database followi
 [astrodb-template-db](https://github.com/astrodbtoolkit/astrodb-template-db) file structure,
 using `astrodbkit`.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` for the workflow.md convention.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+
 ## Prerequisites
 
 This skill requires a schema.yaml that has **passed** `felis validate`. The astrodb-build-schema-generate
@@ -193,3 +199,11 @@ Next steps:
   1. Add JSON data files to data/source/ and run your ingestion scripts.
   2. Update the count assertions in tests/test_contents_*.py to match your data.
 ```
+
+## Step 10: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: the schema.yaml path used, the database file created, whether
+tests passed or failed and any fixes applied, and any notable decisions (e.g., schema location
+differed from the default).

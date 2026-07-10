@@ -12,6 +12,12 @@ table of an AstroDB SQLite database using `astrodb_utils.sources.ingest_source`.
 Read `references/ingest_source_api.md` before starting — it has the full signature,
 parameter meanings, and common warnings with fixes.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` for the workflow.md convention.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+
 ## Prerequisites
 
 1. **`database.toml`** (astrodb-template-db layout) — this file is required to load the
@@ -149,3 +155,10 @@ After a successful dry run, ask the user:
 > Would you like to save these changes to the database? (Re-runs with `SAVE_DB = True`)
 
 **Never set `SAVE_DB = True` automatically** — only on explicit user confirmation.
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: which data file was used, how columns were mapped to the Sources
+schema, how many sources were ingested or skipped, and whether the user confirmed the save.

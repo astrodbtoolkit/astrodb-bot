@@ -14,6 +14,12 @@ references for sources, photometry, spectra, parallaxes, etc.) must exist as a r
 Read `references/ingest_publication_api.md` before starting — it has the full function
 signatures, ADS token setup, the reference naming convention, and common warnings.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` for the workflow.md convention.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+
 ## Reference naming convention
 
 Every entry in `Publications` has a `reference` shortname. Always construct it as:
@@ -207,3 +213,11 @@ writing anything. Only after confirmation, fill:
 
 Backfill is idempotent: skip references whose metadata is already populated. When done,
 verify zero rows still have NULL `bibcode`/`doi`/`description`.
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: which references were ingested, any that were already present or
+failed, how ambiguous shortnames were resolved, and whether the user explicitly confirmed
+before saving.

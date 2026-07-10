@@ -105,6 +105,8 @@ Skills are designed to chain in order:
 - **`astrodb-build-artifacts/`** holds build outputs: parsed table results, generated schema YAML. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
 - **`uv run`** is preferred over bare `python` to ensure the correct virtual environment.
 - **Database loading**: JSON-layout databases (astrodb-template-db) use `build_db_from_json(settings_file="database.toml")`; standalone `.sqlite` files use a direct connection.
+- **`workflow.md`** — every skill reads and appends to a `workflow.md` log in the user's project root, recording *why* decisions were made. Created by `astrodb-build-setup`; subsequent skills append to it. The full convention is in `skills/astrodb-directions.md`, symlinked into each skill's `references/astrodb-directions.md`.
+- **Skills must ask, not assume** — if `workflow.md` and `artifacts/directions.md` don't address a decision, skills must stop and ask the user rather than silently applying a default.
 
 ### Evals Format
 

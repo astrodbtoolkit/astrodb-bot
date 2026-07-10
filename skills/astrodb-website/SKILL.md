@@ -8,6 +8,12 @@ compatibility: python, fastapi, uvicorn
 
 This skill sets up a FastAPI web interface ([astrodb-web](https://github.com/astrodbtoolkit/astrodb-web)) to browse and visualize an AstroDB SQLite database.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` for the workflow.md convention.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+
 ## Prerequisites
 
 - An existing AstroDB SQLite database (`.sqlite` or `.db`).
@@ -116,3 +122,10 @@ Notify the user that their next step should be to set up a permanent hosting sol
 - **Database not found**: Ensure the `--db-path` provided to `setup_website.py` is correct.
 - **Port already in use**: If 8000 is taken, use `--port <other-port>` with uvicorn.
 - **Import errors**: Ensure `uv sync` was run in the `astrodb-web` directory.
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: the website repo URL used, which database was connected, the
+primary table and coordinate columns detected, and any troubleshooting steps taken.

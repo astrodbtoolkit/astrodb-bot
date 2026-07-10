@@ -156,6 +156,12 @@ If the user wants to fill it in now, help them write one based on their notes an
 `<repo-dir>/artifacts/directions.md`. If they'd rather do it later, copy the example to
 `<repo-dir>/artifacts/directions.md` with a comment at the top marking it as a template to fill in.
 
+After the directions document is handled, initialize the workflow log. Read
+`references/astrodb-directions.md` for the full convention. Create `workflow.md` in the
+repo root (using the standard header from `references/astrodb-directions.md`), then append
+a setup entry recording: the database name chosen, the GitHub repo URL, the README
+description provided, and whether a directions document was completed now or deferred.
+
 ## Step 7: Confirm, and point to what's next
 
 Tell the user the scaffold is ready: where the repo was cloned, that the structure checks out, and that
