@@ -67,6 +67,33 @@
           "evidence": "astropy check passed on first try; Table.read() used; sidecar written with reader='astropy'"
         }
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "Parse this data table file and extract column information: 'data/MRT-velo.txt'",
+      "expected_output": "A markdown table with 14 columns (ID, VLSR, e_VLSR, SType, VLSR_G, VLSR_S, VLSR_F, VLSR_T, VLSR_DHT, VLSR_DGT, DGT, VLSR_C, VLSR_M, e_VLSR_M). This is a CDS/AAS machine-readable table (MRT) with an embedded byte-by-byte description header, so descriptions and units (mostly km/s) should come directly from that header rather than being inferred or left as '—'. The reader must recognize the file isn't plain CSV and use astropy's ascii.mrt format. Several velocity columns (e.g. VLSR_G, VLSR_S, VLSR_F, VLSR_T) use the literal value 999 as a fill value for missing data in most rows — this should be flagged as a sentinel/placeholder in the notes, not reported as a real measurement.",
+      "files": ["data/MRT-velo.txt"],
+      "assertions": [
+        {"text": "File was read successfully as a table (not misparsed as a single garbage CSV column)"},
+        {"text": "All 14 columns are present in the output"},
+        {"text": "Descriptions are populated from the embedded byte-by-byte header (not left as '—')"},
+        {"text": "Units are populated as km/s for velocity columns"},
+        {"text": "The 999 sentinel/fill-value pattern is flagged in the notes rather than reported as real data"},
+        {"text": "astropy was used as the reader (not a pandas fallback)"}
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Parse this data table file and extract column information: 'data/MRT-hcsc.txt'",
+      "expected_output": "A markdown table with 17 columns (ID, DIAM, e_DIAM, MASS, e_MASS, BLUM, e_BLUM, LMRAT, e_LMRAT, TEMP, e_TEMP, LRAT, e_LRAT, TBOL, e_TBOL, SIGMA, e_SIGMA). This is also a CDS/MRT table, so descriptions and units should come from the embedded byte-by-byte header (e.g. pc, solMass/Msun, Lsun, K, g/cm^2). The SIGMA/e_SIGMA unit 'g/cm^2' triggers an astropy UnrecognizedUnit warning when read — the unit should still be reported as 'g/cm^2' rather than dropped or left blank.",
+      "files": ["data/MRT-hcsc.txt"],
+      "assertions": [
+        {"text": "File was read successfully as a table (not misparsed as a single garbage CSV column)"},
+        {"text": "All 17 columns are present in the output"},
+        {"text": "Descriptions are populated from the embedded byte-by-byte header (not left as '—')"},
+        {"text": "SIGMA/e_SIGMA units are reported as g/cm^2 despite the UnrecognizedUnit warning"},
+        {"text": "astropy was used as the reader (not a pandas fallback)"}
+      ]
     }
   ]
 }

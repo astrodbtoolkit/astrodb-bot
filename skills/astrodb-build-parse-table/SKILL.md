@@ -1,6 +1,6 @@
 ---
 name: astrodb-build-parse-table
-description: Parse a data table file and extract column information (name, description, units, type). Supports FITS, CSV, ECSV, HDF5, VOTable, Parquet, Excel, and more. Generates a markdown table summarizing the columns.
+description: Parse a data table file and extract column information (name, description, units, type). Supports FITS, CSV, ECSV, HDF5, VOTable, MRT, Parquet, Excel, and more. Generates a markdown table summarizing the columns.
 compatibility: python, astropy, pandas
 metadata:
     authors: ["Claude"]
@@ -87,13 +87,28 @@ try:
     for col in t.columns:
         print(col, t[col].dtype)  # descriptions/units extracted in Step 3
 except Exception:
-    import pandas as pd
-    df = pd.read_csv("$ARGUMENTS")  # adjust reader as needed
-    reader = "pandas"
-    pandas_method = "read_csv"  # update if a different reader was used
-    n_rows = len(df)
-    for col in df.columns:
-        print(col, df[col].dtype)
+    # Before falling back to pandas, check whether this is a CDS/AAS machine-readable
+    # table (common for .txt/.dat files distributed alongside journal articles).
+    # Table.read() can't auto-identify this format and raises above, but pandas.read_csv()
+    # won't error either — it'll silently parse the header text into one garbage column.
+    # See references/format-specific-metadata.md for details.
+    with open("$ARGUMENTS") as f:
+        head = f.read(4000)
+    if "Byte-by-byte Description of file" in head:
+        t = Table.read("$ARGUMENTS", format="ascii.mrt")
+        reader = "astropy"
+        fmt = "mrt"
+        n_rows = len(t)
+        for col in t.columns:
+            print(col, t[col].dtype)
+    else:
+        import pandas as pd
+        df = pd.read_csv("$ARGUMENTS")  # adjust reader as needed
+        reader = "pandas"
+        pandas_method = "read_csv"  # update if a different reader was used
+        n_rows = len(df)
+        for col in df.columns:
+            print(col, df[col].dtype)
 
 # Write sidecar so downstream skills (e.g. astrodb-build-schema-match, astrodb-build-schema-validate)
 # can reuse the same reader without re-discovering the format.
@@ -118,7 +133,11 @@ For each column, extract:
 - **Units** (use "—" if not specified)
 - **Data type** (e.g. `float64`, `int32`, `str`)
 
-**Important:** `t[col].description` is only reliably populated for ECSV files. For all other formats (FITS, CSV, HDF5, VOTable, etc.), ignore what Step 2 printed for descriptions and extract them using the format-specific methods in `references/format-specific-metadata.md`.
+**Important:** `t[col].description` is only reliably populated for ECSV and CDS/MRT files. For all other formats (FITS, plain CSV, HDF5, VOTable, etc.), ignore what Step 2 printed for descriptions and extract them using the format-specific methods in `references/format-specific-metadata.md`.
+
+#### Checking for sentinel fill values
+
+Legacy fixed-width astronomy formats (MRT tables especially, but also older FITS/CSV exports) sometimes mark missing data with a literal placeholder — `999`, `-999`, `-99.9` — instead of a true null. These aren't caught by the reader, so a quick scan matters: if a numeric column's max or min value is a suspiciously round number that recurs far more often than its neighbors, treat it as a fill value rather than a real measurement, and note it in the output (see Step 5) rather than silently reporting it as data.
 
 #### Converting dtypes to human-readable strings
 
@@ -216,7 +235,9 @@ Ask the user to inspect the results table and check if everything looks good, or
 Before telling the user the table is parsed, confirm every item below. Anything unmet must be done — or
 explicitly waived by the user — first. Don't claim a value you didn't actually extract.
 
-- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV).
+- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV and CDS/MRT).
+- [ ] For a `.txt`/`.dat` input, you checked for the `Byte-by-byte Description of file` MRT signature before treating it as plain CSV.
+- [ ] Numeric columns were spot-checked for sentinel fill values (e.g. `999`, `-999`); any found are noted in the output rather than reported as real data.
 - [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
 - [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
 - [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
