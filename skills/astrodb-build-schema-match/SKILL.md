@@ -69,6 +69,32 @@ It also documents how to handle uncertainty columns (`_error`, `_error_upper`, `
 Read `references/photometry-filters.md` for the full rules on resolving band names to SVO Filter
 Profile Service IDs before populating `PhotometryFilters.band`.
 
+## Checkpoint: Confirm ambiguous matches before writing output
+
+After applying all three matching layers, but **before writing any output files**, identify
+every **Low** or **Medium** confidence match. If there are any, compile them into a single
+table and present it to the user:
+
+> Before I write the mapping file, I want to confirm these ambiguous matches:
+>
+> | Column | Description | Units | Proposed DB Table.Field | Confidence | Reason for uncertainty |
+> |--------|-------------|-------|-------------------------|------------|------------------------|
+>
+> Please confirm each one, override with a different `Table.Field`, or say "ignore" to leave
+> it unmatched. I won't write the output files until you've reviewed these.
+
+**Wait for the user's response before writing any files.** Apply any overrides before
+producing the final output.
+
+For **High** confidence matches, no confirmation is needed — they can be written directly.
+
+If `artifacts/directions.md` already addresses a match, do not ask the user about it again —
+honor the direction. But if the directions file is silent on a case and your match is Low or
+Medium, you must stop and ask; do not fill in a silent default.
+
+> **Note:** This skill produces a **column mapping document**, not a `schema.yaml`.
+> `schema.yaml` is generated later by `astrodb-build-schema-generate`.
+
 ## Resolving Unmatched Columns
 
 After working through all three matching layers and the special cases in

@@ -214,6 +214,27 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump(sidecar, f)
 ```
 
-### Step 6: Iterate as needed
+### Step 6: Confirm before proceeding
 
-Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+After writing the output files, present a brief summary in chat:
+- Total columns parsed, and how many rows are in the file
+- How many descriptions/units came from file metadata, were inferred, or are still `—`
+- Any anomalies (fallback reader used, columns with unexpected types, etc.)
+
+Then ask the user to open the HTML file and explicitly confirm the results:
+
+> I've written the parsed column table to `<path>`. Please review it and let me know:
+> 1. Does the column list look complete?
+> 2. Are any descriptions, units, or types wrong or missing?
+> 3. Are there columns that should be skipped in the schema-match step?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they request
+corrections, apply them and update the output files before asking again. Do not proceed to
+`astrodb-build-schema-match` or any downstream skill until the user confirms the table is ready.
+
+If the user asks why you chose a particular file format or reader, explain your choice and
+record it in `workflow.md` (see Step 7). Never assume a format decision was obvious — if there
+was any ambiguity, the user may want to know or change it.
+
+> **Note:** `schema.yaml` is not created in this step or in `astrodb-build-schema-match`.
+> It is generated later by `astrodb-build-schema-generate`.
