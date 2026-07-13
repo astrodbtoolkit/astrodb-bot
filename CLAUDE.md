@@ -24,7 +24,7 @@ Use a descriptive commit message that summarizes what changed (e.g. `add astrodb
 
 When skills are added, removed, or significantly updated, remind the user to:
 
-1. Update the external documentation at [`astrodbtoolkit/astrodb_utils` — `docs/pages/db_management/agent_skills.rst`](https://github.com/astrodbtoolkit/astrodb_utils/blob/main/docs/pages/db_management/agent_skills.rst)
+1. Update this repo's `README.md` to reflect the change
 2. Cut a new release (see Releases and Versioning below)
 
 ## Releases and Versioning
@@ -84,7 +84,7 @@ Skills are designed to chain in order:
 #### Build
 
 1. **`astrodb-build-setup`** — Clone a user's repo from the astrodb-template-db GitHub template; set `db_name` in `database.toml`; personalize the README and LICENSE (new authors, or a different license). No data involved.
-2. **`astrodb-build-parse-table`** — Read FITS/CSV/ECSV/etc. with astropy or pandas; extract column names, descriptions, units, types. Writes output to `astrodb-build-artifacts/` for downstream skills.
+2. **`astrodb-build-parse-table`** — Read FITS/CSV/ECSV/CDS-MRT/etc. with astropy or pandas; extract column names, descriptions, units, types. Writes output to `astrodb-build-artifacts/` for downstream skills.
 3. **`astrodb-build-schema-match`** — Map parsed columns to AstroDB template schema tables/fields. Reads `references/schema.md`, `references/column-patterns.md`, `references/photometry-filters.md`.
 4. **`astrodb-build-schema-validate`** — Check for nullable violations and type mismatches between data and schema.yaml.
 5. **`astrodb-build-schema-generate`** — Produce a Felis YAML `schema.yaml` from the mapping. Runs `felis validate` at the end.
@@ -118,7 +118,7 @@ Each `evals/evals.json` has `skill_name` and an array of `evals`, each with:
 
 ### Workspace Directories
 
- `skills/astrodb-build-schema-match-workspace/` and `skills/astrodb-setup-workspace/` are **not deployable skills** — they contain iteration and eval history from skill development. They have no top-level `SKILL.md`. Do not include them when installing skills into an agent.
+ `skills/astrodb-build-schema-match-workspace/`, `skills/astrodb-setup-workspace/`, and `skills/astrodb-build-parse-table-workspace/` are **not deployable skills** — they contain iteration and eval history from skill development. They have no top-level `SKILL.md`. Do not include them when installing skills into an agent.
  If any `*-workspace/` directories are added under `skills/`, they are **not deployable skills** — they may contain iteration/eval history and may have no top-level `SKILL.md`. Do not include workspace directories when installing skills into an agent.
 
 ### External Dependencies
