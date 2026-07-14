@@ -8,6 +8,9 @@ metadata:
 
 # AstroDB Setup
 
+Read `references/astrodb-directions.md` before starting — it documents the `workflow.md`
+convention that this skill initializes and all subsequent skills maintain.
+
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
 structured, named database repository onto the user's machine — nothing more. It deliberately stops
 before any data is involved; bringing in a data table to parse and ingest is the *next* step, handled
@@ -284,6 +287,13 @@ separate skill:
 > later.
 
 Only raise this if there is an actual mismatch. If the names already match, skip this entirely.
+
+## Final Step: Initialize `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Create `workflow.md` in the
+repo root (using the standard header) and append a setup entry recording: the database name
+chosen, the GitHub repo URL, the README description provided, and whether a directions
+document was completed now or deferred. Subsequent skills will append to this file.
 
 ## Completion Checklist
 

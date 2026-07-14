@@ -61,6 +61,17 @@ Log any non-obvious choice a future reader might question:
 Do **not** log mechanical steps (creating directories, opening files, installing packages,
 running validation commands that passed without issues).
 
+## Artifact folder convention
+
+All build outputs must be written inside `astrodb-build-artifacts/` in the current working
+directory. Create it before writing any files:
+
+```bash
+mkdir -p astrodb-build-artifacts
+```
+
+If this fails, stop and tell the user you cannot create the output directory.
+
 ## Skills must ask, not assume
 
 If `workflow.md` and `artifacts/directions.md` do not address a decision the current skill

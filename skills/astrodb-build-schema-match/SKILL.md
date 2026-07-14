@@ -12,7 +12,20 @@ metadata:
 Map columns from an astronomical data table to the AstroDB template database schema, so you know
 exactly which table and field each column belongs to before ingesting data.
 
-**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files:
+## Context Documents
+
+Before matching:
+
+1. Read `references/astrodb-directions.md` — it covers the workflow.md convention and the
+   artifact folder convention (`astrodb-build-artifacts/`).
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context and decisions from prior skills.
+3. Check whether `artifacts/directions.md` exists. If it does, read it — it contains
+   dataset-specific decisions (which columns go where, what to ignore, custom tables, known
+   edge cases) that should directly inform how you map columns. Honor any explicit direction
+   over the default matching heuristics.
+
+Create the artifact folder before writing any files:
 
 ```bash
 mkdir -p astrodb-build-artifacts
@@ -149,6 +162,14 @@ Tell the user the exact file paths to both the markdown table and the HTML file 
 - **User-assigned**: User specified the exact `Table.field` for this column (set when the user responds to the Unmatched prompt)
 - **Proposed (new field)**: User chose to add a new field to an existing table — needs a schema update before ingestion
 - **Proposed (new table)**: User chose to add a new table — needs a schema update before ingestion
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: any Low/Medium confidence matches and why that mapping was
+chosen, all Unmatched columns and how the user resolved each one, any new tables or fields
+proposed, and any decisions made without `artifacts/directions.md` guidance.
 
 ## Completion Checklist
 

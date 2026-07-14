@@ -12,10 +12,17 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
+### Step 0: Read context documents
 
+1. Read `references/astrodb-directions.md` — it covers the workflow.md convention and the
+   artifact folder convention (`astrodb-build-artifacts/`).
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context and decisions from prior skills.
+3. Check whether `artifacts/directions.md` exists. If it does, read it — it captures
+   dataset-specific decisions (columns to skip, edge cases, schema choices) that should
+   guide your interpretation throughout this skill.
 
-Run this before anything else:
+### Step 1: Create the artifact folder
 
 ```bash
 mkdir -p astrodb-build-artifacts
@@ -209,6 +216,14 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 ### Step 7: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: which file was parsed, which reader was used and why, any
+column descriptions or units that were inferred, what the user confirmed during gap-filling,
+and any columns still missing metadata.
 
 ## Completion Checklist
 
