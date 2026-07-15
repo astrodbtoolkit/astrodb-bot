@@ -123,20 +123,11 @@ Update `README.md` in two places:
 
 Remove the text that refers to the astrodb-utils package.
 
-Keep the link to the entity relationship diagram (ERD) image, and the credit line at the bottom that
-acknowledges the AstroDB Toolkit and template.
+Remove the link to the entity relationship diagram (ERD) image.
+
+Keep the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
 
 Do this with the `Edit` tool (not `sed`) so the rest of the file stays intact.
-
-**Also scan for template-specific boilerplate in other sections** — look for mentions of surveys,
-instruments, or projects the user's database has nothing to do with (e.g. WISeREP, ZTF, a specific
-telescope name). If you find any, show them to the user and ask:
-
-> I see the Acknowledgments section mentions [WISeREP / X]. Should I remove that, or does your
-> database relate to it?
-
-Remove anything the user confirms is leftover template text. Do not silently delete anything
-without showing it first.
 
 After editing, confirm with a brief summary:
 
@@ -152,25 +143,28 @@ Check whether `CLAUDE.md` exists in the cloned repo:
 ```bash
 ls <repo-dir>/CLAUDE.md
 ```
+If `CLAUDE.md` does not exist, skip this sub-step.
 
 If it does, read it and look for a project description section — typically a line like
 `A template schema for astronomical databases, part of the astrodbtoolkit ecosystem.`
 Replace it with the same description the user gave for the README. Use the `Edit` tool.
 
-If `CLAUDE.md` does not exist, skip this sub-step.
+Remove the Git and Github instructions.
+
+Replace any instance of `astrodb-template` with the new database name.
 
 If the user skips this step or says "later" or "skip it," that's fine — just move on to Step 6 without
 pressing.
 
 ## Step 6: Create an artifacts directory and directions document
 
-Create an `artifacts/` directory in the cloned repo to hold reproducibility artifacts:
+Create an `astrodb-build-artifacts/` directory in the cloned repo to hold reproducibility artifacts:
 
 ```bash
-mkdir -p <repo-dir>/artifacts
+mkdir -p <repo-dir>/astrodb-build-artifacts
 ```
 
-A **directions document** lives at `artifacts/directions.md` and captures dataset-specific decisions,
+A **directions document** lives at `astrodb-build-artifacts/directions.md` and captures dataset-specific decisions,
 known issues, and ingestion notes. It is read automatically by subsequent skills
 (`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) to guide their decisions — so filling
 it in now saves time and prevents inconsistencies later.
@@ -183,8 +177,8 @@ captures. Ask:
 > always add to it later.
 
 If the user wants to fill it in now, help them write one based on their notes and save it to
-`<repo-dir>/artifacts/directions.md`. If they'd rather do it later, copy the example to
-`<repo-dir>/artifacts/directions.md` with a comment at the top marking it as a template to fill in.
+`<repo-dir>/astrodb-build-artifacts/directions.md`. If they'd rather do it later, copy the example to
+`<repo-dir>/astrodb-build-artifacts/directions.md` with a comment at the top marking it as a template to fill in.
 
 ## Step 7: Confirm, and point to what's next
 
