@@ -27,19 +27,21 @@ Every entry in `Publications` has a `reference` shortname. Always construct it a
 | Wu & Xi | 2021 | `WuXi21` (or `Wu__21` for very short names) |
 
 **Disambiguation** — if two papers would share the same first-author/year shortname, append
-the last 4 characters of the DOI to the shortname of the conflicting paper as a suffix:
+the last 4 characters of the DOI to **every** conflicting paper's shortname as a suffix:
 
 | Author | Year | DOI | Shortname |
 |--------|------|-----|-----------|
-| Bonaca et al. | 2020 | `10.3847/2041-8213/ab800c` | `Bona20` (first) |
-| Bonaca et al. | 2020 | `10.3847/1538-4357/aba51a` | `Bona20.a51a` (second) |
+| Bonaca et al. | 2020 | `10.3847/2041-8213/ab800c` | `Bona20.800c` |
+| Bonaca et al. | 2020 | `10.3847/1538-4357/aba51a` | `Bona20.a51a` |
 
-Use a `.` separator between the base shortname and the 4-character DOI suffix (e.g.
-`Bona20.800c`). Apply the suffix to whichever paper is encountered second — leave the
-first paper's shortname unchanged.
+Use a `.` separator between the base shortname and the 4-character DOI suffix. Apply the
+suffix to all papers in the collision — there is no "first gets the bare shortname"
+exception. This applies whether you are adding them together or encounter the conflict when
+a second paper is ingested later.
 
-**Never use `a` / `b` / `c` letter suffixes** (e.g. `Bona20a`). When ADS is available it
-generates a compliant shortname automatically; when using `ignore_ads=True`, construct it
+**Always use DOI-based suffixes** — never bare letter suffixes (e.g. `Bona20a`). Letters
+that happen to appear in a DOI suffix (e.g. `Bona20.a51a`) are fine. When ADS is available
+it generates a compliant shortname automatically; when using `ignore_ads=True`, construct it
 yourself with this rule.
 
 ## Critical constraint: `ingest_publication` requires a DOI or bibcode
@@ -207,3 +209,14 @@ writing anything. Only after confirmation, fill:
 
 Backfill is idempotent: skip references whose metadata is already populated. When done,
 verify zero rows still have NULL `bibcode`/`doi`/`description`.
+
+## Completion Checklist
+
+Before telling the user publications are ingested, confirm every item below. Anything unmet must be done —
+or explicitly confirmed by the user — first.
+
+- [ ] Every reference was resolved to the *specific, verified* paper (DOI or bibcode), disambiguated by context — a bare shortname or author+year was never passed to `ingest_publication`. When you had to look a paper up (rather than being given a DOI/bibcode directly), you showed the resolved table and waited for the user's confirmation before writing.
+- [ ] `find_publication` was called before each `ingest_publication`, and references already present were reported as such rather than re-ingested.
+- [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{LABEL}_publications.py` contains only real resolved values (no placeholders), with `IGNORE_ADS` set correctly and `SAVE_DB = False`.
+- [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
+- [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.

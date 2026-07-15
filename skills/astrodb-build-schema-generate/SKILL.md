@@ -166,3 +166,15 @@ felis validate astrodb-build-artifacts/<schema-name>-schema.yaml
 - A `string` column is missing its `length` field.
 
 Fix the errors, rewrite the file, and re-run validation. Repeat until the schema passes, then tell the user it passed (and briefly mention what was fixed if anything needed fixing).
+
+## Completion Checklist
+
+Before telling the user the schema is generated, confirm every item below. Anything unmet must be done —
+or explicitly waived by the user — first.
+
+- [ ] Unmatched and (if a validation report was provided) problematic columns were audited and raised with the user — one question per category — or there were none.
+- [ ] Columns are grouped by table, and each table has a primary key identified (you asked the user when it wasn't obvious).
+- [ ] The Felis YAML follows `references/felis-syntax.md`: correct `@id` references, datatypes, units, nullable flags, and foreign keys — and includes stub table definitions for every lookup table referenced by a FK (at minimum `Sources` and `Publications`), so no FK points at a table absent from the document.
+- [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` (not just pasted into the chat).
+- [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
+- [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).

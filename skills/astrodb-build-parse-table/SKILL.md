@@ -12,16 +12,9 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Check for a directions document
-
-Before doing anything else, check whether `artifacts/directions.md` exists in the current working
-directory. If it does, read it now — it captures dataset-specific decisions (columns to skip, how
-to handle edge cases, schema choices) that should guide your interpretation throughout this skill.
-If it doesn't exist, proceed without it.
-
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
 
-### Step 1: Create the artifact folder
+### Step 0: Create the artifact folder and check for a directions document
 
 Run this before anything else:
 
@@ -30,6 +23,22 @@ mkdir -p astrodb-build-artifacts
 ```
 
 If this fails, stop and tell the user you cannot create the output directory.
+
+Now look for a **directions document** — the user's own notes on this dataset (columns to skip, how to
+handle edge cases, schema decisions already made). Where it comes from depends on what the user gave
+you, so work through these in order and stop at the first hit:
+
+1. **The user provided a path** (e.g. in their opening message). Read it, then copy it to
+   `astrodb-build-artifacts/directions.md` so later skills — and later runs of this one — pick it up
+   without the user having to re-supply the path every time.
+2. **`astrodb-build-artifacts/directions.md` already exists** from a prior run. Read it as-is; it's
+   already in its canonical home, so there's nothing to copy.
+3. **Neither.** Proceed without one. It's optional, so don't stop to ask for it.
+
+When you do find one, let its guidance override the default heuristics in this skill. The user wrote it
+precisely because they know something about this data that the general rules don't capture — a column
+that looks like photometry but isn't, a unit that's mislabeled upstream. Silently applying the defaults
+over an explicit instruction is the failure this lookup exists to prevent.
 
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
@@ -217,3 +226,15 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 ### Step 6: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+
+## Completion Checklist
+
+Before telling the user the table is parsed, confirm every item below. Anything unmet must be done — or
+explicitly waived by the user — first. Don't claim a value you didn't actually extract.
+
+- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV).
+- [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
+- [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
+- [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
+- [ ] The sidecar `astrodb-build-artifacts/astrodb-parse-result.json` was written and then updated with the output file paths.
+- [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.
