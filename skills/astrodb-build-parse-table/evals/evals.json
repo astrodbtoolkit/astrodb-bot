@@ -26,6 +26,11 @@
           "text": "Unit 'dimensionless_unscaled' is assigned to the ellipticity column (e=1-b/a) via units inference",
           "passed": true,
           "evidence": "units-inference.md rule 'dimensionless quantities (e.g. ellipticity, ratios) → dimensionless_unscaled' applied to e=1-b/a, e+, e-"
+        },
+        {
+          "text": "In Step 0, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present",
+          "passed": true,
+          "evidence": "Step 0 item 3 correctly references astrodb-build-artifacts/directions.md"
         }
       ]
     }

@@ -50,6 +50,10 @@
         {
           "id": "eval1_ingestion_note_source_fk",
           "text": "The ingestion notes section mentions that each data table row requires a source foreign key (source identifier is required in each data table)"
+        },
+        {
+          "id": "eval1_directions_path",
+          "text": "In the Context Documents step, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
         }
       ]
     },

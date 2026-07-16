@@ -33,6 +33,10 @@
         {
           "id": "eval1_summary_section",
           "text": "The output includes a clear summary section counting the number of nullable violations and type mismatches found"
+        },
+        {
+          "id": "eval1_directions_path",
+          "text": "In Step 0, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
         }
       ]
     },

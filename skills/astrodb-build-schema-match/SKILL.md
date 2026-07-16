@@ -20,7 +20,7 @@ Before matching:
    artifact folder convention (`astrodb-build-artifacts/`).
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills.
-3. Check whether `artifacts/directions.md` exists. If it does, read it — it contains
+3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
    dataset-specific decisions (which columns go where, what to ignore, custom tables, known
    edge cases) that should directly inform how you map columns. Honor any explicit direction
    over the default matching heuristics.
@@ -169,7 +169,7 @@ Follow the convention in `references/astrodb-directions.md`. Append one new entr
 `workflow.md` in the current working directory (create it with the standard header if it
 doesn't exist yet). Record: any Low/Medium confidence matches and why that mapping was
 chosen, all Unmatched columns and how the user resolved each one, any new tables or fields
-proposed, and any decisions made without `artifacts/directions.md` guidance.
+proposed, and any decisions made without `astrodb-build-artifacts/directions.md` guidance.
 
 ## Completion Checklist
 

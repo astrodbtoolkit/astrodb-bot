@@ -18,7 +18,7 @@ Parse the data table file `$ARGUMENTS` and extract column information.
    artifact folder convention (`astrodb-build-artifacts/`).
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills.
-3. Check whether `artifacts/directions.md` exists. If it does, read it — it captures
+3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it captures
    dataset-specific decisions (columns to skip, edge cases, schema choices) that should
    guide your interpretation throughout this skill.
 
