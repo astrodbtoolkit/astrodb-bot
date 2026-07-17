@@ -13,11 +13,15 @@ contains against what the schema requires.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may describe
    known nullable or type edge cases relevant to this validation.
+4. Initialize this skill's checklist file per the completion-checklist convention — create the
+   artifact directory if needed, then copy the items from `## Completion Checklist` (bottom of this
+   file) into `astrodb-build-artifacts/astrodb-build-schema-validate-checklist.md`.
 
 Two classes of problems can block a clean ingest:
 1. **Nullable violations** — the schema marks a field as `nullable: false`, but the data
@@ -122,12 +126,16 @@ to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool —
 
 ## Completion Checklist
 
-Before telling the user validation is done, confirm every item below. Anything unmet must be done — or
-explicitly waived by the user — first.
+Track this checklist as a file per the **completion-checklist convention** in
+`references/astrodb-directions.md`: you copied it to
+`astrodb-build-artifacts/astrodb-build-schema-validate-checklist.md` when you started and ticked items
+with evidence as you went. Before telling the user validation is done, read that file back — any
+unchecked box means you are not done (finish it, or record the user's explicit waiver) — then reproduce
+the evidence-annotated checklist here.
 
 - [ ] You had the mapping table, the data file path, and the schema.yaml path — asking the user for any that were missing rather than guessing.
 - [ ] You parsed schema.yaml for each field's datatype, nullable flag, and length.
-- [ ] You ran a script (saved to `astrodb-build-artifacts/validate_mapping.py`) that, for each mapped column, counted null/missing values — including FITS masked values and empty strings for non-nullable string fields — and read its dtype.
+- [ ] You ran a script (saved to `astrodb-build-artifacts/validate_mapping.py`) that loaded the data with the reader recorded in the parse-table sidecar when present and, for each mapped column, counted null/missing values — including FITS masked values and empty strings for non-nullable string fields — and read its dtype.
 - [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
 - [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.

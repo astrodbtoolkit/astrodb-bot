@@ -10,9 +10,13 @@ This skill sets up a FastAPI web interface ([astrodb-web](https://github.com/ast
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
+3. Initialize this skill's checklist file per the completion-checklist convention — create the
+   artifact directory if needed, then copy the items from `## Completion Checklist` (bottom of this
+   file) into `astrodb-build-artifacts/astrodb-website-checklist.md`.
 
 ## Prerequisites
 
@@ -125,8 +129,12 @@ Notify the user that their next step should be to set up a permanent hosting sol
 
 ## Completion Checklist
 
-Before telling the user the website is ready, confirm every item below. Anything unmet must be done —
-or explicitly waived by the user — first.
+Track this checklist as a file per the **completion-checklist convention** in
+`references/astrodb-directions.md`: you copied it to
+`astrodb-build-artifacts/astrodb-website-checklist.md` when you started and ticked items with evidence
+as you went. Before telling the user the website is ready, read that file back — any unchecked box means
+you are not done (finish it, or record the user's explicit waiver) — then reproduce the
+evidence-annotated checklist here.
 
 - [ ] The user created their own repo from the astrodb-web template and gave you the URL; you cloned it into the directory they confirmed (default `website/`).
 - [ ] You verified the primary table name and the RA/Dec/source/foreign-key column names against the actual database (`sqlite3 .tables` and `PRAGMA table_info`), rather than assuming defaults.

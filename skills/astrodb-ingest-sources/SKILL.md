@@ -14,9 +14,13 @@ parameter meanings, and common warnings with fixes.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
+3. Initialize this skill's checklist file per the completion-checklist convention — create the
+   artifact directory if needed, then copy the items from `## Completion Checklist` (bottom of this
+   file) into `astrodb-ingest-artifacts/astrodb-ingest-sources-checklist.md`.
 
 ## Prerequisites
 
@@ -233,11 +237,16 @@ After a successful dry run, ask the user:
 
 ## Completion Checklist
 
-Before telling the user sources are ingested, confirm every item below. Anything unmet must be done —
-or explicitly confirmed by the user — first.
+Track this checklist as a file per the **completion-checklist convention** in
+`references/astrodb-directions.md`: you copied it to
+`astrodb-ingest-artifacts/astrodb-ingest-sources-checklist.md` when you started and ticked items with
+evidence as you went. Before telling the user sources are ingested, read that file back — any unchecked
+box means you are not done (finish it, or record the user's explicit confirmation to skip) — then
+reproduce the evidence-annotated checklist here.
 
 - [ ] `database.toml` was located (you asked the user rather than inventing one when it wasn't found).
 - [ ] Every discovery reference already exists in `Publications` — and for any that were missing, you offered to run `ingest_publication` as a sub-step rather than just telling the user to do it.
+- [ ] Every source name was validated against SESAME/SIMBAD before the ingest script was written — unresolvable names were flagged and the user confirmed proceeding, and preferred-name suggestions were offered but never forced — or the check was skipped with a note because there was no internet.
 - [ ] You showed the user the data table's column names, dtypes, and a 3-row preview, and confirmed both the input-file column roles and the target database's schema column names (`ra`/`dec`/`epoch` variants) — asking which database when unsure.
 - [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{REF}_sources.py` uses the user's real column names and paths, includes only optional columns that are actually present, uses the correct DB column names, and sets `SAVE_DB = False`.
 - [ ] A dry run was executed, and you reported how many sources were ingested / skipped (with warnings) and that the database was not saved.
