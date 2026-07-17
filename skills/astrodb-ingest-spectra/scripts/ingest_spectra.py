@@ -11,8 +11,8 @@ import logging
 from datetime import datetime
 
 import pandas as pd
-from astrodb_utils import AstroDBError, build_db_from_json
-from astrodb_utils.spectra import check_spectrum_plottable, find_spectra, ingest_spectrum
+from astrodb_utils import build_db_from_json
+from astrodb_utils.spectra import check_spectrum_plottable, ingest_spectrum
 
 astrodb_utils_logger = logging.getLogger("astrodb_utils")
 astrodb_utils_logger.setLevel(logging.INFO)
@@ -51,9 +51,27 @@ def parse_obs_date(raw):
         return None
 
 
+def categorize_skip(message):
+    """Bucket an ingest_spectrum flags['message'] into a skip-reason category.
+    Match against the message text since ingest_spectrum doesn't return a
+    structured error code. Only duplicate/no-date get their own bucket --
+    other failure modes (missing reference, unresolved source, bad regime,
+    unknown instrument) should already have been caught earlier, during
+    Step 2 (source resolution) and the Prerequisites checks (Step 3), so a
+    single 'other' bucket with the logged message is enough for them."""
+    msg = (message or "").lower()
+    if "duplicate" in msg:
+        return "skipped_duplicate"
+    if "observation date" in msg or "obs_date" in msg:
+        return "skipped_no_date"
+    return "skipped_other"
+
+
 def ingest_spectra(db, data):
-    counts = {"ingested": 0, "skipped_duplicate": 0, "skipped_not_plottable": 0,
-              "skipped_no_date": 0, "skipped_unresolved_source": 0, "skipped_other": 0}
+    counts = {
+        "ingested": 0, "skipped_not_plottable": 0, "skipped_duplicate": 0,
+        "skipped_no_date": 0, "skipped_other": 0,
+    }
 
     for _, row in data.iterrows():
         raw_name = row["NAME_COLUMN"]  # replace with real column name
@@ -66,7 +84,7 @@ def ingest_spectra(db, data):
         canonical_source = SOURCE_NAME_MAP.get(raw_name)
         if canonical_source is None:
             logger.warning(f"Skipping {raw_name}: no resolved Sources.source match")
-            counts["skipped_unresolved_source"] += 1
+            counts["skipped_other"] += 1
             continue
 
         obs_date = parse_obs_date(row["DATE_COLUMN"])  # replace with real column name
@@ -84,48 +102,40 @@ def ingest_spectra(db, data):
         regime = row["REGIME_COLUMN"]
         reference = row["REFERENCE_COLUMN"]
 
-        # Duplicate check -- must check all 5 PK columns (source, regime, mode, obs_date,
-        # reference), not a subset, or distinct spectra with different obs_dates get
-        # wrongly flagged as duplicates
-        existing = find_spectra(
-            db,
-            source=canonical_source,
-            reference=reference,
-            regime=regime,
-            mode=row["MODE_COLUMN"],
-            obs_date=obs_date,
-        )
-        if len(existing) > 0:
-            logger.info(f"Skipping {raw_name}: duplicate spectrum found via find_spectra")
-            counts["skipped_duplicate"] += 1
-            continue
-
-        # Validate before ingesting
+        # check_spectrum_plottable is called separately (and wrapped) because
+        # ingest_spectrum calls it internally without honoring raise_error=False --
+        # a bad URL would otherwise raise uncaught even with raise_error=False below.
         try:
-            check_spectrum_plottable(spectrum_url, raise_error=True, show_plot=False)
+            check_spectrum_plottable(spectrum_url, raise_error=False, show_plot=False)
         except Exception as e:
             logger.warning(f"Skipping {raw_name}: not plottable ({e})")
             counts["skipped_not_plottable"] += 1
             continue
 
-        try:
-            ingest_spectrum(
-                db,
-                source=canonical_source,
-                spectrum=spectrum_url,
-                original_spectrum=original_url,
-                regime=regime,
-                telescope=row["TELESCOPE_COLUMN"],
-                instrument=row["INSTRUMENT_COLUMN"],
-                mode=row["MODE_COLUMN"],
-                obs_date=obs_date,
-                reference=reference,
-            )
+        # ingest_spectrum handles source/reference/regime/instrument validation,
+        # obs_date parsing, and duplicate detection (all five PK columns) internally.
+        # No separate find_spectra pre-check is needed here.
+        flags = ingest_spectrum(
+            db,
+            source=canonical_source,
+            spectrum=spectrum_url,
+            original_spectrum=original_url,
+            regime=regime,
+            telescope=row["TELESCOPE_COLUMN"],
+            instrument=row["INSTRUMENT_COLUMN"],
+            mode=row["MODE_COLUMN"],
+            obs_date=obs_date,
+            reference=reference,
+            raise_error=False,
+        )
+
+        if flags["added"]:
             counts["ingested"] += 1
             logger.info(f"Ingested spectrum for {raw_name}")
-        except AstroDBError as e:
-            logger.error(f"Failed to ingest spectrum for {raw_name}: {e}")
-            counts["skipped_other"] += 1
+        else:
+            category = categorize_skip(flags["message"])
+            counts[category] += 1
+            logger.warning(f"Skipping {raw_name}: {flags['message']}")
 
     return counts
 
@@ -149,6 +159,6 @@ if __name__ == "__main__":
 # Total spectra attempted:
 # Successfully ingested:
 # Skipped (duplicate):
-# Skipped (not plottable):
+# Skipped (not plottable / unreachable):
 # Skipped (missing obs_date):
-# Skipped (unresolved source):
+# Skipped (other):

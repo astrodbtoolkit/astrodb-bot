@@ -1,87 +1,87 @@
 {
-    "skill_name": "astrodb-ingest-spectra",
-    "evals": [
-      {
-        "id": 1,
-        "prompt": "I have spectra to ingest from evals/data/mock_spectra.csv and a database.toml in the project root. Rows 1-4 are real BONES archive rows with already-mapped columns: source, spectrum_url, original_spectrum_url, regime, telescope, instrument, mode, obs_date, reference. All source names already exist exactly as-is in the Sources table, all references (Kirk16, Bard14, Kirk10) already exist in Publications, and all telescope/instrument/mode combos already exist in Instruments. Please ingest rows 1-4 into my astrodb-template-db database.",
-        "expected_output": "A tailored script is written to astrodb-ingest-artifacts/ingest_mock_spectra_spectra.py, a dry run is executed reporting ingested/skipped counts with reasons, and the user is asked to confirm before saving.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "A script is written to astrodb-ingest-artifacts/, named after the input file",
-          "The script reads scripts/ingest_spectra.py for structure but does not copy it verbatim (no literal placeholder column names like NAME_COLUMN in the output)",
-          "The script uses build_db_from_json with a settings_file parameter",
-          "check_spectrum_plottable and find_spectra are both called per-row before ingest_spectrum",
-          "SAVE_DB is set to False for the dry run",
-          "All 4 real rows are ingested successfully in the dry run",
-          "The user is shown ingested/skipped counts before being asked to confirm saving"
-        ]
-      },
-      {
-        "id": 2,
-        "prompt": "Ingest spectra from evals/data/mock_spectra.csv, all 6 rows. Note: row 5 is an exact duplicate of row 1 (same source, regime, mode, obs_date, and reference).",
-        "expected_output": "The skill detects the duplicate pair via find_spectra and ingests only one of the two, reporting the other as skipped due to duplication.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "find_spectra is used to check for existing/duplicate spectra before calling ingest_spectrum",
-          "Exactly one of the two identical 2MASS J14114474-4524153 rows (row 1 and row 5) is ingested; the other is reported as a skipped duplicate",
-          "The duplicate skip reason is reported to the user, not silently dropped"
-        ]
-      },
-      {
-        "id": 3,
-        "prompt": "Ingest spectra from evals/data/mock_spectra.csv. Row 6 (2MASS J16141954-8151154, second occurrence) has no obs_date value -- what should happen to it?",
-        "expected_output": "The skill explains that observation_date is part of the Spectra table's composite primary key and cannot be null, flags row 6 as un-ingestable, and reports it separately in the summary rather than guessing a date or silently dropping it.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "The skill identifies that obs_date is required because it's part of the Spectra composite primary key",
-          "Row 6 is not ingested and no placeholder/guessed date is invented",
-          "Row 6 is reported to the user as skipped for a missing obs_date, distinctly from other skip reasons",
-          "The other rows in the file are not blocked by this one row's issue"
-        ]
-      },
-      {
-        "id": 4,
-        "prompt": "Ingest spectra from evals/data/mock_spectra.csv into astrodb-template-db. One issue: row 1's source '2MASS J14114474-4524153' doesn't actually exist in the Sources table under that exact string -- but '2MASS J1411-4524' does, and '2MASS J14114474-4524153' is listed as an alternate name in the Names table's other_name column for that source.",
-        "expected_output": "The skill resolves the row-1 name to the canonical source '2MASS J1411-4524' via the Names table before ingesting, using the canonical name as the source= value in ingest_spectrum, not the raw sheet name.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "The skill performs a name-reconciliation step checking both Sources.source and Names.other_name, not just a direct string match",
-          "The canonical name '2MASS J1411-4524' is used as source= in the ingest_spectrum call, not the sheet's raw '2MASS J14114474-4524153'",
-          "The resolved mapping is shown to the user rather than applied silently with no explanation"
-        ]
-      },
-      {
-        "id": 5,
-        "prompt": "Ingest spectra from evals/data/mock_spectra.csv. The reference 'Bard14' used by row 3 (LSPM J2331+4607N) doesn't exist in my Publications table yet.",
-        "expected_output": "The skill detects the missing publication and offers to run ingest_publication as a sub-step before proceeding with that row, rather than just failing or silently skipping it.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "The skill identifies that reference 'Bard14' is missing from Publications before attempting to ingest row 3",
-          "The skill offers to run ingest_publication as a sub-step rather than only telling the user to do it manually",
-          "The other rows with valid references are not blocked by this one missing reference"
-        ]
-      },
-      {
-        "id": 6,
-        "prompt": "I want to ingest spectra from evals/data/mock_spectra.csv, but I also have local copies of the raw (non-SIMPLE) files on my machine at ~/bones-local/ that I'd like recorded alongside the permalinks.",
-        "expected_output": "The skill asks for the permalink source directly (no hardcoded hosting pattern assumed for new data), and includes local_spectrum= as an optional parameter alongside the required spectrum= permalink for each ingest_spectrum call.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "The skill does not assume a specific file-hosting pattern for data it hasn't been told about -- it asks the user for confirmation/mapping",
-          "local_spectrum is passed as an optional parameter, not treated as a replacement for the required spectrum= permalink",
-          "The generated script only includes local_spectrum for rows where a local path was actually provided"
-        ]
-      },
-      {
-        "id": 7,
-        "prompt": "Ingest spectra from evals/data/mock_spectra.csv, but the spectrum_url for row 2 (2MASS J16141954-8151154) is actually broken/returns a 404.",
-        "expected_output": "check_spectrum_plottable fails for that row; the skill logs it as skipped due to a not-plottable/unreachable spectrum, with the specific error, and continues processing the remaining rows rather than stopping the whole run.",
-        "files": ["evals/data/mock_spectra.csv"],
-        "expectations": [
-          "check_spectrum_plottable is called with error handling that does not crash the whole script on one bad row",
-          "Row 2 is reported as skipped with the specific plottability/fetch error, not a generic failure",
-          "The remaining rows are still processed and reported correctly"
-        ]
-      }
-    ]
-  }
+  "skill_name": "astrodb-ingest-spectra",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have spectra to ingest from evals/data/mock_spectra.csv and a database.toml in the project root. Rows 1-4 are real BONES archive rows with already-mapped columns: source, spectrum_url, original_spectrum_url, regime, telescope, instrument, mode, obs_date, reference. All source names already exist exactly as-is in the Sources table, all references (Kirk16, Bard14, Kirk10) already exist in Publications, and all telescope/instrument/mode combos already exist in Instruments. Please ingest rows 1-4 into my astrodb-template-db database.",
+      "expected_output": "A tailored script is written to astrodb-ingest-artifacts/ingest_mock_spectra_spectra.py, a dry run is executed reporting ingested/skipped counts with reasons, and the user is asked to confirm before saving.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "A script is written to astrodb-ingest-artifacts/, named after the input file",
+        "The script reads scripts/ingest_spectra.py for structure but does not copy it verbatim (no literal placeholder column names like NAME_COLUMN in the output)",
+        "The script uses build_db_from_json with a settings_file parameter",
+        "check_spectrum_plottable is called per-row before ingest_spectrum (wrapped so a bad row doesn't crash the run); duplicate detection relies on ingest_spectrum's own internal check rather than a separate find_spectra pre-check",
+        "SAVE_DB is set to False for the dry run",
+        "All 4 real rows are ingested successfully in the dry run",
+        "The user is shown ingested/skipped counts before being asked to confirm saving"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Ingest spectra from evals/data/mock_spectra.csv, all 6 rows. Note: row 5 is an exact duplicate of row 1 (same source, regime, mode, obs_date, and reference).",
+      "expected_output": "The skill relies on ingest_spectrum's own internal duplicate check (via raise_error=False and the returned flags dict) rather than a separate find_spectra pre-check, ingests only one of the two duplicate rows, and reports the other as skipped due to duplication.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "ingest_spectrum is called with raise_error=False and its returned flags['message'] is used to detect and report the duplicate -- no redundant separate find_spectra call is added before it",
+        "Exactly one of the two identical 2MASS J14114474-4524153 rows (row 1 and row 5) is ingested; the other is reported as a skipped duplicate",
+        "The duplicate skip reason is reported to the user, not silently dropped"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Ingest spectra from evals/data/mock_spectra.csv. Row 6 (2MASS J16141954-8151154, second occurrence) has no obs_date value -- what should happen to it?",
+      "expected_output": "The skill explains that observation_date is part of the Spectra table's composite primary key and cannot be null, flags row 6 as un-ingestable, and reports it separately in the summary rather than guessing a date or silently dropping it.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "The skill identifies that obs_date is required because it's part of the Spectra composite primary key",
+        "Row 6 is not ingested and no placeholder/guessed date is invented",
+        "Row 6 is reported to the user as skipped for a missing obs_date, distinctly from other skip reasons",
+        "The other rows in the file are not blocked by this one row's issue"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Ingest spectra from evals/data/mock_spectra.csv into astrodb-template-db. One issue: row 1's source '2MASS J14114474-4524153' doesn't actually exist in the Sources table under that exact string -- but '2MASS J1411-4524' does, and '2MASS J14114474-4524153' is listed as an alternate name in the Names table's other_name column for that source.",
+      "expected_output": "The skill resolves the row-1 name to the canonical source '2MASS J1411-4524' via the Names table before ingesting, using the canonical name as the source= value in ingest_spectrum, not the raw sheet name.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "The skill performs a name-reconciliation step checking both Sources.source and Names.other_name, not just a direct string match",
+        "The canonical name '2MASS J1411-4524' is used as source= in the ingest_spectrum call, not the sheet's raw '2MASS J14114474-4524153'",
+        "The resolved mapping is shown to the user rather than applied silently with no explanation"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Ingest spectra from evals/data/mock_spectra.csv. The reference 'Bard14' used by row 3 (LSPM J2331+4607N) doesn't exist in my Publications table yet.",
+      "expected_output": "The skill detects the missing publication and offers to run ingest_publication as a sub-step before proceeding with that row, rather than just failing or silently skipping it.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "The skill identifies that reference 'Bard14' is missing from Publications before attempting to ingest row 3",
+        "The skill offers to run ingest_publication as a sub-step rather than only telling the user to do it manually",
+        "The other rows with valid references are not blocked by this one missing reference"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I want to ingest spectra from evals/data/mock_spectra.csv, but I also have local copies of the raw (non-SIMPLE) files on my machine at ~/bones-local/ that I'd like recorded alongside the permalinks.",
+      "expected_output": "The skill asks for the permalink source directly (no hardcoded hosting pattern assumed for new data), and includes local_spectrum= as an optional parameter alongside the required spectrum= permalink for each ingest_spectrum call.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "The skill does not assume a specific file-hosting pattern for data it hasn't been told about -- it asks the user for confirmation/mapping",
+        "local_spectrum is passed as an optional parameter, not treated as a replacement for the required spectrum= permalink",
+        "The generated script only includes local_spectrum for rows where a local path was actually provided"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Ingest spectra from evals/data/mock_spectra.csv, but the spectrum_url for row 2 (2MASS J16141954-8151154) is actually broken/returns a 404.",
+      "expected_output": "check_spectrum_plottable fails for that row; the skill logs it as skipped due to a not-plottable/unreachable spectrum, with the specific error, and continues processing the remaining rows rather than stopping the whole run.",
+      "files": ["evals/data/mock_spectra.csv"],
+      "expectations": [
+        "check_spectrum_plottable is called with error handling that does not crash the whole script on one bad row",
+        "Row 2 is reported as skipped with the specific plottability/fetch error, not a generic failure",
+        "The remaining rows are still processed and reported correctly"
+      ]
+    }
+  ]
+}

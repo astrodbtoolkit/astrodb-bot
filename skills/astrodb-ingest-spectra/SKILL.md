@@ -10,7 +10,8 @@ Generate and run a Python script that ingests rows from a data table into the `S
 table of an AstroDB SQLite database using `astrodb_utils.spectra.ingest_spectrum`.
 
 Read `references/ingest_spectrum_api.md` before starting — it has the full signatures for
-`check_spectrum_plottable`, `find_spectra`, and `ingest_spectrum`, plus common warnings and fixes.
+`check_spectrum_plottable` and `ingest_spectrum`, including the `flags` dict `ingest_spectrum`
+returns (used for outcome/skip-reason tracking in Step 4), plus common warnings and fixes.
 
 Also before starting, copy the items from the `## Completion Checklist` at the bottom of this
 document — verbatim and unchecked — into
@@ -100,7 +101,7 @@ Ask the user to confirm the input file's column roles:
 | Role | Required? | Notes |
 |------|-----------|-------|
 | Source name | **Yes** | Resolved via Step 2 |
-| Spectrum permalink (URL) | **Yes** | See Step 3.5 — must be a real, stable URL |
+| Spectrum permalink (URL) | **Yes** | See Step 3.5 — must be a real, stable URL. Maps to the `access_url` column in `Spectra`. |
 | Local spectrum path | No | Only if the user has local files; passed as `local_spectrum` |
 | Regime | **Yes** | Must exist in `RegimeList` |
 | Telescope | **Yes** | Must exist in `Telescopes` |
@@ -110,10 +111,13 @@ Ask the user to confirm the input file's column roles:
 | Reference | **Yes** | Must exist in `Publications` |
 | Original/raw spectrum URL | No | Passed as `original_spectrum` |
 | Comments | No | |
+| Other references | No | Comma-delimited; passed as `other_references` |
 
 ### Step 3.5: Spectrum permalink — always ask, never assume a hosting pattern
 
-The skill has **no default file host**. Ask the user directly:
+The skill has **no default file host**. If the data table already contains a column of
+full, resolvable URLs, confirm that column with the user and use it directly — don't ask
+the hosting question in that case, it's already answered. Otherwise, ask the user directly:
 
 > Where are your spectrum files hosted? I need either:
 > (a) a column in your data table that already has full URLs, or
@@ -128,7 +132,21 @@ whatever the user provides this run.
 
 ## Step 4: Validate spectra before ingesting
 
-For every row, **before** calling `ingest_spectrum`:
+`ingest_spectrum` already does most of the per-row validation internally when called with
+`raise_error=False` — it checks the reference exists, resolves the source, validates the
+regime and instrument/mode/telescope combo, parses `obs_date`, and **checks for duplicates
+via its own internal `find_spectra` call using all five primary-key columns**
+(`source`, `regime`, `mode`, `obs_date`, `reference`). Don't duplicate that duplicate-check
+yourself with a separate `find_spectra` call before `ingest_spectrum` — it's redundant, and
+if you build your own with a subset of the five columns it can actually produce a *less*
+accurate result than the one `ingest_spectrum` already does internally.
+
+There is one real gap you do need to cover yourself: inside `ingest_spectrum`, the call to
+`check_spectrum_plottable` does **not** pass through the `raise_error` you gave `ingest_spectrum`
+— it uses `check_spectrum_plottable`'s own default of `raise_error=True`. That means even with
+`ingest_spectrum(..., raise_error=False)`, a broken or unreachable spectrum URL will still raise
+an uncaught exception instead of returning a `flags` dict. So run this check yourself, wrapped,
+**before** calling `ingest_spectrum`:
 
 ```python
 from astrodb_utils.spectra import check_spectrum_plottable
@@ -140,15 +158,26 @@ except Exception as e:
     ...
 ```
 
-Also run `find_spectra(db, source=canonical_source, reference=reference, regime=regime)`
-first to check for existing duplicates — skip (with a logged reason) rather than double-ingest.
+Then call `ingest_spectrum(db, ..., raise_error=False)` and read the returned `flags` dict:
+- `flags["added"]` — `True` if the row was ingested, `False` otherwise
+- `flags["message"]` — why it wasn't added when `added` is `False` (missing/unknown reference,
+  invalid or missing `obs_date`, unresolved source, unknown regime, missing instrument, or a
+  suspected duplicate — the message text distinguishes these, use it to bucket your skip counts)
 
 **Rows with a missing or unparseable `obs_date` cannot be ingested at all** — `observation_date`
 is part of the `Spectra` table's composite primary key (source+regime+mode+obs_date+reference),
-so it can't be null. Flag these rows and report them separately in the summary rather than
-silently dropping them or guessing a date. Two spectra only count as true duplicates if they
-match on **all five** PK columns — differing on any one (e.g. same source+regime but a
-different `obs_date`) means both are legitimately distinct rows.
+so it can't be null. `ingest_spectrum` will report this via `flags["message"]`, but categorize
+it as its own skip reason in your summary rather than lumping it in with other failures — don't
+guess a date to work around it.
+
+**Column length limits** — every string column in `Spectra` has a hard length cap (`access_url`/
+`original_spectrum`/`local_spectrum`: 200 chars, `source`: 50, `regime`/`telescope`/`instrument`/
+`mode`/`reference`: 30, `comments`/`other_references`: 100). Some real archive URLs run close to
+or over the 200-char limit. With `raise_error=False`, `ingest_spectrum` catches the resulting
+`IntegrityError` internally and returns it through `flags["message"]` like everything else — so
+this doesn't need a separate pre-check, just make sure your skip-reason categorization treats an
+integrity/length failure as its own bucket rather than lumping it into "other error," since it's
+usually fixable by trimming the value rather than a real data problem.
 
 ---
 
@@ -165,18 +194,29 @@ The output script must:
 - Use the canonical source names from Step 2, the user's real column names, file path, and
   `database.toml` location
 - Call `build_db_from_json(settings_file=SETTINGS_FILE)`
-- Run `check_spectrum_plottable` and `find_spectra` per row before `ingest_spectrum`
-- Only pass optional params (`local_spectrum`, `obs_date`, `original_spectrum`, `comments`)
-  that are actually present in the data
+- Run `check_spectrum_plottable` (wrapped, per Step 4) before `ingest_spectrum` for every row —
+  this is the one check `ingest_spectrum` doesn't gate on `raise_error`
+- Call `ingest_spectrum(db, ..., raise_error=False)` and use the returned `flags` dict to
+  determine outcome and skip reason — do **not** also call `find_spectra` separately first;
+  `ingest_spectrum` already runs that duplicate check internally with all five PK columns
+- Only pass optional params (`local_spectrum`, `obs_date`, `original_spectrum`, `comments`,
+  `other_references`) that are actually present in the data
 - Set `SAVE_DB = False` for the first run
 - Use the dry-run log message: `"Dry run complete — NOT saved. Set SAVE_DB = True to write the database to JSON files."`
-- **End with a comment block reporting the ingest results**, per the issue requirement:
+- **End with a comment block reporting the ingest results**, per the issue requirement. Only
+  `duplicate`, `not plottable`, and `missing obs_date` need their own bucket — those are the
+  failure modes that legitimately happen mid-run. Missing reference/regime/instrument/unresolved
+  source should already have been caught earlier (Step 2, Prerequisites), so lump anything else
+  into a single `other` bucket, logged with the real message, rather than inventing more
+  categories than the run actually needs:
   ```python
   # Ingest summary:
   # Total spectra attempted: N
   # Successfully ingested: X
   # Skipped (duplicate): Y
-  # Skipped (not plottable / other error): Z
+  # Skipped (not plottable / unreachable): Z
+  # Skipped (missing obs_date): W
+  # Skipped (other): V
   ```
   Populate this by counting outcomes during the run, not with placeholder numbers.
 
@@ -188,7 +228,7 @@ Every variable must contain a real value — never write placeholder text to the
 
 Run `astrodb-ingest-artifacts/ingest_{REF}_spectra.py` with `SAVE_DB = False`. Report:
 - How many spectra were ingested successfully
-- Any rows skipped, with their specific reason (not-plottable, duplicate, unresolved source, etc.)
+- Any rows skipped, with their specific reason (not-plottable, duplicate, unresolved source, missing obs_date, etc.)
 - Confirmation that the database was **not** saved
 
 ---
@@ -232,11 +272,14 @@ Before telling the user spectra are ingested:
 - [ ] Every reference, telescope/instrument/mode combo, and regime was confirmed to exist in
       `Publications`/`Instruments`/`RegimeList` — missing ones were offered as sub-steps.
 - [ ] The user was asked directly for the spectrum permalink source (URL column or base URL +
-      filename column) — no hosting pattern was assumed or hardcoded.
-- [ ] `check_spectrum_plottable` and `find_spectra` were run per row before `ingest_spectrum`.
+      filename column) — no hosting pattern was assumed or hardcoded, and the question was
+      skipped only when a full-URL column was already present and confirmed.
+- [ ] `check_spectrum_plottable` was run (wrapped) per row before `ingest_spectrum`; duplicate
+      detection relied on `ingest_spectrum(raise_error=False)`'s own internal `find_spectra`
+      call rather than a redundant separate one.
 - [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{REF}_spectra.py` uses real column names/paths, only
       includes optional params present in the data, and sets `SAVE_DB = False`.
-- [ ] The script ends with a comment block reporting real ingested/skipped counts (not
-      placeholder numbers).
+- [ ] The script ends with a comment block reporting real, per-category ingested/skipped counts
+      (not placeholder numbers, not collapsed into a single "other" bucket).
 - [ ] A dry run was executed and results (ingested/skipped with reasons) were reported to the user.
 - [ ] `SAVE_DB = True` was set **only** after explicit user confirmation.
