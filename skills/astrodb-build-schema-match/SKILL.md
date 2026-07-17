@@ -33,6 +33,22 @@ mkdir -p astrodb-build-artifacts
 
 If this fails, stop and tell the user you cannot create the output directory.
 
+## Directions Document
+
+Before matching, look for a **directions document** — the user's notes on which columns go where, what
+to ignore, custom tables, and known edge cases. Work through these in order and stop at the first hit:
+
+1. **The user provided a path.** Read it, then copy it to `astrodb-build-artifacts/directions.md` so it
+   persists for later skills and later runs.
+2. **`astrodb-build-artifacts/directions.md` already exists** — from a prior run, or copied there by
+   `astrodb-build-parse-table`. Read it as-is.
+3. **Neither.** Proceed without one; it's optional.
+
+Where a directions document speaks to a column, honor it over the default matching heuristics in this
+skill. Column matching is guesswork built on naming conventions, and the user writes these notes exactly
+where those conventions mislead — a `J` column that's a magnitude in one survey and a coordinate in
+another. Their explicit call beats the heuristic every time.
+
 ## Input
 
 Accept input in either form:

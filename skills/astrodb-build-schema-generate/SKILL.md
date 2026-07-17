@@ -28,6 +28,24 @@ and validate databases. The canonical spec is at https://felis.lsst.io/.
 
 Read `references/felis-syntax.md` for the exact syntax rules and examples before writing any YAML.
 
+## Step 0: Confirm the schema name
+
+**Before doing anything else**, ask the user what to name the schema:
+
+> What should I call this schema? This becomes the top-level `name:` in `schema.yaml` and
+> the SQLite filename (e.g. `mirion` → `mirion.sqlite`). It should match your database name,
+> not the template default.
+
+Wait for an explicit answer. Do not derive the name silently from the data file name, from
+the existing `schema.yaml`, or from any other source — the name the user types here is the
+only acceptable value.
+
+**Never accept `astrodb_template`, `astrodb-template`, or `template` as the schema name.**
+If the user types one of these, tell them that is the template placeholder and ask them to
+provide the actual dataset name.
+
+Hold this name for use in Step 3 (`name:` and `@id:`) and Step 4 (output filename).
+
 ## Inputs
 
 You need at minimum:
@@ -35,8 +53,7 @@ You need at minimum:
 1. **The mapping table** from `astrodb-build-schema-match` — rows like:
    `Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes`
 
-2. **Schema name** — what to call the new schema (e.g. the dataset name or survey name).
-   If not provided, derive it from the data file name or ask the user.
+2. **Schema name** — confirmed in Step 0 above. Do not re-derive or re-ask here.
 
 Optionally also accept:
 
@@ -122,6 +139,12 @@ reasonable ceiling (e.g., 30, 50, 100, 256). If you can't observe the data, use 
 - If validation found a nullable violation and the user chose to relax it: set `nullable: true`
 
 ## Step 4: Write the schema file
+
+Before writing, verify the YAML you are about to write has:
+- `name: <user-confirmed schema name>` — not `astrodb_template`, not derived from the file
+- `"@id": "#<user-confirmed schema name>"` — matching the `name:` field exactly
+
+If either field still contains a template placeholder, stop and fix it before writing.
 
 Save the generated YAML to `astrodb-build-artifacts/<schema-name>-schema.yaml` using the Write tool. This is required — always produce a real `.yaml` file. Do not only paste the YAML in the chat; the file is what the user will use.
 

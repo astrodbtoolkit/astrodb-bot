@@ -62,6 +62,12 @@ Use Python or shell to extract it:
 python -c "import yaml; d=yaml.safe_load(open('<schema-path>')); print(d['name'])"
 ```
 
+**If the extracted name is `astrodb_template`, `astrodb-template`, or `template`, stop.**
+Do not create a database with the template placeholder name — it will be committed as
+`astrodb-template.sqlite` and every test will reference the wrong name.
+
+Check the directions file for the database name. If it is not there, ask the user for a database name and update the schema.yaml before proceeding. 
+
 ## Step 4: Determine the project root
 
 The project root is the directory where the new database will live — typically the current working
