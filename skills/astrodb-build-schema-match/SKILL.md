@@ -16,8 +16,8 @@ exactly which table and field each column belongs to before ingesting data.
 
 Before matching:
 
-1. Read `references/astrodb-directions.md` — it covers the workflow.md convention and the
-   artifact folder convention (`astrodb-build-artifacts/`).
+1. Read `references/astrodb-directions.md` — it covers the workflow.md, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
@@ -32,6 +32,10 @@ mkdir -p astrodb-build-artifacts
 ```
 
 If this fails, stop and tell the user you cannot create the output directory.
+
+Then record this skill's checklist per the completion-checklist convention: add a
+`## astrodb-build-schema-match` section holding the items from `## Completion Checklist` (bottom of
+this file) to `astrodb-build-artifacts/checklists.md`.
 
 ## Directions Document
 
@@ -189,12 +193,14 @@ proposed, and any decisions made without `astrodb-build-artifacts/directions.md`
 
 ## Completion Checklist
 
-Before telling the user the mapping is done, confirm every item below. Anything unmet must be done — or
-explicitly waived by the user — first.
+Before telling the user the mapping is done, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
 
-- [ ] You read `references/schema.md` before mapping, and applied all three matching layers (name patterns, units, description) plus the special-case rules in `references/column-patterns.md`.
+- [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-parse-table` on it first and worked from its output.
+- [ ] You read `references/schema.md` before mapping, and applied all three matching layers — name patterns, units (normalizing astropy's spaced forms like `km / s` to their compact equivalents), and description — plus the special-case rules in `references/column-patterns.md`. Any directions-document guidance was honored over the default heuristics.
 - [ ] Any photometry band names were resolved to SVO Filter Profile Service IDs per `references/photometry-filters.md`.
 - [ ] Every input column has a row with DB Table, DB Field, Confidence, and Notes — columns with nowhere to go are marked **Unmatched** rather than dropped.
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
-- [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md`, including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
+- [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
 - [ ] You gave a short plain-text summary in the chat and told the user the paths to both files.

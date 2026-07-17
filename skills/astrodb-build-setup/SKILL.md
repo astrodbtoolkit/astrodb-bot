@@ -8,8 +8,9 @@ metadata:
 
 # AstroDB Setup
 
-Read `references/astrodb-directions.md` before starting — it documents the `workflow.md`
-convention that this skill initializes and all subsequent skills maintain.
+Read `references/astrodb-directions.md` before starting — it documents the `workflow.md` convention
+that this skill initializes and all subsequent skills maintain, plus the artifact-folder and
+completion-checklist conventions this skill follows.
 
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
 structured, named database repository onto the user's machine — nothing more. It deliberately stops
@@ -160,6 +161,16 @@ done
 If any of the three is missing, the repo probably wasn't created from the astrodb-template — tell the
 user what's absent and have them confirm they used **Use this template** on astrodb-template-db before
 going on.
+
+Now that the repo is in place, record this skill's checklist per the **completion-checklist convention**
+in `references/astrodb-directions.md`. Create the artifact directory and add a `## astrodb-build-setup`
+section holding the items from `## Completion Checklist` (bottom of this file) to
+`<repo-dir>/astrodb-build-artifacts/checklists.md`, then tick items with evidence as you complete them
+through the rest of setup:
+
+```bash
+mkdir -p <repo-dir>/astrodb-build-artifacts
+```
 
 ## Step 4: Remove generated schema representations from the template
 
@@ -406,15 +417,16 @@ document was completed now or deferred. Subsequent skills will append to this fi
 
 ## Completion Checklist
 
-Before telling the user setup is complete, confirm every item below. Anything unmet must be done — or
-explicitly waived by the user — first. Never tick a box by inventing a value (e.g. a name the user never
-gave) or by claiming a check you didn't actually run.
+Before telling the user setup is complete, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
 
 Where an item says "asked", reading the answer out of the directions document counts — that's the point
 of the document. What doesn't count is neither asking nor finding it written down.
 
 - [ ] **Directions** — if the user gave a path, or `astrodb-build-artifacts/directions.md` existed, you read it before asking anything it could have answered, and told the user what you took from it.
 - [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
+- [ ] The template's pre-generated schema representations were removed — `docs/figures/schema_erd.png` and `docs/schema/*.md` no longer exist in the repo (you confirmed the ERD is actually gone, not just that `rm -f` returned success).
 - [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
 - [ ] **README** — the title + description reflect this database, from the directions document or from the user's answer (or they explicitly skipped). Removed: the astrodb-utils line and the template ERD image link. Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
 - [ ] **CLAUDE.md** — if the repo has one, its project description reflects the user's database, the Git/GitHub instructions are gone, and no `astrodb-template` references remain (or the user explicitly skipped). If the repo has no `CLAUDE.md`, this is a no-op.

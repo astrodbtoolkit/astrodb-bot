@@ -16,9 +16,13 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
+3. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-ingest-publications` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-ingest-artifacts/checklists.md`.
 
 ## Reference naming convention
 
@@ -226,11 +230,16 @@ before saving.
 
 ## Completion Checklist
 
-Before telling the user publications are ingested, confirm every item below. Anything unmet must be done —
-or explicitly confirmed by the user — first.
+Before telling the user publications are ingested, verify every item in your section of the workflow checklist file and
+reproduce the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
 
+- [ ] The database was located — a `database.toml` or standalone `.sqlite` the user pointed you to or that you found in the project root; you asked rather than inventing a path when it wasn't found.
+- [ ] You checked for an ADS token with `check_ads_token()`; if it was missing, you offered to set it up or proceeded with `ignore_ads=True` and hand-supplied metadata.
 - [ ] Every reference was resolved to the *specific, verified* paper (DOI or bibcode), disambiguated by context — a bare shortname or author+year was never passed to `ingest_publication`. When you had to look a paper up (rather than being given a DOI/bibcode directly), you showed the resolved table and waited for the user's confirmation before writing.
+- [ ] Every `reference` shortname follows the naming convention — first four letters of the first author's last name + two-digit year — and any collisions were disambiguated with a `.` + last-4-characters-of-DOI suffix applied to **every** colliding paper, never bare letter suffixes like `Bona20a`.
 - [ ] `find_publication` was called before each `ingest_publication`, and references already present were reported as such rather than re-ingested.
 - [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{LABEL}_publications.py` contains only real resolved values (no placeholders), with `IGNORE_ADS` set correctly and `SAVE_DB = False`.
 - [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
 - [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.
+- [ ] If — and only if — this was a backfill of an existing `Publications` table: rows whose metadata was already populated were skipped (idempotent), updates used the path matching the layout (direct `UPDATE` for a standalone `.sqlite`; `ingest_publication` + `db.save_database()` for the JSON layout), and you verified at the end that zero rows still have NULL `bibcode`/`doi`/`description`.

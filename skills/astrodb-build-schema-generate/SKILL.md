@@ -14,11 +14,15 @@ by the user's data.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills (especially schema-match choices).
-3. Check whether `artifacts/directions.md` exists. If it does, read it — it may specify
+3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may specify
    schema decisions that should override the defaults below.
+4. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-build-schema-generate` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-build-artifacts/checklists.md`.
 
 ## What is Felis YAML?
 
@@ -177,12 +181,14 @@ Fix the errors, rewrite the file, and re-run validation. Repeat until the schema
 
 ## Completion Checklist
 
-Before telling the user the schema is generated, confirm every item below. Anything unmet must be done —
-or explicitly waived by the user — first.
+Before telling the user the schema is generated, verify every item in your section of the workflow checklist file and
+reproduce the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
 
-- [ ] Unmatched and (if a validation report was provided) problematic columns were audited and raised with the user — one question per category — or there were none.
+- [ ] The schema name was confirmed with the user (Step 0) and is a real dataset name — never `astrodb_template`/`template` — matching the `name:` and `@id:` written into the file.
+- [ ] Unmatched and (if a validation report was provided) problematic columns were audited and raised with the user — one question per category — or there were none. If no validation report was provided, you noted the schema was generated without null/type checks and suggested validating before ingesting.
 - [ ] Columns are grouped by table, and each table has a primary key identified (you asked the user when it wasn't obvious).
 - [ ] The Felis YAML follows `references/felis-syntax.md`: correct `@id` references, datatypes, units, nullable flags, and foreign keys — and includes stub table definitions for every lookup table referenced by a FK (at minimum `Sources` and `Publications`), so no FK points at a table absent from the document.
-- [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` (not just pasted into the chat).
+- [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` — you gave the user the path rather than reproducing the full YAML in the chat.
 - [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
 - [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).

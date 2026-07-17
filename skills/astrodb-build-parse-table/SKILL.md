@@ -12,33 +12,36 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Read context documents
+### Step 0: Read context documents and set up
 
-### Step 0: Create the artifact folder and check for a directions document
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it to carry
+   forward context from prior skills.
+3. Create the artifact folder:
 
-### Step 1: Create the artifact folder
+   ```bash
+   mkdir -p astrodb-build-artifacts
+   ```
 
-```bash
-mkdir -p astrodb-build-artifacts
-```
+   If this fails, stop and tell the user you cannot create the output directory.
+4. Record this skill's checklist per the completion-checklist convention: add a
+   `## astrodb-build-parse-table` section holding the items from `## Completion Checklist` (bottom of
+   this file) to `astrodb-build-artifacts/checklists.md`.
+5. Look for a **directions document** — the user's own notes on this dataset (columns to skip, how to
+   handle edge cases, schema decisions already made). Work through these in order and stop at the first
+   hit:
+   - **The user provided a path** (e.g. in their opening message). Read it, then copy it to
+     `astrodb-build-artifacts/directions.md` so later skills — and later runs of this one — pick it up
+     without the user having to re-supply the path every time.
+   - **`astrodb-build-artifacts/directions.md` already exists** from a prior run. Read it as-is; it's
+     already in its canonical home, so there's nothing to copy.
+   - **Neither.** Proceed without one. It's optional, so don't stop to ask for it.
 
-If this fails, stop and tell the user you cannot create the output directory.
-
-Now look for a **directions document** — the user's own notes on this dataset (columns to skip, how to
-handle edge cases, schema decisions already made). Where it comes from depends on what the user gave
-you, so work through these in order and stop at the first hit:
-
-1. **The user provided a path** (e.g. in their opening message). Read it, then copy it to
-   `astrodb-build-artifacts/directions.md` so later skills — and later runs of this one — pick it up
-   without the user having to re-supply the path every time.
-2. **`astrodb-build-artifacts/directions.md` already exists** from a prior run. Read it as-is; it's
-   already in its canonical home, so there's nothing to copy.
-3. **Neither.** Proceed without one. It's optional, so don't stop to ask for it.
-
-When you do find one, let its guidance override the default heuristics in this skill. The user wrote it
-precisely because they know something about this data that the general rules don't capture — a column
-that looks like photometry but isn't, a unit that's mislabeled upstream. Silently applying the defaults
-over an explicit instruction is the failure this lookup exists to prevent.
+   When you do find one, let its guidance override the default heuristics in this skill. The user wrote
+   it precisely because they know something about this data that the general rules don't capture — a
+   column that looks like photometry but isn't, a unit that's mislabeled upstream. Silently applying the
+   defaults over an explicit instruction is the failure this lookup exists to prevent.
 
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
@@ -73,7 +76,7 @@ If that fails, tell the user Python 3.11 or greater is required and ask them to 
 
 If none of the above work, tell the user you're unable to install the required libraries and ask them to run in an environment that has either `uv` or `pip` available.
 
-### Step 3: Read the file
+### Step 2: Read the file
 
 Use `astropy.table.Table.read()` first, which handles most formats automatically. Fall back to `pandas` if needed:
 
@@ -128,7 +131,7 @@ except Exception:
 
 # Write sidecar so downstream skills (e.g. astrodb-build-schema-match, astrodb-build-schema-validate)
 # can reuse the same reader without re-discovering the format.
-# Output file paths are added to the sidecar in Step 6.
+# Output file paths are added to the sidecar in Step 5.
 with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump({
         "file_path": "$ARGUMENTS",
@@ -141,7 +144,7 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
 
 See `references/file-formats.md` for the full list of supported formats.
 
-### Step 4: Extract column information
+### Step 3: Extract column information
 
 For each column, extract:
 - **Column name**
@@ -185,7 +188,7 @@ If you can't infer a description confidently, leave it as "—".
 
 When a column has no units in the file metadata, consult `references/units-inference.md` for the lookup table and uncertainty-column inheritance logic.
 
-### Step 5: Ask the user to fill in any remaining gaps
+### Step 4: Ask the user to fill in any remaining gaps
 
 After exhausting file metadata and inference, if there are still columns with missing descriptions or units, ask the user to fill them in — but only if the number is manageable (fewer than 10). Present each missing column one at a time and wait for the user's response before moving to the next.
 
@@ -196,7 +199,7 @@ For example:
 
 If there are 10 or more columns still missing descriptions or units, output the table as-is with "—" placeholders and note at the end how many are missing, so the user can address them separately.
 
-### Step 6: Output the results
+### Step 5: Output the results
 
 Create a new output directory inside `astrodb-build-artifacts/`, named after the input file's base name with a `-parsed-data-table` suffix. **Do not overwrite an existing directory** — if the directory already exists, append `-1`, `-2`, etc. until a free name is found. For example, if the input is `data/catalog.fits`, create `astrodb-build-artifacts/catalog-parsed-data-table/` and save:
 - `astrodb-build-artifacts/catalog-parsed-data-table/catalog-parsed-data-table.md`
@@ -242,7 +245,7 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump(sidecar, f)
 ```
 
-### Step 7: Iterate as needed
+### Step 6: Iterate as needed
 
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
 
@@ -256,8 +259,9 @@ and any columns still missing metadata.
 
 ## Completion Checklist
 
-Before telling the user the table is parsed, confirm every item below. Anything unmet must be done — or
-explicitly waived by the user — first. Don't claim a value you didn't actually extract.
+Before telling the user the table is parsed, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`. Don't claim a value you didn't actually extract.
 
 - [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV and CDS/MRT).
 - [ ] For a `.txt`/`.dat` input, you checked for the `Byte-by-byte Description of file` MRT signature before treating it as plain CSV.
@@ -265,5 +269,5 @@ explicitly waived by the user — first. Don't claim a value you didn't actually
 - [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
 - [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
 - [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
-- [ ] The sidecar `astrodb-build-artifacts/astrodb-parse-result.json` was written and then updated with the output file paths.
+- [ ] The file was successfully read (astropy first, pandas fallback) in a verified Python 3.11+ environment, and the sidecar `astrodb-build-artifacts/astrodb-parse-result.json` records the reader, format, and row count — then was updated with the output file paths.
 - [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.

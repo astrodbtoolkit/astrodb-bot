@@ -12,9 +12,13 @@ using `astrodbkit`.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` for the workflow.md convention.
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
+3. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-build-create-db` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-build-artifacts/checklists.md`.
 
 ## Prerequisites
 
@@ -208,12 +212,14 @@ Next steps:
 
 ## Completion Checklist
 
-Before telling the user the database is created, confirm every item below. Anything unmet must be done
-first.
+Before telling the user the database is created, verify every item in your section of the workflow checklist file and
+reproduce the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`. The felis-validation and pytest gates below are **not waivable** —
+do not proceed past a failure.
 
 - [ ] You located the schema.yaml and confirmed `felis validate` passes on it — if it doesn't, you stopped rather than building from a broken schema.
-- [ ] The database name was read from the schema's top-level `name:` field.
-- [ ] `data/reference/` and `data/source/` exist, the validated schema.yaml is at the project root, and `database.toml` exists (created only if absent — an existing one was not overwritten).
+- [ ] The database name was read from the schema's top-level `name:` field, and it is a real name — not the `astrodb-template`/`template` placeholder (if it was, you got the real name from the directions document or by asking the user, and updated the schema before proceeding).
+- [ ] `data/reference/` and `data/source/` exist under the project root you confirmed with the user, the validated schema.yaml is at that root, and `database.toml` exists (created only if absent — an existing one was not overwritten).
 - [ ] The empty SQLite database was created with `scripts/create_db.py`, and you verified the `.sqlite` file exists and is non-empty.
 - [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
 - [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.
