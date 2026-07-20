@@ -94,6 +94,7 @@ Skills are designed to chain in order:
 
 1. **`astrodb-ingest-publications`** — Add papers to the `Publications` table using `astrodb_utils.publications.ingest_publication`. Always resolves DOI/bibcode from NASA ADS before writing; never passes bare shortnames.
 2. **`astrodb-ingest-sources`** — Add rows to the `Sources` table using `astrodb_utils.sources.ingest_source`. Requires publications to already exist.
+3. **`astrodb-ingest-photometry`** — Add magnitudes to the `Photometry` table using `astrodb_utils.photometry.ingest_photometry`. Resolves each band to an SVO filter ID and sets up its `PhotometryFilters`/`Telescopes`/`Instruments` rows (via `ingest_photometry_filter`, which fetches SVO metadata) before any magnitude. Requires the source (`Sources`) and reference (`Publications`) to already exist.
 
 #### Website
 
