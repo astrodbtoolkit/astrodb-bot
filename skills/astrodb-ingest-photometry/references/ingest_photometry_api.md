@@ -43,9 +43,20 @@ What it validates, in order (each raises `AstroDBError` when `raise_error=True`)
    Telescopes table."*
 6. The insert itself — a `UNIQUE constraint failed` becomes *"The measurement may be a duplicate."*
 
-There is **no** pre-check for duplicates; uniqueness is enforced by the DB constraint on insert.
-`magnitude_error_upper` / `magnitude_error_lower` exist in the `Photometry` schema but are **not**
-parameters of this function — only a symmetric `magnitude_error` is supported.
+There is **no** pre-check for duplicates; uniqueness is enforced by the DB constraint on insert. The
+`Photometry` uniqueness constraint is on **`(source, band, reference)`** (per the schema docs) — it
+does **not** include `epoch`. So repeated measurements of the same source in the same band from the
+same reference but at different epochs collide, and all but the first come back as
+*"may be a duplicate."* If a data table holds genuine multi-epoch / time-series photometry for one
+band+reference, flag it for the user rather than silently dropping rows.
+
+`magnitude_error_upper` / `magnitude_error_lower` exist in the `Photometry` schema (columns of type
+`double`) but are **not** parameters of this function — only a symmetric `magnitude_error` is
+supported.
+
+Column string caps (from the schema): `source` 100, `comments` 100, and `band` / `telescope` /
+`reference` / `regime` 30 characters. A value over its cap raises an `IntegrityError` (not a UNIQUE
+one), which the skip-bucketing catches as *other* — trim the value before ingest.
 
 ### Bucketing skip reasons
 
@@ -155,3 +166,5 @@ band and ask the user** to confirm rather than guessing.
 | `The measurement may be a duplicate.` | UNIQUE constraint on insert | Expected on re-runs; report as "already present", not an error |
 | `Error fetching filter data from SVO` | No internet, or unknown filter ID | Check connectivity; confirm the SVO ID exists in the FPS |
 | Asymmetric error columns present | `magnitude_error_upper/lower` unsupported | Ask the user how to handle; the helper takes only symmetric `magnitude_error` |
+| Repeated `may be a duplicate` on multi-epoch data | Key is `(source, band, reference)` — `epoch` is not in it | Flag time-series data; only one row per source+band+reference fits this key |
+| `IntegrityError` value too long | A string exceeds its column cap (`source`/`comments` 100; `band`/`telescope`/`reference`/`regime` 30) | Trim/shorten the value before ingest |

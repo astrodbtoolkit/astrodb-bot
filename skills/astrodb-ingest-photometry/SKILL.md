@@ -117,6 +117,11 @@ If the table has asymmetric `magnitude_error_upper` / `magnitude_error_lower` co
 these are not supported by the helper and ask how to proceed (e.g. use one side, average, or skip the
 uncertainty) rather than dropping them silently.
 
+**Uniqueness is `(source, band, reference)`** — `epoch` is **not** part of the key. If the table has
+more than one measurement of the same source in the same band from the same reference (e.g. a
+time series across epochs), only one row fits this key; the rest will come back as duplicates. Flag
+this to the user rather than silently losing rows.
+
 For a wide table, record which magnitude column maps to which **band**, and which error column pairs
 with it — this feeds both Step 4 (filter setup) and the ingest loop.
 
