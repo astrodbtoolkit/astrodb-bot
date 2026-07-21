@@ -5,7 +5,7 @@ description = "AI skills for building and maintaining astronomical databases bui
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "lsst-felis>=30.2026.1100",
+    "lsst-felis<=30.2026.2900",
 ]
 
 [tool.ruff]
