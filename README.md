@@ -19,6 +19,7 @@ To install this in another agent, you can copy the `skills/` directory to whatev
 
 - [`astrodb-ingest-publications`](skills/astrodb-ingest-publications/SKILL.md) — Ingest publications into the Publications table from a DOI/bibcode or a table of references; backfills missing metadata for existing references.
 - [`astrodb-ingest-sources`](skills/astrodb-ingest-sources/SKILL.md) — Ingest astronomical objects into the Sources table from a data file.
+- [`astrodb-ingest-photometry`](skills/astrodb-ingest-photometry/SKILL.md) — Ingest magnitudes into the Photometry table from a data file, setting up the PhotometryFilters/Telescopes/Instruments (from SVO filter IDs) first.
 
 ### Website
 

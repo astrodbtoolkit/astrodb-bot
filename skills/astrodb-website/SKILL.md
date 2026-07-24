@@ -10,13 +10,14 @@ This skill sets up a FastAPI web interface ([astrodb-web](https://github.com/ast
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
-   completion-checklist conventions this skill follows.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
-   to carry forward context from prior skills.
-3. Record this skill's checklist per the completion-checklist convention — create the artifact
-   directory if needed, then add a `## astrodb-website` section holding the items from
-   `## Completion Checklist` (bottom of this file) to `astrodb-website-artifacts/checklists.md`.
+1. Read `references/astrodb-directions.md` (shared conventions) and
+   `references/astrodb-website-directions.md` (website specifics: the `website-workflow.md` decision log
+   and the verify-and-report completion-checklist behavior).
+2. Check whether `astrodb-website-artifacts/website-workflow.md` exists. If it does, read it
+   to carry forward context (and you may also read `astrodb-build-artifacts/build-workflow.md`).
+
+(This skill **verifies** its completion checklist and reports it in the final message — it does not
+write it out to a file. See `references/astrodb-website-directions.md`.)
 
 ## Prerequisites
 
@@ -129,9 +130,10 @@ Notify the user that their next step should be to set up a permanent hosting sol
 
 ## Completion Checklist
 
-Before telling the user the website is ready, verify every item in your section of the workflow checklist file and reproduce
-the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`.
+Before telling the user the website is ready, verify every item below and reproduce the
+evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md` (the website phase verifies and reports — it does not persist the
+checklist to a file; see `references/astrodb-website-directions.md`).
 
 - [ ] The user created their own repo from the astrodb-web template and gave you the URL; you cloned it into the directory they confirmed (default `website/`).
 - [ ] You verified the primary table name and the RA/Dec/source/foreign-key column names against the actual database (`sqlite3 .tables` and `PRAGMA table_info`), rather than assuming defaults.

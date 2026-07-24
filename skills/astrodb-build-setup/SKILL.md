@@ -8,9 +8,10 @@ metadata:
 
 # AstroDB Setup
 
-Read `references/astrodb-directions.md` before starting — it documents the `workflow.md` convention
-that this skill initializes and all subsequent skills maintain, plus the artifact-folder and
-completion-checklist conventions this skill follows.
+Read `references/astrodb-directions.md` (shared conventions) and
+`references/astrodb-build-directions.md` (build specifics) before starting. Together they document the
+`build-workflow.md` decision log that this skill initializes and all subsequent build skills maintain,
+the artifact-folder convention, and the `checklists.md` completion-checklist tracking this skill follows.
 
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
 structured, named database repository onto the user's machine — nothing more. It deliberately stops
@@ -163,7 +164,7 @@ user what's absent and have them confirm they used **Use this template** on astr
 going on.
 
 Now that the repo is in place, record this skill's checklist per the **completion-checklist convention**
-in `references/astrodb-directions.md`. Create the artifact directory and add a `## astrodb-build-setup`
+in `references/astrodb-build-directions.md`. Create the artifact directory and add a `## astrodb-build-setup`
 section holding the items from `## Completion Checklist` (bottom of this file) to
 `<repo-dir>/astrodb-build-artifacts/checklists.md`, then tick items with evidence as you complete them
 through the rest of setup:
@@ -408,18 +409,18 @@ separate skill:
 
 Only raise this if there is an actual mismatch. If the names already match, skip this entirely.
 
-## Final Step: Initialize `workflow.md`
+## Final Step: Initialize `build-workflow.md`
 
-Follow the convention in `references/astrodb-directions.md`. Create `workflow.md` in the
-repo root (using the standard header) and append a setup entry recording: the database name
-chosen, the GitHub repo URL, the README description provided, and whether a directions
-document was completed now or deferred. Subsequent skills will append to this file.
+Follow the convention in `references/astrodb-build-directions.md`. Create
+`astrodb-build-artifacts/build-workflow.md` (using the standard header) and append a setup entry
+recording: the database name chosen, the GitHub repo URL, the README description provided, and whether a
+directions document was completed now or deferred. Subsequent build skills will append to this file.
 
 ## Completion Checklist
 
 Before telling the user setup is complete, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`.
+`references/astrodb-build-directions.md`.
 
 Where an item says "asked", reading the answer out of the directions document counts — that's the point
 of the document. What doesn't count is neither asking nor finding it written down.

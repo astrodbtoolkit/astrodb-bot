@@ -13,9 +13,10 @@ contains against what the schema requires.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
-   completion-checklist conventions this skill follows.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+1. Read `references/astrodb-directions.md` (shared conventions) and
+   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
+   `checklists.md` completion-checklist tracking).
+2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
    to carry forward context from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may describe
    known nullable or type edge cases relevant to this validation.
@@ -128,7 +129,7 @@ to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool —
 
 Before telling the user validation is done, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`.
+`references/astrodb-build-directions.md`.
 
 - [ ] You had the mapping table, the data file path, and the schema.yaml path — asking the user for any that were missing rather than guessing.
 - [ ] You parsed schema.yaml for each field's datatype, nullable flag, and length.

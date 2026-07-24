@@ -1,0 +1,86 @@
+{
+  "skill_name": "astrodb-ingest-photometry",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a CSV at evals/data/mock_photometry.csv with J, H, and W1 magnitudes and a database.toml. Please ingest this photometry into my astrodb-template-db database.",
+      "expected_output": "The bands are resolved to SVO IDs (2MASS/2MASS.J, 2MASS/2MASS.H, WISE/WISE.W1) and their PhotometryFilters/Telescopes/Instruments are set up first, then a tailored script is written to astrodb-ingest-artifacts/ingest_mock_photometry_photometry.py, a dry run runs with SAVE_DB=False, and the user is asked to confirm before saving.",
+      "files": ["evals/data/mock_photometry.csv"],
+      "expectations": [
+        "Each magnitude column is mapped to an SVO filter ID (Jmag -> 2MASS/2MASS.J, Hmag -> 2MASS/2MASS.H, W1mag -> WISE/WISE.W1)",
+        "ingest_photometry_filter is used to set up each band's PhotometryFilters/Telescopes/Instruments BEFORE any magnitude is ingested",
+        "The tailored script is written to astrodb-ingest-artifacts/ (not tmp/) and named after the input file",
+        "The script uses build_db_from_json(settings_file=...) and sets SAVE_DB = False for the dry run",
+        "The e_Jmag/e_Hmag/e_W1mag columns are passed as magnitude_error",
+        "Each band's regime is derived from its SVO effective wavelength and resolved via get_db_regime (e.g. J/H -> nir), not requested from the user as a column",
+        "A dry run is executed and ingested/skipped counts (plus filters created) are reported before the user is asked to confirm saving"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Ingest photometry from evals/data/ambiguous_band.csv into my database.",
+      "expected_output": "The bare V band is ambiguous (Johnson vs Gaia vs Cousins), so the skill stops and asks the user to confirm the SVO filter ID rather than guessing before setting up the filter.",
+      "files": ["evals/data/ambiguous_band.csv"],
+      "expectations": [
+        "The skill recognizes that a bare 'V' band does not map unambiguously to a single SVO filter ID",
+        "The skill asks the user to confirm the SVO ID (e.g. Generic/Johnson.V) instead of silently choosing one",
+        "It does not ingest any magnitude until the band is resolved"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add the magnitudes in evals/data/mock_photometry.csv to my database. None of these filters exist in my PhotometryFilters table yet.",
+      "expected_output": "Because ingest_photometry rejects a band not present in PhotometryFilters, the skill creates each filter with ingest_photometry_filter (which also creates the Telescopes and Instruments rows) before ingesting, then ingests the magnitudes.",
+      "files": ["evals/data/mock_photometry.csv"],
+      "expectations": [
+        "The skill sets up the missing PhotometryFilters rows via ingest_photometry_filter before ingesting",
+        "It notes that the Telescopes (2MASS, WISE) and Instruments rows are created as a side effect of filter setup",
+        "Photometry ingestion happens only after the filters exist"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I already ingested evals/data/mock_photometry.csv once. If I run it again, what happens?",
+      "expected_output": "Re-running hits the Photometry UNIQUE constraint; the skill reports those rows as duplicates/skipped (via the 'may be a duplicate' AstroDBError) rather than erroring out or double-inserting.",
+      "files": ["evals/data/mock_photometry.csv"],
+      "expectations": [
+        "Duplicate measurements are detected via the UNIQUE constraint (no separate pre-check is claimed)",
+        "The already-present rows are reported as skipped/duplicate in the summary, grouped under a duplicate reason",
+        "The run completes and reports counts rather than crashing"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Ingest photometry from evals/data/mock_photometry.csv, but the source '2MASS J10453718-1420307' is not in my Sources table yet.",
+      "expected_output": "The source-name reconciliation step flags the unresolved source, and the skill offers to run astrodb-ingest-sources for it rather than inventing a source or ingesting against a missing one.",
+      "files": ["evals/data/mock_photometry.csv"],
+      "expectations": [
+        "The skill resolves source names against Sources/Names before ingesting and flags the unresolved one",
+        "It offers to run astrodb-ingest-sources as a sub-step for the missing source",
+        "It does not fabricate a source or proceed to ingest that source's magnitudes"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Ingest evals/data/mock_photometry.csv. The reference 'Kirk08' is not in my Publications table.",
+      "expected_output": "The skill detects the missing reference and offers to run astrodb-ingest-publications before ingesting any measurement that cites it.",
+      "files": ["evals/data/mock_photometry.csv"],
+      "expectations": [
+        "The skill identifies that 'Kirk08' is missing from Publications",
+        "It offers to run astrodb-ingest-publications rather than just failing",
+        "Measurements citing the missing reference are not silently dropped"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Ingest the photometry in evals/data/asymmetric_errors.csv into my database.",
+      "expected_output": "The table has asymmetric Jmag_upper/Jmag_lower error columns. ingest_photometry only takes a symmetric magnitude_error, so the skill writes a small custom insert (modeled on ingest_photometry) that validates source/band/reference and populates the Photometry magnitude_error_upper/magnitude_error_lower columns directly, after confirming the mapping with the user.",
+      "files": ["evals/data/asymmetric_errors.csv"],
+      "expectations": [
+        "The skill recognizes that magnitude_error_upper/magnitude_error_lower are real Photometry columns that ingest_photometry does not populate",
+        "It writes a custom insert (modeled on ingest_photometry, validating source/band/reference) that populates magnitude_error_upper and magnitude_error_lower rather than dropping or silently averaging them",
+        "It confirms the upper/lower column mapping with the user before writing"
+      ]
+    }
+  ]
+}

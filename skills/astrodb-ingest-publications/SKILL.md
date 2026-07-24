@@ -16,13 +16,14 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
-   completion-checklist conventions this skill follows.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
-   to carry forward context from prior skills.
-3. Record this skill's checklist per the completion-checklist convention — create the artifact
-   directory if needed, then add a `## astrodb-ingest-publications` section holding the items from
-   `## Completion Checklist` (bottom of this file) to `astrodb-ingest-artifacts/checklists.md`.
+1. Read `references/astrodb-ingest-directions.md` — the conventions for the ingest workflow: the
+   `ingest-workflow.md` decision log and the completion-checklist convention. It points to
+   `references/astrodb-directions.md` for the shared artifact-folder and "ask, don't assume" rules.
+2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
+   prior ingest skills.
+
+(The ingest skills **verify** their completion checklist and report it in the final message — they do
+not write it out to a file. See `references/astrodb-ingest-directions.md`.)
 
 ## Reference naming convention
 
@@ -220,19 +221,20 @@ writing anything. Only after confirmation, fill:
 Backfill is idempotent: skip references whose metadata is already populated. When done,
 verify zero rows still have NULL `bibcode`/`doi`/`description`.
 
-## Final Step: Update `workflow.md`
+## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-directions.md`. Append one new entry to
-`workflow.md` in the current working directory (create it with the standard header if it
-doesn't exist yet). Record: which references were ingested, any that were already present or
+Follow the convention in `references/astrodb-ingest-directions.md`. **Prepend** one dated entry (most
+recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
+it doesn't exist yet). Record: which references were ingested, any that were already present or
 failed, how ambiguous shortnames were resolved, and whether the user explicitly confirmed
 before saving.
 
 ## Completion Checklist
 
-Before telling the user publications are ingested, verify every item in your section of the workflow checklist file and
-reproduce the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`.
+Before telling the user publications are ingested, verify every item below and reproduce the
+evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-ingest-directions.md` — verify and report each item in your final message; do
+**not** write the checklist out to a file.
 
 - [ ] The database was located — a `database.toml` or standalone `.sqlite` the user pointed you to or that you found in the project root; you asked rather than inventing a path when it wasn't found.
 - [ ] You checked for an ADS token with `check_ads_token()`; if it was missing, you offered to set it up or proceeded with `ignore_ads=True` and hand-supplied metadata.

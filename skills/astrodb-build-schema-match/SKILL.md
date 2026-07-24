@@ -16,9 +16,10 @@ exactly which table and field each column belongs to before ingesting data.
 
 Before matching:
 
-1. Read `references/astrodb-directions.md` — it covers the workflow.md, artifact-folder, and
-   completion-checklist conventions this skill follows.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+1. Read `references/astrodb-directions.md` (shared conventions) and
+   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
+   `checklists.md` completion-checklist tracking).
+2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
    to carry forward context and decisions from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
    dataset-specific decisions (which columns go where, what to ignore, custom tables, known
@@ -183,10 +184,10 @@ Tell the user the exact file paths to both the markdown table and the HTML file 
 - **Proposed (new field)**: User chose to add a new field to an existing table — needs a schema update before ingestion
 - **Proposed (new table)**: User chose to add a new table — needs a schema update before ingestion
 
-## Final Step: Update `workflow.md`
+## Final Step: Update `build-workflow.md`
 
-Follow the convention in `references/astrodb-directions.md`. Append one new entry to
-`workflow.md` in the current working directory (create it with the standard header if it
+Follow the convention in `references/astrodb-build-directions.md`. Append one new entry to
+`astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it
 doesn't exist yet). Record: any Low/Medium confidence matches and why that mapping was
 chosen, all Unmatched columns and how the user resolved each one, any new tables or fields
 proposed, and any decisions made without `astrodb-build-artifacts/directions.md` guidance.
@@ -195,7 +196,7 @@ proposed, and any decisions made without `astrodb-build-artifacts/directions.md`
 
 Before telling the user the mapping is done, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`.
+`references/astrodb-build-directions.md`.
 
 - [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-parse-table` on it first and worked from its output.
 - [ ] You read `references/schema.md` before mapping, and applied all three matching layers — name patterns, units (normalizing astropy's spaced forms like `km / s` to their compact equivalents), and description — plus the special-case rules in `references/column-patterns.md`. Any directions-document guidance was honored over the default heuristics.

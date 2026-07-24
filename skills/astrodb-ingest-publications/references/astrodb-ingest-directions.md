@@ -1,0 +1,1 @@
+../../astrodb-ingest-directions.md

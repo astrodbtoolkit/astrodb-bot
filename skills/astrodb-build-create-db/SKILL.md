@@ -12,9 +12,10 @@ using `astrodbkit`.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
-   completion-checklist conventions this skill follows.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+1. Read `references/astrodb-directions.md` (shared conventions) and
+   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
+   `checklists.md` completion-checklist tracking).
+2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
    to carry forward context from prior skills.
 3. Record this skill's checklist per the completion-checklist convention — create the artifact
    directory if needed, then add a `## astrodb-build-create-db` section holding the items from
@@ -214,7 +215,7 @@ Next steps:
 
 Before telling the user the database is created, verify every item in your section of the workflow checklist file and
 reproduce the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-directions.md`. The felis-validation and pytest gates below are **not waivable** —
+`references/astrodb-build-directions.md`. The felis-validation and pytest gates below are **not waivable** —
 do not proceed past a failure.
 
 - [ ] You located the schema.yaml and confirmed `felis validate` passes on it — if it doesn't, you stopped rather than building from a broken schema.
