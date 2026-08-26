@@ -12,6 +12,18 @@ Take a completed AstroDB schema mapping — and optionally a validation report �
 well-formed Felis YAML schema file covering all the tables and columns that will be populated
 by the user's data.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context and decisions from prior skills (especially schema-match choices).
+3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may specify
+   schema decisions that should override the defaults below.
+4. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-build-schema-generate` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-build-artifacts/checklists.md`.
+
 ## What is Felis YAML?
 
 Felis is the schema description language used by AstroDB and LSST. A Felis YAML file defines
@@ -20,6 +32,24 @@ and validate databases. The canonical spec is at https://felis.lsst.io/.
 
 Read `references/felis-syntax.md` for the exact syntax rules and examples before writing any YAML.
 
+## Step 0: Confirm the schema name
+
+**Before doing anything else**, ask the user what to name the schema:
+
+> What should I call this schema? This becomes the top-level `name:` in `schema.yaml` and
+> the SQLite filename (e.g. `mirion` → `mirion.sqlite`). It should match your database name,
+> not the template default.
+
+Wait for an explicit answer. Do not derive the name silently from the data file name, from
+the existing `schema.yaml`, or from any other source — the name the user types here is the
+only acceptable value.
+
+**Never accept `astrodb_template`, `astrodb-template`, or `template` as the schema name.**
+If the user types one of these, tell them that is the template placeholder and ask them to
+provide the actual dataset name.
+
+Hold this name for use in Step 3 (`name:` and `@id:`) and Step 4 (output filename).
+
 ## Inputs
 
 You need at minimum:
@@ -27,8 +57,7 @@ You need at minimum:
 1. **The mapping table** from `astrodb-build-schema-match` — rows like:
    `Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes`
 
-2. **Schema name** — what to call the new schema (e.g. the dataset name or survey name).
-   If not provided, derive it from the data file name or ask the user.
+2. **Schema name** — confirmed in Step 0 above. Do not re-derive or re-ask here.
 
 Optionally also accept:
 
@@ -115,6 +144,12 @@ reasonable ceiling (e.g., 30, 50, 100, 256). If you can't observe the data, use 
 
 ## Step 4: Write the schema file
 
+Before writing, verify the YAML you are about to write has:
+- `name: <user-confirmed schema name>` — not `astrodb_template`, not derived from the file
+- `"@id": "#<user-confirmed schema name>"` — matching the `name:` field exactly
+
+If either field still contains a template placeholder, stop and fix it before writing.
+
 Save the generated YAML to `astrodb-build-artifacts/<schema-name>-schema.yaml` using the Write tool. This is required — always produce a real `.yaml` file. Do not only paste the YAML in the chat; the file is what the user will use.
 
 Tell the user:
@@ -143,3 +178,17 @@ felis validate astrodb-build-artifacts/<schema-name>-schema.yaml
 - A `string` column is missing its `length` field.
 
 Fix the errors, rewrite the file, and re-run validation. Repeat until the schema passes, then tell the user it passed (and briefly mention what was fixed if anything needed fixing).
+
+## Completion Checklist
+
+Before telling the user the schema is generated, verify every item in your section of the workflow checklist file and
+reproduce the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
+
+- [ ] The schema name was confirmed with the user (Step 0) and is a real dataset name — never `astrodb_template`/`template` — matching the `name:` and `@id:` written into the file.
+- [ ] Unmatched and (if a validation report was provided) problematic columns were audited and raised with the user — one question per category — or there were none. If no validation report was provided, you noted the schema was generated without null/type checks and suggested validating before ingesting.
+- [ ] Columns are grouped by table, and each table has a primary key identified (you asked the user when it wasn't obvious).
+- [ ] The Felis YAML follows `references/felis-syntax.md`: correct `@id` references, datatypes, units, nullable flags, and foreign keys — and includes stub table definitions for every lookup table referenced by a FK (at minimum `Sources` and `Publications`), so no FK points at a table absent from the document.
+- [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` — you gave the user the path rather than reproducing the full YAML in the chat.
+- [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
+- [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).

@@ -1,11 +1,11 @@
 [project]
 name = "astrodb-bot"
-version = "1.0.0"
+version = "1.4.0"
 description = "AI skills for building and maintaining astronomical databases built with the AstroDB Toolkit framework."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "lsst-felis>=30.2026.1100",
+    "lsst-felis<=30.2026.2900",
 ]
 
 [tool.ruff]

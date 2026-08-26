@@ -28,11 +28,15 @@
         },
         {
           "id": "eval1_report_written",
-          "text": "A validation report file is written to /tmp/ and the path is given to the user"
+          "text": "A validation report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
         },
         {
           "id": "eval1_summary_section",
           "text": "The output includes a clear summary section counting the number of nullable violations and type mismatches found"
+        },
+        {
+          "id": "eval1_directions_path",
+          "text": "In Step 0, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
         }
       ]
     },
@@ -94,7 +98,7 @@
         },
         {
           "id": "eval3_report_written",
-          "text": "A report file is written to /tmp/ and the path is given to the user"
+          "text": "A report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
         }
       ]
     }

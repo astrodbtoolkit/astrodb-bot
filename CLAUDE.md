@@ -24,7 +24,7 @@ Use a descriptive commit message that summarizes what changed (e.g. `add astrodb
 
 When skills are added, removed, or significantly updated, remind the user to:
 
-1. Update the external documentation at [`astrodbtoolkit/astrodb_utils` — `docs/pages/db_management/agent_skills.rst`](https://github.com/astrodbtoolkit/astrodb_utils/blob/main/docs/pages/db_management/agent_skills.rst)
+1. Update this repo's `README.md` to reflect the change
 2. Cut a new release (see Releases and Versioning below)
 
 ## Releases and Versioning
@@ -83,8 +83,8 @@ Skills are designed to chain in order:
 
 #### Build
 
-1. **`astrodb-build-setup`** — Clone a user's repo from the astrodb-template-db GitHub template; set `db_name` in `database.toml`. No data involved.
-2. **`astrodb-build-parse-table`** — Read FITS/CSV/ECSV/etc. with astropy or pandas; extract column names, descriptions, units, types. Writes output to `astrodb-build-artifacts/` for downstream skills.
+1. **`astrodb-build-setup`** — Clone a user's repo from the astrodb-template-db GitHub template; set `db_name` in `database.toml`; personalize the README and LICENSE (new authors, or a different license). No data involved.
+2. **`astrodb-build-parse-table`** — Read FITS/CSV/ECSV/CDS-MRT/etc. with astropy or pandas; extract column names, descriptions, units, types. Writes output to `astrodb-build-artifacts/` for downstream skills.
 3. **`astrodb-build-schema-match`** — Map parsed columns to AstroDB template schema tables/fields. Reads `references/schema.md`, `references/column-patterns.md`, `references/photometry-filters.md`.
 4. **`astrodb-build-schema-validate`** — Check for nullable violations and type mismatches between data and schema.yaml.
 5. **`astrodb-build-schema-generate`** — Produce a Felis YAML `schema.yaml` from the mapping. Runs `felis validate` at the end.
@@ -105,6 +105,8 @@ Skills are designed to chain in order:
 - **`astrodb-build-artifacts/`** holds build outputs written **flat** (no subdirectories): `<basename>-parsed-data-table.md/.html`, `<basename>-schema-match.md/.html`, `<name>-schema.yaml`, `astrodb-parse-result.json`, `validate_mapping.py`. **`astrodb-ingest-artifacts/`** holds generated ingestion scripts.
 - **`uv run`** is preferred over bare `python` to ensure the correct virtual environment.
 - **Database loading**: JSON-layout databases (astrodb-template-db) use `build_db_from_json(settings_file="database.toml")`; standalone `.sqlite` files use a direct connection.
+- **Shared conventions (`skills/astrodb-directions.md`)**: cross-skill conventions live in one file, symlinked into each skill's `references/astrodb-directions.md` so they resolve after install. It covers the `workflow.md` decision log, the artifact-folder convention, and the completion-checklist convention. Each skill reads it at the start (its "Step 0: Read context documents").
+- **Completion checklist** (developer guidance — the audience here is whoever edits these skills, not the end user): every `SKILL.md` ends with a `## Completion Checklist`, a blocking self-verification gate the skill must satisfy (or have the user explicitly waive) before reporting itself done. Per the convention in `astrodb-directions.md`, it is **file-tracked, one file per workflow**: each workflow keeps a single `<workflow>-artifacts/checklists.md` in which every skill records its items under a `## <skill-name>` heading, ticks each `[ ]` to `[x]` with a one-line evidence note as it completes, re-reads its section before finishing, and reproduces that section in its completion message. Items are verifiable outcomes; user-dependent ones read "prompted and honored the user's choice (or they declined)," never a forced action that could tempt fabrication. The protocol lives once in `astrodb-directions.md`; each `SKILL.md` keeps only its own items plus a short pointer to it. **Whenever you add, remove, or reorder a skill's steps, update that skill's checklist items in the same edit** — the checklist is the skill's contract, and a step with no checklist item is one that will silently get skipped.
 
 ### Evals Format
 
@@ -117,7 +119,7 @@ Each `evals/evals.json` has `skill_name` and an array of `evals`, each with:
 
 ### Workspace Directories
 
- `skills/astrodb-build-schema-match-workspace/` and `skills/astrodb-setup-workspace/` are **not deployable skills** — they contain iteration and eval history from skill development. They have no top-level `SKILL.md`. Do not include them when installing skills into an agent.
+ `skills/astrodb-build-schema-match-workspace/`, `skills/astrodb-setup-workspace/`, and `skills/astrodb-build-parse-table-workspace/` are **not deployable skills** — they contain iteration and eval history from skill development. They have no top-level `SKILL.md`. Do not include them when installing skills into an agent.
  If any `*-workspace/` directories are added under `skills/`, they are **not deployable skills** — they may contain iteration/eval history and may have no top-level `SKILL.md`. Do not include workspace directories when installing skills into an agent.
 
 ### External Dependencies

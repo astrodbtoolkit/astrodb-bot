@@ -1,6 +1,6 @@
 ---
 name: astrodb-build-parse-table
-description: Parse a data table file and extract column information (name, description, units, type). Supports FITS, CSV, ECSV, HDF5, VOTable, Parquet, Excel, and more. Generates a markdown table summarizing the columns.
+description: Parse a data table file and extract column information (name, description, units, type). Supports FITS, CSV, ECSV, HDF5, VOTable, MRT, Parquet, Excel, and more. Generates a markdown table summarizing the columns.
 compatibility: python, astropy, pandas
 metadata:
     authors: ["Claude"]
@@ -12,24 +12,14 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Check for a directions document
+### Step 0: Check for a directions document and artifacts directory
 
-Before doing anything else, check whether `artifacts/directions.md` exists in the current working
-directory. If it does, read it now — it captures dataset-specific decisions (columns to skip, how
+Before doing anything else, check whether ``astrodb-build-artifacts/directions.md` exists. 
+If it does, read it now — it captures dataset-specific decisions (columns to skip, how
 to handle edge cases, schema choices) that should guide your interpretation throughout this skill.
 If it doesn't exist, proceed without it.
 
-**All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** Create this folder before writing any files.
-
-### Step 1: Create the artifact folder
-
-Run this before anything else:
-
-```bash
-mkdir -p astrodb-build-artifacts
-```
-
-If this fails, stop and tell the user you cannot create the output directory.
+**All outputs from this skill must be written inside the `astrodb-build-artifacts/` in the current working directory.** 
 
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
@@ -94,13 +84,28 @@ try:
     for col in t.columns:
         print(col, t[col].dtype)  # descriptions/units extracted in Step 3
 except Exception:
-    import pandas as pd
-    df = pd.read_csv("$ARGUMENTS")  # adjust reader as needed
-    reader = "pandas"
-    pandas_method = "read_csv"  # update if a different reader was used
-    n_rows = len(df)
-    for col in df.columns:
-        print(col, df[col].dtype)
+    # Before falling back to pandas, check whether this is a CDS/AAS machine-readable
+    # table (common for .txt/.dat files distributed alongside journal articles).
+    # Table.read() can't auto-identify this format and raises above, but pandas.read_csv()
+    # won't error either — it'll silently parse the header text into one garbage column.
+    # See references/format-specific-metadata.md for details.
+    with open("$ARGUMENTS") as f:
+        head = f.read(4000)
+    if "Byte-by-byte Description of file" in head:
+        t = Table.read("$ARGUMENTS", format="ascii.mrt")
+        reader = "astropy"
+        fmt = "mrt"
+        n_rows = len(t)
+        for col in t.columns:
+            print(col, t[col].dtype)
+    else:
+        import pandas as pd
+        df = pd.read_csv("$ARGUMENTS")  # adjust reader as needed
+        reader = "pandas"
+        pandas_method = "read_csv"  # update if a different reader was used
+        n_rows = len(df)
+        for col in df.columns:
+            print(col, df[col].dtype)
 
 # Write sidecar so downstream skills (e.g. astrodb-build-schema-match, astrodb-build-schema-validate)
 # can reuse the same reader without re-discovering the format.
@@ -125,7 +130,11 @@ For each column, extract:
 - **Units** (use "—" if not specified)
 - **Data type** (e.g. `float64`, `int32`, `str`)
 
-**Important:** `t[col].description` is only reliably populated for ECSV files. For all other formats (FITS, CSV, HDF5, VOTable, etc.), ignore what Step 2 printed for descriptions and extract them using the format-specific methods in `references/format-specific-metadata.md`.
+**Important:** `t[col].description` is only reliably populated for ECSV and CDS/MRT files. For all other formats (FITS, plain CSV, HDF5, VOTable, etc.), ignore what Step 2 printed for descriptions and extract them using the format-specific methods in `references/format-specific-metadata.md`.
+
+#### Checking for sentinel fill values
+
+Legacy fixed-width astronomy formats (MRT tables especially, but also older FITS/CSV exports) sometimes mark missing data with a literal placeholder — `999`, `-999`, `-99.9` — instead of a true null. These aren't caught by the reader, so a quick scan matters: if a numeric column's max or min value is a suspiciously round number that recurs far more often than its neighbors, treat it as a fill value rather than a real measurement, and note it in the output (see Step 5) rather than silently reporting it as data.
 
 #### Converting dtypes to human-readable strings
 
@@ -217,6 +226,51 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump(sidecar, f)
 ```
 
-### Step 6: Iterate as needed
+### Step 6: Confirm before proceeding
 
+After writing the output files, present a brief summary in chat:
+- Total columns parsed, and how many rows are in the file
+- How many descriptions/units came from file metadata, were inferred, or are still `—`
+- Any anomalies (fallback reader used, columns with unexpected types, etc.)
+
+Then ask the user to open the HTML file and explicitly confirm the results:
+
+> I've written the parsed column table to `<path>`. Please review it and let me know:
+> 1. Does the column list look complete?
+> 2. Are any descriptions, units, or types wrong or missing?
+> 3. Are there columns that should be skipped in the schema-match step?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they request
+corrections, apply them and update the output files before asking again. Do not proceed to
+`astrodb-build-schema-match` or any downstream skill until the user confirms the table is ready.
+
+If the user asks why you chose a particular file format or reader, explain your choice and
+record it in `workflow.md` (see Step 7). Never assume a format decision was obvious — if there
+was any ambiguity, the user may want to know or change it.
+
+> **Note:** `schema.yaml` is not created in this step or in `astrodb-build-schema-match`.
+> It is generated later by `astrodb-build-schema-generate`.
 Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
+
+## Final Step: Update `workflow.md`
+
+Follow the convention in `references/astrodb-directions.md`. Append one new entry to
+`workflow.md` in the current working directory (create it with the standard header if it
+doesn't exist yet). Record: which file was parsed, which reader was used and why, any
+column descriptions or units that were inferred, what the user confirmed during gap-filling,
+and any columns still missing metadata.
+
+## Completion Checklist
+
+Before telling the user the table is parsed, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`. Don't claim a value you didn't actually extract.
+
+- [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV and CDS/MRT).
+- [ ] For a `.txt`/`.dat` input, you checked for the `Byte-by-byte Description of file` MRT signature before treating it as plain CSV.
+- [ ] Numeric columns were spot-checked for sentinel fill values (e.g. `999`, `-999`); any found are noted in the output rather than reported as real data.
+- [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
+- [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
+- [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
+- [ ] The file was successfully read (astropy first, pandas fallback) in a verified Python 3.11+ environment, and the sidecar `astrodb-build-artifacts/astrodb-parse-result.json` records the reader, format, and row count — then was updated with the output file paths.
+- [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.

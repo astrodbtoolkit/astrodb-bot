@@ -33,5 +33,6 @@ Date: <today>
 
 If there are no issues, say so clearly: "All N mapped columns passed validation."
 
-Also write the full report to `tmp/schema-validation-report.md` using the Write tool and
-tell the user the path.
+Also write the full report to `astrodb-build-artifacts/schema-validation-report.md` using the
+Write tool and tell the user the path. (This is the same `astrodb-build-artifacts/` directory the
+validation script in Step 2 was written to, and where the other build skills write their outputs.)
