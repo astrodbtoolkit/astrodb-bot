@@ -84,7 +84,9 @@
         {"text": "Descriptions are populated from the embedded byte-by-byte header (not left as '—')"},
         {"text": "Units are populated as km/s for velocity columns"},
         {"text": "The 999 sentinel/fill-value pattern is flagged in the notes rather than reported as real data"},
-        {"text": "astropy was used as the reader (not a pandas fallback)"}
+        {"text": "astropy was used as the reader (not a pandas fallback)"},
+        {"text": "The 999 fill-value finding is treated as a property of this dataset — it goes in the output notes (and workflow.md if logged at all), NOT in gotchas.md, which is only for problems with the skills themselves"},
+        {"text": "No gotchas.md entry is written about MRT detection or the sentinel scan: the skill already documents both (references/file-formats.md and Step 3), and a warning that worked is not a gotcha"}
       ]
     },
     {
@@ -97,7 +99,9 @@
         {"text": "All 17 columns are present in the output"},
         {"text": "Descriptions are populated from the embedded byte-by-byte header (not left as '—')"},
         {"text": "SIGMA/e_SIGMA units are reported as g/cm^2 despite the UnrecognizedUnit warning"},
-        {"text": "astropy was used as the reader (not a pandas fallback)"}
+        {"text": "astropy was used as the reader (not a pandas fallback)"},
+        {"text": "The astropy UnrecognizedUnit warning is not logged as a gotcha — references/format-specific-metadata.md already describes it, so it is expected behavior rather than a skill defect"},
+        {"text": "If reading this file required deviating from the skill's written steps, that deviation IS logged in gotchas.md with Kind, Where, What happened, Workaround, and a concrete Suggested change; if no deviation was needed, this run adds no entry at all"}
       ]
     }
   ]

@@ -27,7 +27,10 @@
         "Resolves the CORRECT paper for spot-checked references using stream context: Bonaca2020->GD-1 doi 10.3847/2041-8213/ab800c; Ibata2024->STREAMFINDER atlas doi 10.3847/1538-4357/ad382d; Yang2023->M3 doi 10.3847/1538-4357/acdee2; Shipp2020->Palomar 13 doi 10.3847/1538-3881/abbd3a; Koposov2023->Orphan-Chenab doi 10.1093/mnras/stad551",
         "Shows the resolved reference->DOI/title table to the user and waits for confirmation before writing",
         "Fills via a direct UPDATE on the sqlite after user confirmation (the rows already exist, so re-ingesting would collide on the reference primary key)",
-        "Verifies zero rows still have NULL bibcode/doi/description after writing"
+        "Verifies zero rows still have NULL bibcode/doi/description after writing",
+        "If the backfill required deviating from the skill's written path (for example the documented route failing on the existing reference primary key), that deviation is logged in gotchas.md with Kind, Where, What happened, Workaround, and a concrete Suggested change — classified `gotcha` if another user backfilling a table would hit it again",
+        "Any `gotcha` logged is named in the completion message with a pointer to https://github.com/astrodbtoolkit/astrodb-bot/issues/new, and the skill does not open the issue itself or run gh",
+        "Per-reference lookup reasoning (which stream disambiguated which shortname) goes to workflow.md, not gotchas.md"
       ]
     },
     {
@@ -39,7 +42,8 @@
         "Recognizes that a DOI is provided and skips the Google Scholar/ADS/Crossref lookup step",
         "Calls ingest_publication with doi=\"10.1088/0004-637X/748/2/93\" after a find_publication dedup check",
         "Checks for an ADS token and explains the consequence if missing rather than failing silently",
-        "SAVE_DB is False and the user is asked to confirm before saving"
+        "SAVE_DB is False and the user is asked to confirm before saving",
+        "A missing ADS token is not logged as a `gotcha` — the skill documents the check, so a condition it warned about is an environment issue (at most `one-off`), not a defect in the skill"
       ]
     },
     {

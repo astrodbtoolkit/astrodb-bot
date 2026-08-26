@@ -14,10 +14,8 @@ exactly which table and field each column belongs to before ingesting data.
 
 ## Directions Document
 
-1. Read `references/astrodb-directions.md` (shared conventions) and
-   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
-   `checklists.md` completion-checklist tracking).
-2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
+1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
    dataset-specific decisions (which columns go where, what to ignore, custom tables, known
@@ -206,3 +204,4 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
 - [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
 - [ ] You gave a short plain-text summary in the chat and told the user the paths to both files.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.

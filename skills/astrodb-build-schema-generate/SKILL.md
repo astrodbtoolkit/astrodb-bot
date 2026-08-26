@@ -14,10 +14,8 @@ by the user's data.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` (shared conventions) and
-   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
-   `checklists.md` completion-checklist tracking).
-2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
+1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills (especially schema-match choices).
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may specify
    schema decisions that should override the defaults below.
@@ -193,3 +191,4 @@ reproduce the evidence-annotated list here, per the **completion-checklist conve
 - [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` — you gave the user the path rather than reproducing the full YAML in the chat.
 - [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
 - [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.

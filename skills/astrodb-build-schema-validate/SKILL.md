@@ -13,10 +13,8 @@ contains against what the schema requires.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` (shared conventions) and
-   `references/astrodb-build-directions.md` (build specifics: the `build-workflow.md` decision log and the
-   `checklists.md` completion-checklist tracking).
-2. Check whether `astrodb-build-artifacts/build-workflow.md` exists. If it does, read it
+1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may describe
    known nullable or type edge cases relevant to this validation.
@@ -137,3 +135,4 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
 - [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.

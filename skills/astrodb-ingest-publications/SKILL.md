@@ -16,14 +16,12 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-ingest-directions.md` — the conventions for the ingest workflow: the
-   `ingest-workflow.md` decision log and the completion-checklist convention. It points to
-   `references/astrodb-directions.md` for the shared artifact-folder and "ask, don't assume" rules.
-2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
-   prior ingest skills.
-
-(The ingest skills **verify** their completion checklist and report it in the final message — they do
-not write it out to a file. See `references/astrodb-ingest-directions.md`.)
+1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+3. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-ingest-publications` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-ingest-artifacts/checklists.md`.
 
 ## Reference naming convention
 
@@ -245,3 +243,4 @@ evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
 - [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.
 - [ ] If — and only if — this was a backfill of an existing `Publications` table: rows whose metadata was already populated were skipped (idempotent), updates used the path matching the layout (direct `UPDATE` for a standalone `.sqlite`; `ingest_publication` + `db.save_database()` for the JSON layout), and you verified at the end that zero rows still have NULL `bibcode`/`doi`/`description`.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.

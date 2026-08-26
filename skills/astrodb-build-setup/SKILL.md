@@ -8,10 +8,8 @@ metadata:
 
 # AstroDB Setup
 
-Read `references/astrodb-directions.md` (shared conventions) and
-`references/astrodb-build-directions.md` (build specifics) before starting. Together they document the
-`build-workflow.md` decision log that this skill initializes and all subsequent build skills maintain,
-the artifact-folder convention, and the `checklists.md` completion-checklist tracking this skill follows.
+Read `references/astrodb-directions.md` before starting — it defines the workflow that
+you should use.
 
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
 structured, named database repository onto the user's machine — nothing more. It deliberately stops
@@ -435,3 +433,4 @@ of the document. What doesn't count is neither asking nor finding it written dow
 - [ ] **Artifacts** — `astrodb-build-artifacts/` exists. If the user supplied a directions document by path, it has been copied to `astrodb-build-artifacts/directions.md`. It contains `directions.md` only if the user actually wrote one or supplied a path; you did not leave an unfilled template behind.
 - [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
 - [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.

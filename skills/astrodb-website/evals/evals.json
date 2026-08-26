@@ -9,7 +9,8 @@
       "expectations": [
         "The output includes verification of the /browse endpoint using curl",
         "The model clones the Astro-Web repository",
-        "The model runs setup_website.py with ra_deg and dec_deg"
+        "The model runs setup_website.py with ra_deg and dec_deg",
+        "No gotchas.md entry is invented for this run — the documented steps worked, so nothing is logged, and database-specific details (discovered column names, table names) go to workflow.md instead"
       ],
       "files": [
         ".agents/skills/astrodb-website/evals/data/astrodb-template.sqlite",
@@ -53,6 +54,14 @@
         },
         {
           "text": "Runs the website server and verifies the browse endpoint using curl",
+          "type": "output_contains"
+        },
+        {
+          "text": "If serving the non-standard Galaxies/galaxy naming needed work the skill does not document (hand-editing .env or template files after setup_website.py, for example), that deviation is logged in gotchas.md as kind `gotcha` with a concrete Suggested change naming the file and step to fix",
+          "type": "file_contains"
+        },
+        {
+          "text": "Does not open a GitHub issue or PR and does not run gh — any gotcha is only reported to the user, pointing at the astrodb-bot issues URL and at gotchas.md for the drafted text",
           "type": "output_contains"
         }
       ]
