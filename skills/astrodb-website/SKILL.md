@@ -8,6 +8,16 @@ compatibility: python, fastapi, uvicorn
 
 This skill sets up a FastAPI web interface ([astrodb-web](https://github.com/astrodbtoolkit/astrodb-web)) to browse and visualize an AstroDB SQLite database.
 
+## Step 0: Read context documents
+
+1. Read `references/astrodb-directions.md` — it defines the `workflow.md`, artifact-folder, and
+   completion-checklist conventions this skill follows.
+2. Check whether `workflow.md` exists in the current working directory. If it does, read it
+   to carry forward context from prior skills.
+3. Record this skill's checklist per the completion-checklist convention — create the artifact
+   directory if needed, then add a `## astrodb-website` section holding the items from
+   `## Completion Checklist` (bottom of this file) to `astrodb-website-artifacts/checklists.md`.
+
 ## Prerequisites
 
 - An existing AstroDB SQLite database (`.sqlite` or `.db`).
@@ -116,3 +126,16 @@ Notify the user that their next step should be to set up a permanent hosting sol
 - **Database not found**: Ensure the `--db-path` provided to `setup_website.py` is correct.
 - **Port already in use**: If 8000 is taken, use `--port <other-port>` with uvicorn.
 - **Import errors**: Ensure `uv sync` was run in the `astrodb-web` directory.
+
+## Completion Checklist
+
+Before telling the user the website is ready, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-directions.md`.
+
+- [ ] The user created their own repo from the astrodb-web template and gave you the URL; you cloned it into the directory they confirmed (default `website/`).
+- [ ] You verified the primary table name and the RA/Dec/source/foreign-key column names against the actual database (`sqlite3 .tables` and `PRAGMA table_info`), rather than assuming defaults.
+- [ ] After running `setup_website.py`, you `cat`'d the generated `.env` and confirmed it has `ASTRO_WEB_DATABASE_URL` (an absolute `sqlite:///` path), `ASTRO_WEB_PRIMARY_TABLE`, and the RA/Dec column keys.
+- [ ] `uv sync` was run and the server was started.
+- [ ] You verified the server actually serves data (e.g. `curl -s http://localhost:8000/browse` returns table content), recovering from any table-name-case or relative-path issues.
+- [ ] You told the user the site is running at http://localhost:8000, how to stop it, and the next steps (restart on DB changes; set up permanent hosting for production).

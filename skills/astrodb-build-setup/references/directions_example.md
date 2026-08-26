@@ -3,6 +3,21 @@
 Notes, decisions, and known issues for this database. Subsequent skills read this file
 automatically — keep it up to date as new decisions are made.
 
+## Database
+
+Answers the questions `astrodb-build-setup` would otherwise have to ask. Fill in what you
+know; anything you leave out, the skill will ask about instead.
+
+- **Name**: `StreamDB` — becomes `db_name` in `database.toml` and names the SQLite file
+- **Description**: A catalog of stellar stream members with metallicities, orbital
+  distances, and membership probabilities — for studying the accretion history of the
+  Milky Way halo. Used as the README and CLAUDE.md description.
+
+## License
+
+- **License**: BSD 3-Clause (keep the template's)
+- **Copyright holder(s)**: Jane Astronomer, 2026 — added alongside the template authors
+
 ## Data Overview
 - Each row represents a single star
 - `all_stream.fits` contains all membership data
