@@ -36,6 +36,10 @@
           "text": "Column 'SpT' is mapped to SourceTypes table and source_type field"
         },
         {
+          "id": "eval1_SpT_offers_spectraltypes",
+          "text": "Because 'SpT' is a spectral type column, the agent offers the user the richer SpectralTypes table (numeric spectral type code, uncertainty, regime, photometric flag) as an alternative to the template's generic SourceTypes, and asks this in the same message as the Checkpoint confirmation question rather than as a separate round trip"
+        },
+        {
           "id": "eval1_assoc_associations",
           "text": "Column 'assoc' is mapped to Associations table"
         },
@@ -274,6 +278,54 @@
         {
           "id": "eval7_no_continuous_to_adopted",
           "text": "No continuous or string column anywhere in the mapping is assigned to an 'adopted' field — adopted is treated as boolean-only"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Here's the astrodb-parse-data-table output for my ultracool dwarf spectral classification catalog. Map each column to the right AstroDB table and field. If you offer me an alternative table for the spectral types, assume my answer is yes — go ahead and map them that way.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| name | Source designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| spt_opt | Optical spectral type (e.g. M6, L2) | — | str |\n| e_spt_opt | Uncertainty in optical spectral type (subtypes) | — | float64 |\n| spt_nir | Near-infrared spectral type (e.g. T4.5) | — | str |\n| e_spt_nir | Uncertainty in near-infrared spectral type (subtypes) | — | float64 |\n| spt_ref | Reference bibcode for the spectral types | — | str |",
+      "expected_output": "The agent offers the richer SpectralTypes table in place of the generic SourceTypes, and because the user pre-approved it, maps spt_opt and spt_nir to SpectralTypes.spectral_type_string (as separate rows distinguished by regime, not separate fields), e_spt_opt/e_spt_nir to SpectralTypes.spectral_type_error, and the optical/NIR context to SpectralTypes.regime using the existing RegimeList lookup. SpectralTypes is not in the template schema, so it is flagged as a proposed new table with its full column set listed under Proposed Schema Additions, and spectral_type_code is called out as derived at ingest rather than mapped or invented.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval8_offers_spectraltypes",
+          "text": "The agent offers the richer SpectralTypes table as an alternative to the template's generic SourceTypes, rather than silently mapping to either one"
+        },
+        {
+          "id": "eval8_spt_to_spectral_type_string",
+          "text": "Columns 'spt_opt' and 'spt_nir' are mapped to SpectralTypes.spectral_type_string, NOT to SourceTypes.source_type"
+        },
+        {
+          "id": "eval8_errors_to_spectral_type_error",
+          "text": "Columns 'e_spt_opt' and 'e_spt_nir' are mapped to SpectralTypes.spectral_type_error"
+        },
+        {
+          "id": "eval8_regime_from_context",
+          "text": "The optical vs near-infrared distinction is carried by SpectralTypes.regime, and the output notes that the template's existing RegimeList lookup table covers this foreign key so no new lookup table is needed for it"
+        },
+        {
+          "id": "eval8_separate_rows_not_fields",
+          "text": "The optical and near-infrared spectral types become separate rows in SpectralTypes distinguished by regime — they are NOT mapped to two different fields of the same row"
+        },
+        {
+          "id": "eval8_proposed_new_table",
+          "text": "SpectralTypes is flagged as a proposed new table (e.g. confidence 'Proposed (new table)') and appears in a Proposed Schema Additions section, since it is not part of the current template schema"
+        },
+        {
+          "id": "eval8_full_column_set_listed",
+          "text": "The Proposed Schema Additions entry lists the full SpectralTypes column set — source, spectral_type_string, spectral_type_code, spectral_type_error, regime, adopted, photometric, comments, reference — so astrodb-build-schema-generate has what it needs"
+        },
+        {
+          "id": "eval8_spectral_type_code_derived",
+          "text": "spectral_type_code is described as a derived numeric code computed at ingest (e.g. 60=M0, 70=L0, 80=T0) with no corresponding input column — no values are invented for it and no input column is mapped to it"
+        },
+        {
+          "id": "eval8_no_sourcetypelist",
+          "text": "Spectral type values are not added to SourceTypeList in the Lookup Table Checklist, since SourceTypes is not the target table for these columns"
+        },
+        {
+          "id": "eval8_ref_to_reference",
+          "text": "Column 'spt_ref' is mapped to the reference field of the spectral type table (SpectralTypes.reference), not left unmatched"
         }
       ]
     }
