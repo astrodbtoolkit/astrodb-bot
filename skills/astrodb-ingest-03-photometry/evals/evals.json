@@ -52,22 +52,22 @@
     {
       "id": 5,
       "prompt": "Ingest photometry from evals/data/mock_photometry.csv, but the source '2MASS J10453718-1420307' is not in my Sources table yet.",
-      "expected_output": "The source-name reconciliation step flags the unresolved source, and the skill offers to run astrodb-ingest-sources for it rather than inventing a source or ingesting against a missing one.",
+      "expected_output": "The source-name reconciliation step flags the unresolved source, and the skill offers to run astrodb-ingest-02-sources for it rather than inventing a source or ingesting against a missing one.",
       "files": ["evals/data/mock_photometry.csv"],
       "expectations": [
         "The skill resolves source names against Sources/Names before ingesting and flags the unresolved one",
-        "It offers to run astrodb-ingest-sources as a sub-step for the missing source",
+        "It offers to run astrodb-ingest-02-sources as a sub-step for the missing source",
         "It does not fabricate a source or proceed to ingest that source's magnitudes"
       ]
     },
     {
       "id": 6,
       "prompt": "Ingest evals/data/mock_photometry.csv. The reference 'Kirk08' is not in my Publications table.",
-      "expected_output": "The skill detects the missing reference and offers to run astrodb-ingest-publications before ingesting any measurement that cites it.",
+      "expected_output": "The skill detects the missing reference and offers to run astrodb-ingest-01-publications before ingesting any measurement that cites it.",
       "files": ["evals/data/mock_photometry.csv"],
       "expectations": [
         "The skill identifies that 'Kirk08' is missing from Publications",
-        "It offers to run astrodb-ingest-publications rather than just failing",
+        "It offers to run astrodb-ingest-01-publications rather than just failing",
         "Measurements citing the missing reference are not silently dropped"
       ]
     },

@@ -1,11 +1,13 @@
 {
-  "skill_name": "astrodb-create-db",
+  "skill_name": "astrodb-build-06-create-db",
   "evals": [
     {
       "id": 0,
-      "prompt": "I just ran the astrodb-generate-schema skill and it wrote my schema to /tmp/BrownDwarfSurvey-schema.yaml — felis validate passed. Now I want to set up the actual database. Please create it for me in /tmp/bdsurvey-project/.",
+      "prompt": "I just ran the astrodb-build-05-schema-generate skill and it wrote my schema to /tmp/BrownDwarfSurvey-schema.yaml — felis validate passed. Now I want to set up the actual database. Please create it for me in /tmp/bdsurvey-project/.",
       "expected_output": "The skill runs felis validate on the schema, creates /tmp/bdsurvey-project/ with data/reference/ and data/source/ subdirectories, copies schema.yaml, creates database.toml, runs create_db.py to produce BrownDwarfSurvey.sqlite, runs generate_tests.py to create a tests/ directory with adapted test files (including test_contents_spectraltypes.py for the non-template SpectralTypes table), runs pytest to confirm all tests pass, and reports all file paths.",
-      "files": ["/tmp/BrownDwarfSurvey-schema.yaml"],
+      "files": [
+        "/tmp/BrownDwarfSurvey-schema.yaml"
+      ],
       "assertions": [
         {
           "text": "Creates BrownDwarfSurvey.sqlite in the project directory",
@@ -22,6 +24,14 @@
         {
           "text": "Runs pytest and reports that all tests pass",
           "type": "output_contains"
+        },
+        {
+          "text": "Ends with a checkpoint: recommends the user open the .sqlite in a database browser to confirm the expected tables and columns are present and the tables are empty, and asks for explicit confirmation before moving on to the ingest skills",
+          "type": "output_contains"
+        },
+        {
+          "text": "States that a missing or misnamed table or column should be fixed by returning to the schema-generate or schema-match skill and regenerating, not by patching the .sqlite directly with ad hoc SQL",
+          "type": "output_contains"
         }
       ]
     },
@@ -29,7 +39,9 @@
       "id": 1,
       "prompt": "I have a Felis schema at /tmp/PhotometryCatalog-schema.yaml that I generated earlier. Can you initialize a new AstroDB database from it? Put everything in /tmp/photcat-db/.",
       "expected_output": "The skill validates the schema, creates the astrodb-template-db directory structure under /tmp/photcat-db/ (data/reference/, data/source/, schema.yaml, database.toml), runs create_db.py to produce PhotometryCatalog.sqlite, runs generate_tests.py to create a tests/ directory, runs pytest to confirm all tests pass, and reports all file paths.",
-      "files": ["/tmp/PhotometryCatalog-schema.yaml"],
+      "files": [
+        "/tmp/PhotometryCatalog-schema.yaml"
+      ],
       "assertions": [
         {
           "text": "Creates PhotometryCatalog.sqlite in the project directory",
@@ -42,6 +54,10 @@
         {
           "text": "Runs pytest and reports passing results",
           "type": "output_contains"
+        },
+        {
+          "text": "Ends with a checkpoint: recommends the user open the .sqlite in a database browser to confirm the expected tables and columns are present and the tables are empty, and asks for explicit confirmation before moving on to the ingest skills",
+          "type": "output_contains"
         }
       ]
     },
@@ -49,7 +65,9 @@
       "id": 2,
       "prompt": "I have a schema.yaml sitting in /tmp/BrownDwarfSurvey-schema.yaml — I'm not sure if felis validate was run on it. Make the sqlite database at /tmp/bd-db-check/.",
       "expected_output": "The skill explicitly runs felis validate on the schema before proceeding (because validation status is uncertain). If validation passes, it creates the full directory structure, database, and tests/ directory with all tests passing. It does NOT silently skip validation just because the user said they might not have done it.",
-      "files": ["/tmp/BrownDwarfSurvey-schema.yaml"],
+      "files": [
+        "/tmp/BrownDwarfSurvey-schema.yaml"
+      ],
       "assertions": [
         {
           "text": "Explicitly runs felis validate before creating the database",
@@ -61,6 +79,10 @@
         },
         {
           "text": "Creates a tests/ directory and runs pytest",
+          "type": "output_contains"
+        },
+        {
+          "text": "Ends with a checkpoint: recommends the user open the .sqlite in a database browser to confirm the expected tables and columns are present and the tables are empty, and asks for explicit confirmation before moving on to the ingest skills",
           "type": "output_contains"
         }
       ]

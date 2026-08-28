@@ -1,9 +1,9 @@
 {
-  "skill_name": "astrodb-validate-schema-mapping",
+  "skill_name": "astrodb-build-04-schema-validate",
   "evals": [
     {
       "id": 1,
-      "prompt": "I just ran astrodb-match-schema on my parallax catalog and here's the mapping I got. Can you validate this against the actual data file to make sure it's safe to ingest?\n\nData file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/parallax_catalog_with_nulls.ecsv\n\nSchema file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source_id | Primary identifier | — | str | Sources | source | High | Primary key |\n| ra | Right ascension | deg | float64 | Sources | ra_deg | High | |\n| dec | Declination | deg | float64 | Sources | dec_deg | High | |\n| plx | Parallax | mas | float64 | Parallaxes | parallax_mas | High | |\n| e_plx | Parallax uncertainty | mas | float64 | Parallaxes | parallax_error | High | |\n| ref | Reference bibcode | — | str | Publications | reference | High | |",
+      "prompt": "I just ran astrodb-build-03-schema-match on my parallax catalog and here's the mapping I got. Can you validate this against the actual data file to make sure it's safe to ingest?\n\nData file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/parallax_catalog_with_nulls.ecsv\n\nSchema file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source_id | Primary identifier | — | str | Sources | source | High | Primary key |\n| ra | Right ascension | deg | float64 | Sources | ra_deg | High | |\n| dec | Declination | deg | float64 | Sources | dec_deg | High | |\n| plx | Parallax | mas | float64 | Parallaxes | parallax_mas | High | |\n| e_plx | Parallax uncertainty | mas | float64 | Parallaxes | parallax_error | High | |\n| ref | Reference bibcode | — | str | Publications | reference | High | |",
       "expected_output": "A validation report identifying that the 'plx' column (mapped to Parallaxes.parallax_mas) has 3 null values out of 8 rows. The schema should show that parallax_mas is nullable (or warn about null values). Report should also confirm clean types for all columns and produce a summary.",
       "files": [
         "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/parallax_catalog_with_nulls.ecsv",
@@ -37,6 +37,10 @@
         {
           "id": "eval1_directions_path",
           "text": "In Step 0, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
+        },
+        {
+          "id": "eval1_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes the mapped columns checked and the nullable-violation and type-mismatch counts, then asks the user to review the report and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
@@ -68,6 +72,10 @@
         {
           "id": "eval2_summary_counts",
           "text": "The summary correctly shows 1 type mismatch and 0 nullable violations"
+        },
+        {
+          "id": "eval2_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes the mapped columns checked and the nullable-violation and type-mismatch counts, then asks the user to review the report and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
@@ -99,6 +107,10 @@
         {
           "id": "eval3_report_written",
           "text": "A report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
+        },
+        {
+          "id": "eval3_checkpoint_confirm",
+          "text": "Ends with a checkpoint: even though the report is clean (zero nullable violations and zero type mismatches), still asks the user for an explicit go-ahead before proceeding to the schema-generate step rather than declaring the skill done on its own"
         }
       ]
     }

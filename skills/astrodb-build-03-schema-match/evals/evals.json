@@ -1,9 +1,9 @@
 {
-  "skill_name": "astrodb-match-schema",
+  "skill_name": "astrodb-build-03-schema-match",
   "evals": [
     {
       "id": 1,
-      "prompt": "I ran astrodb-parse-data-table on my catalog and got this output. Can you tell me which AstroDB table and field each column belongs to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| source_id | Primary source identifier | — | str |\n| alt_name | Alternative catalog name | — | str |\n| ra | Right ascension (J2000) | deg | float64 |\n| dec | Declination (J2000) | deg | float64 |\n| plx | Parallax | mas | float64 |\n| e_plx | Parallax uncertainty | mas | float64 |\n| pmRA | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| e_pmRA | Uncertainty in pmRA | mas/yr | float64 |\n| pmDE | Proper motion in declination | mas/yr | float64 |\n| e_pmDE | Uncertainty in pmDE | mas/yr | float64 |\n| RV | Heliocentric radial velocity | km/s | float64 |\n| e_RV | RV uncertainty | km/s | float64 |\n| SpT | Spectral type | — | str |\n| assoc | Moving group or association membership | — | str |\n| ref | Reference bibcode | — | str |",
+      "prompt": "I ran astrodb-build-02-parse-table on my catalog and got this output. Can you tell me which AstroDB table and field each column belongs to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| source_id | Primary source identifier | — | str |\n| alt_name | Alternative catalog name | — | str |\n| ra | Right ascension (J2000) | deg | float64 |\n| dec | Declination (J2000) | deg | float64 |\n| plx | Parallax | mas | float64 |\n| e_plx | Parallax uncertainty | mas | float64 |\n| pmRA | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| e_pmRA | Uncertainty in pmRA | mas/yr | float64 |\n| pmDE | Proper motion in declination | mas/yr | float64 |\n| e_pmDE | Uncertainty in pmDE | mas/yr | float64 |\n| RV | Heliocentric radial velocity | km/s | float64 |\n| e_RV | RV uncertainty | km/s | float64 |\n| SpT | Spectral type | — | str |\n| assoc | Moving group or association membership | — | str |\n| ref | Reference bibcode | — | str |",
       "expected_output": "A markdown table mapping each column to the correct AstroDB table and field with confidence levels and ingestion notes.",
       "files": [],
       "assertions": [
@@ -54,12 +54,16 @@
         {
           "id": "eval1_directions_path",
           "text": "In the Context Documents step, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
+        },
+        {
+          "id": "eval1_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
     {
       "id": 2,
-      "prompt": "Here's the column table from astrodb-parse-data-table for a multi-band photometry catalog. Please map these to the right AstroDB fields:\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| name | Object designation (2MASS or WISE) | — | str |\n| Jmag | 2MASS J-band magnitude | mag | float64 |\n| eJmag | J-band magnitude uncertainty | mag | float64 |\n| Hmag | 2MASS H-band magnitude | mag | float64 |\n| eHmag | H-band uncertainty | mag | float64 |\n| Kmag | 2MASS Ks-band magnitude | mag | float64 |\n| eKmag | Ks-band uncertainty | mag | float64 |\n| W1mag | WISE W1 magnitude | mag | float64 |\n| eW1mag | W1 uncertainty | mag | float64 |\n| W2mag | WISE W2 magnitude | mag | float64 |\n| eW2mag | W2 uncertainty | mag | float64 |\n| Teff | Effective temperature from SED fit | K | float64 |\n| e_Teff | Teff uncertainty | K | float64 |\n| logL | Log luminosity from SED fit | Lsun | float64 |\n| e_logL | logL uncertainty | Lsun | float64 |",
+      "prompt": "Here's the column table from astrodb-build-02-parse-table for a multi-band photometry catalog. Please map these to the right AstroDB fields:\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| name | Object designation (2MASS or WISE) | — | str |\n| Jmag | 2MASS J-band magnitude | mag | float64 |\n| eJmag | J-band magnitude uncertainty | mag | float64 |\n| Hmag | 2MASS H-band magnitude | mag | float64 |\n| eHmag | H-band uncertainty | mag | float64 |\n| Kmag | 2MASS Ks-band magnitude | mag | float64 |\n| eKmag | Ks-band uncertainty | mag | float64 |\n| W1mag | WISE W1 magnitude | mag | float64 |\n| eW1mag | W1 uncertainty | mag | float64 |\n| W2mag | WISE W2 magnitude | mag | float64 |\n| eW2mag | W2 uncertainty | mag | float64 |\n| Teff | Effective temperature from SED fit | K | float64 |\n| e_Teff | Teff uncertainty | K | float64 |\n| logL | Log luminosity from SED fit | Lsun | float64 |\n| e_logL | logL uncertainty | Lsun | float64 |",
       "expected_output": "Band magnitude columns map to Photometry.magnitude, errors to Photometry.magnitude_error, with multi-row ingestion note. Teff and logL map to ModeledParameters.",
       "files": [],
       "assertions": [
@@ -90,12 +94,16 @@
         {
           "id": "eval2_multirow_note",
           "text": "The ingestion notes mention that each photometry band becomes a separate row in the Photometry table (one row per band per source, not one column per band)"
+        },
+        {
+          "id": "eval2_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
     {
       "id": 3,
-      "prompt": "I have a catalog of nearby brown dwarfs with columns from astrodb-parse-data-table below. I want to ingest this into my AstroDB database. What table/field does each column map to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| designation | Source name | — | str |\n| RA_ICRS | Right ascension ICRS | deg | float64 |\n| DE_ICRS | Declination ICRS | deg | float64 |\n| dist_pc | Distance | pc | float64 |\n| e_dist | Distance uncertainty | pc | float64 |\n| vsini | Projected rotational velocity | km/s | float64 |\n| e_vsini | vsini uncertainty | km/s | float64 |\n| Prot | Rotation period | d | float64 |\n| e_Prot | Period uncertainty | d | float64 |\n| sep_arcsec | Projected separation from companion | arcsec | float64 |\n| companion_name | Name of companion object | — | str |\n| Gmag | Gaia G magnitude | mag | float64 |\n| BPmag | Gaia BP magnitude | mag | float64 |\n| RPmag | Gaia RP magnitude | mag | float64 |\n| notes | Free-form notes | — | str |",
+      "prompt": "I have a catalog of nearby brown dwarfs with columns from astrodb-build-02-parse-table below. I want to ingest this into my AstroDB database. What table/field does each column map to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| designation | Source name | — | str |\n| RA_ICRS | Right ascension ICRS | deg | float64 |\n| DE_ICRS | Declination ICRS | deg | float64 |\n| dist_pc | Distance | pc | float64 |\n| e_dist | Distance uncertainty | pc | float64 |\n| vsini | Projected rotational velocity | km/s | float64 |\n| e_vsini | vsini uncertainty | km/s | float64 |\n| Prot | Rotation period | d | float64 |\n| e_Prot | Period uncertainty | d | float64 |\n| sep_arcsec | Projected separation from companion | arcsec | float64 |\n| companion_name | Name of companion object | — | str |\n| Gmag | Gaia G magnitude | mag | float64 |\n| BPmag | Gaia BP magnitude | mag | float64 |\n| RPmag | Gaia RP magnitude | mag | float64 |\n| notes | Free-form notes | — | str |",
       "expected_output": "Handles tricky unit conversions (dist→parallax, days→hours), companion columns, Gaia photometry, and notes field.",
       "files": [],
       "assertions": [
@@ -130,12 +138,16 @@
         {
           "id": "eval3_notes_comments",
           "text": "Column 'notes' is mapped to a comments field in some table"
+        },
+        {
+          "id": "eval3_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
     {
       "id": 4,
-      "prompt": "I ran astrodb-parse-data-table on NearbyGalaxies_Jan2021_PUBLIC.fits and want to load it into AstroDB. Here's the column summary — can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| GalaxyName | Galaxy name | — | str (16-char) |\n| RA | Right Ascension (hours minutes seconds) | — | str (10-char) |\n| Dec | Declination (degrees arcminutes arcseconds) | — | str (11-char) |\n| EB-V | Reddening E(B-V) | mag | float32 |\n| dmod | Distance modulus (m-M)0 | mag | float32 |\n| dmod+ | Upper uncertainty on dmod | mag | float32 |\n| dmod- | Lower uncertainty on dmod | mag | float32 |\n| vh | Heliocentric radial velocity | km / s | float32 |\n| vh+ | Upper uncertainty on vh | km / s | float32 |\n| vh- | Lower uncertainty on vh | km / s | float32 |\n| Vmag | Apparent V magnitude (Vega mags) | mag | float32 |\n| Vmag+ | Upper uncertainty on Vmag | mag | float32 |\n| Vmag- | Lower uncertainty on Vmag | mag | float32 |\n| PA | Position angle | deg | float32 |\n| PA+ | Upper uncertainty on PA | deg | float32 |\n| PA- | Lower uncertainty on PA | deg | float32 |\n| e=1-b/a | Projected ellipticity, e=1-b/a | dimensionless_unscaled | float32 |\n| e+ | Upper uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| e- | Lower uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| muVo | Central V surface brightness | mag / arcsec2 | float32 |\n| muVo+ | Upper uncertainty on muVo | mag / arcsec2 | float32 |\n| muVo- | Lower uncertainty on muVo | mag / arcsec2 | float32 |\n| rh | Half-light radius measured on major axis | arcmin | float32 |\n| rh+ | Upper uncertainty on rh | arcmin | float32 |\n| rh- | Lower uncertainty on rh | arcmin | float32 |\n| sigma_s | Stellar radial velocity dispersion | km / s | float32 |\n| sigma_s+ | Upper uncertainty on sigma_s | km / s | float32 |\n| sigma_s- | Lower uncertainty on sigma_s | km / s | float32 |\n| vrot_s | Stellar peak/max rotation velocity | km / s | float32 |\n| vrot_s+ | Upper uncertainty on vrot_s | km / s | float32 |\n| vrot_s- | Lower uncertainty on vrot_s | km / s | float32 |\n| MHI | HI mass | solMass | float32 |\n| sigma_g | HI radial velocity dispersion | km / s | float32 |\n| sigma_g+ | Upper uncertainty on sigma_g | km / s | float32 |\n| sigma_g- | Lower uncertainty on sigma_g | km / s | float32 |\n| vrot_g | HI peak/max rotation velocity | km / s | float32 |\n| vrot_g+ | Upper uncertainty on vrot_g | km / s | float32 |\n| vrot_g- | Lower uncertainty on vrot_g | km / s | float32 |\n| [Fe/H] | Stellar mean metallicity | dex | float32 |\n| feh+ | Upper uncertainty on [Fe/H] | dex | float32 |\n| feh- | Lower uncertainty on [Fe/H] | dex | float32 |\n| F | Flag | — | int16 |\n| pmra | Proper motion in right ascension | mas / yr | float32 |\n| epmra+ | Upper uncertainty on pmra | mas / yr | float32 |\n| epmra- | Lower uncertainty on pmra | mas / yr | float32 |\n| pmdec | Proper motion in declination | mas / yr | float32 |\n| epmdec+ | Upper uncertainty on pmdec | mas / yr | float32 |\n| epmdec- | Lower uncertainty on pmdec | mas / yr | float32 |\n| References | Literature references | — | str (53-char) |",
+      "prompt": "I ran astrodb-build-02-parse-table on NearbyGalaxies_Jan2021_PUBLIC.fits and want to load it into AstroDB. Here's the column summary — can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| GalaxyName | Galaxy name | — | str (16-char) |\n| RA | Right Ascension (hours minutes seconds) | — | str (10-char) |\n| Dec | Declination (degrees arcminutes arcseconds) | — | str (11-char) |\n| EB-V | Reddening E(B-V) | mag | float32 |\n| dmod | Distance modulus (m-M)0 | mag | float32 |\n| dmod+ | Upper uncertainty on dmod | mag | float32 |\n| dmod- | Lower uncertainty on dmod | mag | float32 |\n| vh | Heliocentric radial velocity | km / s | float32 |\n| vh+ | Upper uncertainty on vh | km / s | float32 |\n| vh- | Lower uncertainty on vh | km / s | float32 |\n| Vmag | Apparent V magnitude (Vega mags) | mag | float32 |\n| Vmag+ | Upper uncertainty on Vmag | mag | float32 |\n| Vmag- | Lower uncertainty on Vmag | mag | float32 |\n| PA | Position angle | deg | float32 |\n| PA+ | Upper uncertainty on PA | deg | float32 |\n| PA- | Lower uncertainty on PA | deg | float32 |\n| e=1-b/a | Projected ellipticity, e=1-b/a | dimensionless_unscaled | float32 |\n| e+ | Upper uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| e- | Lower uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| muVo | Central V surface brightness | mag / arcsec2 | float32 |\n| muVo+ | Upper uncertainty on muVo | mag / arcsec2 | float32 |\n| muVo- | Lower uncertainty on muVo | mag / arcsec2 | float32 |\n| rh | Half-light radius measured on major axis | arcmin | float32 |\n| rh+ | Upper uncertainty on rh | arcmin | float32 |\n| rh- | Lower uncertainty on rh | arcmin | float32 |\n| sigma_s | Stellar radial velocity dispersion | km / s | float32 |\n| sigma_s+ | Upper uncertainty on sigma_s | km / s | float32 |\n| sigma_s- | Lower uncertainty on sigma_s | km / s | float32 |\n| vrot_s | Stellar peak/max rotation velocity | km / s | float32 |\n| vrot_s+ | Upper uncertainty on vrot_s | km / s | float32 |\n| vrot_s- | Lower uncertainty on vrot_s | km / s | float32 |\n| MHI | HI mass | solMass | float32 |\n| sigma_g | HI radial velocity dispersion | km / s | float32 |\n| sigma_g+ | Upper uncertainty on sigma_g | km / s | float32 |\n| sigma_g- | Lower uncertainty on sigma_g | km / s | float32 |\n| vrot_g | HI peak/max rotation velocity | km / s | float32 |\n| vrot_g+ | Upper uncertainty on vrot_g | km / s | float32 |\n| vrot_g- | Lower uncertainty on vrot_g | km / s | float32 |\n| [Fe/H] | Stellar mean metallicity | dex | float32 |\n| feh+ | Upper uncertainty on [Fe/H] | dex | float32 |\n| feh- | Lower uncertainty on [Fe/H] | dex | float32 |\n| F | Flag | — | int16 |\n| pmra | Proper motion in right ascension | mas / yr | float32 |\n| epmra+ | Upper uncertainty on pmra | mas / yr | float32 |\n| epmra- | Lower uncertainty on pmra | mas / yr | float32 |\n| pmdec | Proper motion in declination | mas / yr | float32 |\n| epmdec+ | Upper uncertainty on pmdec | mas / yr | float32 |\n| epmdec- | Lower uncertainty on pmdec | mas / yr | float32 |\n| References | Literature references | — | str (53-char) |",
       "expected_output": "Galaxy catalog mapped with astropy-format units. vh (km / s) → RadialVelocities.rv_kms, pmra/pmdec (mas / yr) → ProperMotions, e=1-b/a (dimensionless_unscaled) → Morphology.ellipticity, rh (arcmin) → Morphology.half_light_radius_arcmin, MHI (solMass) → ModeledParameters. F flag column marked Unmatched with user prompt. RA/Dec sexagesimal conversion noted.",
       "files": [],
       "assertions": [
@@ -182,12 +194,16 @@
         {
           "id": "eval4_asymmetric_errors_noted",
           "text": "The output notes that asymmetric error columns (e.g. dmod+/dmod-) are non-standard for AstroDB and explains handling options"
+        },
+        {
+          "id": "eval4_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
     {
       "id": 5,
-      "prompt": "I ran astrodb-parse-data-table on arecibo_radar_observed_objects_list.csv and got this column summary. Can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| Number | Identifier number of the observed object | — | str |\n| Name | Common name of the observed object | — | str |\n| Designation | Provisional or permanent designation (e.g., asteroid number) | — | str |\n| Category | Category/type of object (e.g., Planet, Moon, MBA, Comet) | — | str |\n| Components | Number of components in the system | dimensionless_unscaled | float64 |\n| Absolute Magnitute | Absolute magnitude of the object (note: column name contains typo — should be \"Magnitude\") | mag | float64 |\n| Quality Code for Best Images | Quality code for best radar images (numeric scale) | — | float64 |\n| NASA Link | URL link to the NASA page for the object | — | str |",
+      "prompt": "I ran astrodb-build-02-parse-table on arecibo_radar_observed_objects_list.csv and got this column summary. Can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| Number | Identifier number of the observed object | — | str |\n| Name | Common name of the observed object | — | str |\n| Designation | Provisional or permanent designation (e.g., asteroid number) | — | str |\n| Category | Category/type of object (e.g., Planet, Moon, MBA, Comet) | — | str |\n| Components | Number of components in the system | dimensionless_unscaled | float64 |\n| Absolute Magnitute | Absolute magnitude of the object (note: column name contains typo — should be \"Magnitude\") | mag | float64 |\n| Quality Code for Best Images | Quality code for best radar images (numeric scale) | — | float64 |\n| NASA Link | URL link to the NASA page for the object | — | str |",
       "expected_output": "Solar system catalog: identifiers map to Sources/Names, Absolute Magnitute marked Unmatched (absolute not apparent mag), NASA Link marked Unmatched (generic URL), Quality Code marked Unmatched (quality flag). User is asked what to do with all three Unmatched columns.",
       "files": [],
       "assertions": [
@@ -210,12 +226,16 @@
         {
           "id": "eval5_unmatched_count",
           "text": "At least 3 of the 8 columns are marked Unmatched or flagged with strong caveats — this is a solar system catalog and most columns fall outside AstroDB's stellar schema"
+        },
+        {
+          "id": "eval5_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
     {
       "id": 6,
-      "prompt": "Here's the astrodb-parse-data-table output for my Gaia ultracool dwarf sample. Map each column to the right AstroDB table and field — Sources should stay bare.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| gucds_name | Canonical GUCDS source name | — | str |\n| gucds_shortname | GUCDS short-form name | — | str |\n| twomass_designation | 2MASS designation | — | str |\n| wise_designation | WISE designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| pmra | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| pmdec | Proper motion in declination | mas/yr | float64 |\n| rv | Radial velocity | km/s | float64 |\n| survey_flag | Internal survey membership flag | — | int16 |\n| vizier_url | Link to the VizieR catalog page | — | str |",
+      "prompt": "Here's the astrodb-build-02-parse-table output for my Gaia ultracool dwarf sample. Map each column to the right AstroDB table and field — Sources should stay bare.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| gucds_name | Canonical GUCDS source name | — | str |\n| gucds_shortname | GUCDS short-form name | — | str |\n| twomass_designation | 2MASS designation | — | str |\n| wise_designation | WISE designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| pmra | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| pmdec | Proper motion in declination | mas/yr | float64 |\n| rv | Radial velocity | km/s | float64 |\n| survey_flag | Internal survey membership flag | — | int16 |\n| vizier_url | Link to the VizieR catalog page | — | str |",
       "expected_output": "Exactly one column (gucds_name) becomes Sources.source; gucds_shortname, twomass_designation, and wise_designation all map to Names.other_name (High confidence), NOT to Sources. pmra/pmdec map to ProperMotions and rv to RadialVelocities — never to Sources. Sources receives only source, ra_deg, dec_deg. survey_flag and vizier_url are marked Unmatched and routed to a proposed Misc table (or ignored), not dumped into Sources.comments.",
       "files": [],
       "assertions": [
@@ -250,6 +270,10 @@
         {
           "id": "eval6_misc_not_sources_comments",
           "text": "Columns 'survey_flag' and 'vizier_url' are marked Unmatched and offered a proposed Misc table (or ignore) — they are NOT dumped into Sources.comments and NOT proposed as new fields on the Sources table"
+        },
+        {
+          "id": "eval6_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     },
@@ -274,6 +298,10 @@
         {
           "id": "eval7_no_continuous_to_adopted",
           "text": "No continuous or string column anywhere in the mapping is assigned to an 'adopted' field — adopted is treated as boolean-only"
+        },
+        {
+          "id": "eval7_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
         }
       ]
     }
