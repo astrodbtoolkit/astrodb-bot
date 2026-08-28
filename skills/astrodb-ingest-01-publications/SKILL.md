@@ -16,8 +16,8 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-ingest-directions.md` — the ingest-phase conventions (decision log,
-   completion-checklist behavior). It points to `references/astrodb-directions.md` for the shared
+1. Read `references/astrodb-ingest-instructions.md` — the ingest-phase conventions (decision log,
+   completion-checklist behavior). It points to `references/astrodb-instructions.md` for the shared
    artifact-folder, `gotchas.md`, and "ask, don't assume" rules.
 2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
    prior ingest skills.
@@ -234,7 +234,7 @@ confirmed before saving.
 ## Completion Checklist
 
 Before telling the user publications are ingested, verify every item below and reproduce the
-evidence-annotated list in your final message, per `references/astrodb-ingest-directions.md`.
+evidence-annotated list in your final message, per `references/astrodb-ingest-instructions.md`.
 
 - [ ] The database was located — a `database.toml` or standalone `.sqlite` the user pointed you to or that you found in the project root; you asked rather than inventing a path when it wasn't found.
 - [ ] You checked for an ADS token with `check_ads_token()`; if it was missing, you offered to set it up or proceeded with `ignore_ads=True` and hand-supplied metadata.

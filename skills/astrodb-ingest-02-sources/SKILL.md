@@ -14,8 +14,8 @@ parameter meanings, and common warnings with fixes.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-ingest-directions.md` — the ingest-phase conventions (decision log,
-   completion-checklist behavior). It points to `references/astrodb-directions.md` for the shared
+1. Read `references/astrodb-ingest-instructions.md` — the ingest-phase conventions (decision log,
+   completion-checklist behavior). It points to `references/astrodb-instructions.md` for the shared
    artifact-folder, `gotchas.md`, and "ask, don't assume" rules.
 2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
    prior ingest skills.
@@ -235,7 +235,7 @@ After a successful dry run, ask the user:
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-directions.md` to log an entry in
+Follow the convention in `references/astrodb-ingest-instructions.md` to log an entry in
 `astrodb-ingest-artifacts/ingest-workflow.md`. Record: which sources were ingested / skipped and why,
 how source names were resolved against SESAME/SIMBAD, any missing publications you offered to ingest,
 and whether the user explicitly confirmed before saving.
