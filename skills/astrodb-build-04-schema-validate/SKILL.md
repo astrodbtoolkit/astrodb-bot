@@ -119,6 +119,27 @@ to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool —
 - **String columns with empty strings**: count `""` as effectively null for non-nullable
   string fields — empty strings often slip through where None would be caught.
 
+## Checkpoint: Confirm before proceeding
+
+After writing the validation report, present a brief summary in chat:
+- Total mapped columns checked
+- Number of nullable violations and type mismatches found, if any
+- Any edge cases hit (columns not found in data/schema, all-null columns, etc.)
+
+Then ask the user to review the report and confirm:
+
+> I've written the validation report to `<path>`. Please review it and let me know:
+> 1. For any nullable violations — should the schema field become nullable, or does the data
+>    need to be cleaned/filled before ingest?
+> 2. For any type mismatches — is the mapping correct, or does the schema field's type need to
+>    change?
+> 3. Are you ready to proceed to `astrodb-build-schema-generate`?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they request
+changes to the mapping or schema, apply them and re-run validation before asking again. Do not
+proceed to `astrodb-build-schema-generate` or any downstream skill until the user confirms the
+report is ready — even a clean report (zero violations) should still get an explicit go-ahead.
+
 ## Completion Checklist
 
 Before telling the user validation is done, verify every item in your section of the workflow checklist file and reproduce
@@ -131,4 +152,5 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
 - [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
+- [ ] You asked the user to review the report and confirm before proceeding, and waited for their explicit confirmation (applying and re-validating any requested changes) before treating this skill as done.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

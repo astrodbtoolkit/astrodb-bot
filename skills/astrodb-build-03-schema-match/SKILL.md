@@ -180,6 +180,28 @@ Tell the user the exact file paths to both the markdown table and the HTML file 
 - **Proposed (new field)**: User chose to add a new field to an existing table — needs a schema update before ingestion
 - **Proposed (new table)**: User chose to add a new table — needs a schema update before ingestion
 
+## Checkpoint: Confirm before proceeding
+
+After writing the mapping files — and after any Unmatched-column follow-up has been answered or
+left open — present a brief summary in chat:
+- How many columns matched at each confidence level (High/Medium/Low)
+- How many columns are Unmatched, and how many of those the user resolved
+- How many Proposed Schema Additions (new fields or tables) were generated, if any
+
+Then give the user a chance to review the complete mapping before moving on:
+
+> I've written the schema mapping to `<md path>` (and `<html path>`). Please review it and let me
+> know:
+> 1. Does every column's DB Table.Field assignment look right?
+> 2. Do the Proposed Schema Additions (if any) look right before they become part of
+>    `schema.yaml`?
+> 3. Are you ready to proceed to `astrodb-build-schema-generate`?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they request
+corrections, apply them and update both the `.md` and `.html` output files before asking again.
+Do not proceed to `astrodb-build-schema-generate` or any downstream skill until the user confirms
+the mapping is ready.
+
 ## Final Step: Update `build-workflow.md`
 
 Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
@@ -201,4 +223,5 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
 - [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
 - [ ] You gave a short plain-text summary in the chat and told the user the paths to both files.
+- [ ] You asked the user to review the complete mapping and confirm before proceeding, and waited for their explicit confirmation (applying and re-confirming any requested corrections) before treating this skill as done.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

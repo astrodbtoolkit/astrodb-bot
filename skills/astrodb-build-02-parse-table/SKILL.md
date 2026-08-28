@@ -224,7 +224,7 @@ with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
     json.dump(sidecar, f)
 ```
 
-### Step 6: Confirm before proceeding
+### Checkpoint: Confirm before proceeding
 
 After writing the output files, present a brief summary in chat:
 - Total columns parsed, and how many rows are in the file
@@ -237,6 +237,7 @@ Then ask the user to open the HTML file and explicitly confirm the results:
 > 1. Does the column list look complete?
 > 2. Are any descriptions, units, or types wrong or missing?
 > 3. Are there columns that should be skipped in the schema-match step?
+> 4. Are you ready to proceed to `astrodb-build-schema-match`?
 
 **Wait for the user's explicit confirmation before this skill is complete.** If they request
 corrections, apply them and update the output files before asking again. Do not proceed to
@@ -248,7 +249,6 @@ was any ambiguity, the user may want to know or change it.
 
 > **Note:** `schema.yaml` is not created in this step or in `astrodb-build-schema-match`.
 > It is generated later by `astrodb-build-schema-generate`.
-Ask the user to inspect the results table and check if everything looks good, or if they want to make any edits to the descriptions, units, or types. If they want to make edits, allow them to specify which column(s) and what changes to make, then update the markdown and HTML files accordingly.
 
 ## Final Step: Update `build-workflow.md`
 
@@ -271,5 +271,5 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
 - [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
 - [ ] The file was successfully read (astropy first, pandas fallback) in a verified Python 3.11+ environment, and the sidecar `astrodb-build-artifacts/astrodb-parse-result.json` records the reader, format, and row count — then was updated with the output file paths.
-- [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.
+- [ ] You showed links to both files in the chat (the table was not dumped inline), asked the user to review and confirm before proceeding, and waited for their explicit confirmation (applying and re-confirming any requested corrections) before treating this skill as done.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

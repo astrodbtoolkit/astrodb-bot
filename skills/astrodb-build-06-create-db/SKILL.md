@@ -207,6 +207,31 @@ Next steps:
   2. Update the count assertions in tests/test_contents_*.py to match your data.
 ```
 
+## Checkpoint: Confirm before proceeding
+
+After the final report, present a brief summary in chat:
+- The database file path and size
+- How many tables were created, and how many tests were generated and passed
+
+Then ask the user to visually inspect the new database before ingesting any data into it:
+
+> I've created `<db-name>.sqlite` at `<path>`. Before we start ingesting data, I'd recommend
+> opening it in a SQLite database browser (e.g. DB Browser for SQLite, DBViewer, or TablePlus)
+> to confirm:
+> 1. All the expected tables are present, with the columns you mapped in schema-match.
+> 2. Table and column names look right — this is the easiest point to fix naming, before any
+>    data goes in.
+> 3. Tables are empty, as expected for a freshly created database.
+> 4. Are you ready to move on to ingesting data (starting with
+>    `astrodb-ingest-01-publications`)?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they spot
+something wrong (a missing/misnamed table or column, wrong type), send them back to the
+appropriate upstream skill — `astrodb-build-05-schema-generate` for schema-level fixes, or
+`astrodb-build-03-schema-match` if the mapping itself was wrong — and regenerate rather than
+patching the `.sqlite` file directly with ad hoc SQL. Do not proceed to the ingest skills until
+the user confirms the database looks right.
+
 ## Completion Checklist
 
 Before telling the user the database is created, verify every item in your section of the workflow checklist file and
@@ -220,4 +245,5 @@ do not proceed past a failure.
 - [ ] The empty SQLite database was created with `scripts/create_db.py`, and you verified the `.sqlite` file exists and is non-empty.
 - [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
 - [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.
+- [ ] You asked the user to inspect the `.sqlite` file in a database browser and confirm before proceeding, and waited for their explicit confirmation before treating this skill as done.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
