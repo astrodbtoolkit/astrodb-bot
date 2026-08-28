@@ -24,6 +24,23 @@ its own artifact directory: **`astrodb-ingest-artifacts/ingest-workflow.md`**.
 - **Prepend** one entry (using the standard entry format from `astrodb-instructions.md`) after your main
   work — **most recent on top, each entry dated**. Do not edit existing entries; add a new one above them.
 
+## Post-ingest checkpoint: link the database
+
+After every ingest that actually writes to the database (`SAVE_DB` was flipped to `True` and the save
+succeeded — not a dry run), tell the user where the `.sqlite` file lives and invite them to inspect it
+before moving on:
+
+- Resolve the real path — `<project-root>/<db_name>.sqlite` for the JSON template layout (read `db_name`
+  from `database.toml`), or the standalone `.sqlite` path the user already pointed you to.
+- Report it as a clickable markdown link (e.g. `[MyDataset.sqlite](MyDataset.sqlite)`) and suggest a quick
+  way to look at it — open it in DB Browser for SQLite/TablePlus, or run a one-off query against the table
+  you just touched.
+- Do this even when the ingest reported success and nothing looked wrong. The checkpoint exists to catch
+  what the ingest helpers can't — a description that's subjectively off, a row attached to the wrong
+  source — not just to confirm the write happened.
+
+This happens every time data is written, independent of the completion checklist below.
+
 ## Completion checklist: verify and report, don't persist
 
 The ingest phase does **not** persist its checklist to a `checklists.md` file — the shared
