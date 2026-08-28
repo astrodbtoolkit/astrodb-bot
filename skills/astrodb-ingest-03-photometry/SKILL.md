@@ -20,9 +20,11 @@ warnings with fixes.
 
 ## Step 0: Read context documents
 
-Read `references/astrodb-instructions.md` (shared conventions) and
-`references/astrodb-ingest-instructions.md` (ingest-specific conventions) — together they cover the
-artifact folder, decision log, and completion-checklist conventions this skill follows.
+1. Read `references/astrodb-ingest-instructions.md` — the ingest-phase conventions (decision log,
+   completion-checklist behavior). It points to `references/astrodb-directions.md` for the shared
+   artifact-folder, `gotchas.md`, and "ask, don't assume" rules.
+2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
+   prior ingest skills.
 
 ## Prerequisites
 
@@ -241,17 +243,16 @@ After a clean dry run, ask the user:
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-instructions.md`. **Prepend** one dated entry (most
-recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
-it doesn't exist). Record: which bands resolved to which SVO IDs (and any confirmed with the user), the
-regimes derived, which filters / telescopes / instruments / regimes were created, how many measurements
-were ingested / skipped and why, and whether the user confirmed before saving.
+Follow the convention in `references/astrodb-ingest-instructions.md` to log an entry in
+`astrodb-ingest-artifacts/ingest-workflow.md`. Record: which bands resolved to which SVO IDs (and any
+confirmed with the user), the regimes derived, which filters / telescopes / instruments / regimes were
+created, how many measurements were ingested / skipped and why, and whether the user confirmed before
+saving.
 
 ## Completion Checklist
 
-Before telling the user photometry is ingested, verify every item in the checklist below, per the
-**completion-checklist convention** in `references/astrodb-ingest-instructions.md` — verify and report
-each item in your final message; do **not** write the checklist out to a file.
+Before telling the user photometry is ingested, verify every item below and reproduce the
+evidence-annotated list in your final message, per `references/astrodb-ingest-directions.md`.
 
 - [ ] `database.toml` was located (you asked the user rather than inventing one when it wasn't found).
 - [ ] Every source name was resolved to a unique `Sources.source` (directly or through `Names`), and any that did not resolve were flagged — with `astrodb-ingest-sources` offered as a sub-step rather than inventing sources or ingesting against a non-existent one.
