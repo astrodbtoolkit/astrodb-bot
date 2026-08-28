@@ -1,5 +1,5 @@
 ---
-name: astrodb-build-setup
+name: astrodb-build-01-setup
 description: First step in creating a new AstroDB database — run this FIRST, before any other astrodb-* skill, whenever the user wants to start, create, or set up a new AstroDB (astronomical) database, or asks "what's the first step to making a new astrodb." It stands up the database repository — ask for a database name (and suggest the user give their new GitHub repo that same name), have the user create that repo from the astrodb-template (https://github.com/astrodbtoolkit/astrodb-template-db, via "Use this template") and give you its address, clone that repo, verify it has the expected template structure (a data/ directory, a database.toml, and a schema.yaml), and update database.toml with the new name. This step only stands up and names the empty scaffold — it does not touch data files or ingestion, which come later. Trigger on "start a new astrodb," "set up an astronomical database," or "what's the first step to a new astrodb." When beginning a brand-new AstroDB, use this skill first.
 compatibility: git, python
 metadata:
@@ -8,7 +8,7 @@ metadata:
 
 # AstroDB Setup
 
-Read `references/astrodb-directions.md` before starting — it defines the workflow that
+Read `references/astrodb-instructions.md` before starting — it defines the workflow that
 you should use.
 
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
@@ -162,7 +162,7 @@ user what's absent and have them confirm they used **Use this template** on astr
 going on.
 
 Now that the repo is in place, record this skill's checklist per the **completion-checklist convention**
-in `references/astrodb-build-directions.md`. Create the artifact directory and add a `## astrodb-build-setup`
+in `references/astrodb-build-instructions.md`. Create the artifact directory and add a `## astrodb-build-setup`
 section holding the items from `## Completion Checklist` (bottom of this file) to
 `<repo-dir>/astrodb-build-artifacts/checklists.md`, then tick items with evidence as you complete them
 through the rest of setup:
@@ -409,7 +409,7 @@ Only raise this if there is an actual mismatch. If the names already match, skip
 
 ## Final Step: Initialize `build-workflow.md`
 
-Follow the convention in `references/astrodb-build-directions.md`. Create
+Follow the convention in `references/astrodb-build-instructions.md`. Create
 `astrodb-build-artifacts/build-workflow.md` (using the standard header) and append a setup entry
 recording: the database name chosen, the GitHub repo URL, the README description provided, and whether a
 directions document was completed now or deferred. Subsequent build skills will append to this file.
@@ -418,7 +418,7 @@ directions document was completed now or deferred. Subsequent build skills will 
 
 Before telling the user setup is complete, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`.
+`references/astrodb-build-instructions.md`.
 
 Where an item says "asked", reading the answer out of the directions document counts — that's the point
 of the document. What doesn't count is neither asking nor finding it written down.
@@ -433,4 +433,4 @@ of the document. What doesn't count is neither asking nor finding it written dow
 - [ ] **Artifacts** — `astrodb-build-artifacts/` exists. If the user supplied a directions document by path, it has been copied to `astrodb-build-artifacts/directions.md`. It contains `directions.md` only if the user actually wrote one or supplied a path; you did not leave an unfilled template behind.
 - [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
 - [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

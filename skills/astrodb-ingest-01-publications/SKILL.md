@@ -1,5 +1,5 @@
 ---
-name: astrodb-ingest-publications
+name: astrodb-ingest-01-publications
 description: "Generate and run a Python script that adds publications (references/citations) to an AstroDB Publications lookup table. Use this skill when the user says: ingest a publication, add a paper/reference/citation, populate the Publications table, 'add this DOI/bibcode', or names a paper by author+year (e.g. 'add Cruz et al. 2003') even when NO DOI is given. Also use to backfill or complete missing metadata (bibcode, DOI, description) for reference shortnames that ALREADY exist in a Publications table but are blank — e.g. 'look at Publications and fill everything out'. Also use when a data table's discovery references are missing from Publications and must be added before sources/photometry/spectra can be ingested. Handles a single paper, a batch of references from a table column, or backfilling an existing table — including the common case where the user has only a reference shortname or author+year and the paper must first be looked up online. Works standalone or as the prerequisite step before ingest-sources."
 compatibility: python, astrodb_utils
 ---
@@ -16,7 +16,7 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Record this skill's checklist per the completion-checklist convention — create the artifact
@@ -221,7 +221,7 @@ verify zero rows still have NULL `bibcode`/`doi`/`description`.
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-directions.md`. **Prepend** one dated entry (most
+Follow the convention in `references/astrodb-ingest-instructions.md`. **Prepend** one dated entry (most
 recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
 it doesn't exist yet). Record: which references were ingested, any that were already present or
 failed, how ambiguous shortnames were resolved, and whether the user explicitly confirmed
@@ -231,7 +231,7 @@ before saving.
 
 Before telling the user publications are ingested, verify every item below and reproduce the
 evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-ingest-directions.md` — verify and report each item in your final message; do
+`references/astrodb-ingest-instructions.md` — verify and report each item in your final message; do
 **not** write the checklist out to a file.
 
 - [ ] The database was located — a `database.toml` or standalone `.sqlite` the user pointed you to or that you found in the project root; you asked rather than inventing a path when it wasn't found.
@@ -243,4 +243,4 @@ evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
 - [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.
 - [ ] If — and only if — this was a backfill of an existing `Publications` table: rows whose metadata was already populated were skipped (idempotent), updates used the path matching the layout (direct `UPDATE` for a standalone `.sqlite`; `ingest_publication` + `db.save_database()` for the JSON layout), and you verified at the end that zero rows still have NULL `bibcode`/`doi`/`description`.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

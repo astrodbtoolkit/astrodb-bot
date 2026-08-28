@@ -1,5 +1,5 @@
 ---
-name: astrodb-build-schema-generate
+name: astrodb-build-05-schema-generate
 description: Generate a Felis YAML schema for a user-provided astronomical data file, using the output of the astrodb-build-schema-match and astrodb-build-schema-validate skills. Produces a standards-compliant schema.yaml covering each mapped table and column, with proper Felis syntax (@id references, datatypes, nullable flags, units, and foreign key constraints). Always use this skill when the user has completed a schema mapping (with or without validation) and wants to produce a Felis YAML, create a schema file for their data, generate schema.yaml, export their mapping as a schema, or document their database tables. Also trigger when the user says "generate schema", "create felis yaml", "make a schema file", or "turn this mapping into a schema".
 compatibility: python, pyyaml
 metadata:
@@ -14,7 +14,7 @@ by the user's data.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills (especially schema-match choices).
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may specify
@@ -182,7 +182,7 @@ Fix the errors, rewrite the file, and re-run validation. Repeat until the schema
 
 Before telling the user the schema is generated, verify every item in your section of the workflow checklist file and
 reproduce the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`.
+`references/astrodb-build-instructions.md`.
 
 - [ ] The schema name was confirmed with the user (Step 0) and is a real dataset name — never `astrodb_template`/`template` — matching the `name:` and `@id:` written into the file.
 - [ ] Unmatched and (if a validation report was provided) problematic columns were audited and raised with the user — one question per category — or there were none. If no validation report was provided, you noted the schema was generated without null/type checks and suggested validating before ingesting.
@@ -191,4 +191,4 @@ reproduce the evidence-annotated list here, per the **completion-checklist conve
 - [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` — you gave the user the path rather than reproducing the full YAML in the chat.
 - [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
 - [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

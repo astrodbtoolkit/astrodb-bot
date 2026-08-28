@@ -1,5 +1,5 @@
 ---
-name: astrodb-build-parse-table
+name: astrodb-build-02-parse-table
 description: Parse a data table file and extract column information (name, description, units, type). Supports FITS, CSV, ECSV, HDF5, VOTable, MRT, Parquet, Excel, and more. Generates a markdown table summarizing the columns.
 compatibility: python, astropy, pandas
 metadata:
@@ -14,7 +14,7 @@ Parse the data table file `$ARGUMENTS` and extract column information.
 
 ### Step 0: Read context documents and set up
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it to carry
    forward context from prior skills.
 3. Create the artifact folder:
@@ -275,7 +275,7 @@ Ask the user to inspect the results table and check if everything looks good, or
 
 ## Final Step: Update `build-workflow.md`
 
-Follow the convention in `references/astrodb-build-directions.md`. Append one new entry to
+Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
 `astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it
 doesn't exist yet). Record: which file was parsed, which reader was used and why, any
 column descriptions or units that were inferred, what the user confirmed during gap-filling,
@@ -285,7 +285,7 @@ and any columns still missing metadata.
 
 Before telling the user the table is parsed, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`. Don't claim a value you didn't actually extract.
+`references/astrodb-build-instructions.md`. Don't claim a value you didn't actually extract.
 
 - [ ] Descriptions were extracted using the format-specific methods in `references/format-specific-metadata.md` — not taken from what Step 2 printed (which is only reliable for ECSV and CDS/MRT).
 - [ ] For a `.txt`/`.dat` input, you checked for the `Byte-by-byte Description of file` MRT signature before treating it as plain CSV.
@@ -295,4 +295,4 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
 - [ ] The file was successfully read (astropy first, pandas fallback) in a verified Python 3.11+ environment, and the sidecar `astrodb-build-artifacts/astrodb-parse-result.json` records the reader, format, and row count — then was updated with the output file paths.
 - [ ] You showed links to both files in the chat (the table was not dumped inline) and invited the user to review or edit.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

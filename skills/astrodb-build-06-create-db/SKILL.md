@@ -1,6 +1,6 @@
 ---
-name: astrodb-build-create-db
-description: Create an empty SQLite AstroDB database from a Felis-validated schema.yaml, following the astrodb-template-db file structure. Use this skill whenever the user wants to create a database, initialize a SQLite database, build an AstroDB, or has just finished generating a Felis schema and wants to turn it into a working database. Always trigger after astrodb-build-schema-generate completes, or when the user says "create database", "make database", "initialize database", "create sqlite", "make sqlite", "build the database", "create astrodb", "initialize astrodb", or "set up the database". Do NOT skip this skill just because a schema.yaml already exists — this skill is exactly what handles that case.
+name: astrodb-build-06-create-db
+description: Create an empty SQLite AstroDB database from a Felis-validated schema.yaml, following the astrodb-template-db file structure. Use this skill whenever the user wants to create a database, initialize a SQLite database, build an AstroDB, or has just finished generating a Felis schema and wants to turn it into a working database. Always trigger after astrodb-build-05-schema-generate completes, or when the user says "create database", "make database", "initialize database", "create sqlite", "make sqlite", "build the database", "create astrodb", "initialize astrodb", or "set up the database". Do NOT skip this skill just because a schema.yaml already exists — this skill is exactly what handles that case.
 compatibility: python, astrodbkit, felis
 ---
 
@@ -12,16 +12,16 @@ using `astrodbkit`.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Record this skill's checklist per the completion-checklist convention — create the artifact
-   directory if needed, then add a `## astrodb-build-create-db` section holding the items from
+   directory if needed, then add a `## astrodb-build-06-create-db` section holding the items from
    `## Completion Checklist` (bottom of this file) to `astrodb-build-artifacts/checklists.md`.
 
 ## Prerequisites
 
-This skill requires a schema.yaml that has **passed** `felis validate`. The astrodb-build-schema-generate
+This skill requires a schema.yaml that has **passed** `felis validate`. The astrodb-build-05-schema-generate
 skill always runs this validation as its final step, so if the user just completed that workflow
 the schema is already validated. If there is any doubt, validate before proceeding.
 
@@ -29,7 +29,7 @@ the schema is already validated. If there is any doubt, validate before proceedi
 
 Check (in order):
 1. A path the user explicitly stated in the conversation
-2. `astrodb-build-artifacts/<schema-name>-schema.yaml` — the default output of astrodb-build-schema-generate
+2. `astrodb-build-artifacts/<schema-name>-schema.yaml` — the default output of astrodb-build-05-schema-generate
 3. `schema.yaml` in the current working directory
 
 If you cannot find the file, ask the user for the path before continuing.
@@ -45,7 +45,7 @@ felis validate <schema-path>
 ```
 
 **If validation fails:** show the error to the user and stop — do not create the database from
-a broken schema. Offer to go back to astrodb-build-schema-generate to fix the issue.
+a broken schema. Offer to go back to astrodb-build-05-schema-generate to fix the issue.
 
 **If validation passes:** proceed.
 
@@ -137,7 +137,7 @@ python <skill-dir>/scripts/create_db.py --schema ... --db-path ...
 ```
 
 **If the script fails**, read the traceback carefully:
-- `felis.datamodel` errors → schema is not valid Felis; offer to re-run astrodb-build-schema-generate
+- `felis.datamodel` errors → schema is not valid Felis; offer to re-run astrodb-build-05-schema-generate
 - `sqlite3` errors → check that the db path is writable
 - `ImportError` for astrodbkit → astrodbkit is not installed; run `uv add astrodbkit`
 
@@ -213,7 +213,7 @@ Next steps:
 
 Before telling the user the database is created, verify every item in your section of the workflow checklist file and
 reproduce the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`. The felis-validation and pytest gates below are **not waivable** —
+`references/astrodb-build-instructions.md`. The felis-validation and pytest gates below are **not waivable** —
 do not proceed past a failure.
 
 - [ ] You located the schema.yaml and confirmed `felis validate` passes on it — if it doesn't, you stopped rather than building from a broken schema.
@@ -222,4 +222,4 @@ do not proceed past a failure.
 - [ ] The empty SQLite database was created with `scripts/create_db.py`, and you verified the `.sqlite` file exists and is non-empty.
 - [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
 - [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

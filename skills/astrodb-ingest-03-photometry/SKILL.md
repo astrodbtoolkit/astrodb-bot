@@ -1,5 +1,5 @@
 ---
-name: astrodb-ingest-photometry
+name: astrodb-ingest-03-photometry
 description: "Generate and run a Python script that ingests photometry (magnitudes / brightness measurements) into an AstroDB Photometry table from a data table. Use this skill when the user says: ingest photometry, add magnitudes, add brightness measurements, populate the Photometry table, add JHK/WISE/SDSS/Gaia magnitudes, or provides a FITS/CSV/ECSV file with magnitude columns and wants them in the database. Sets up the required PhotometryFilters, Telescopes, and Instruments (from SVO filter IDs) before the magnitudes. Works standalone or as the step after astrodb-ingest-sources."
 compatibility: python, astropy, astrodb_utils
 ---
@@ -20,14 +20,14 @@ warnings with fixes.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-ingest-directions.md` — the conventions for the ingest workflow: the
+1. Read `references/astrodb-ingest-instructions.md` — the conventions for the ingest workflow: the
    `ingest-workflow.md` decision log and the completion-checklist convention. It points to
-   `references/astrodb-directions.md` for the shared artifact-folder and "ask, don't assume" rules.
+   `references/astrodb-instructions.md` for the shared artifact-folder and "ask, don't assume" rules.
 2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
    prior ingest skills.
 
 (The ingest skills **verify** their completion checklist and report it in the final message — they do
-not write it out to a file. See `references/astrodb-ingest-directions.md`.)
+not write it out to a file. See `references/astrodb-ingest-instructions.md`.)
 
 ## Prerequisites
 
@@ -246,7 +246,7 @@ After a clean dry run, ask the user:
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-directions.md`. **Prepend** one dated entry (most
+Follow the convention in `references/astrodb-ingest-instructions.md`. **Prepend** one dated entry (most
 recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
 it doesn't exist). Record: which bands resolved to which SVO IDs (and any confirmed with the user), the
 regimes derived, which filters / telescopes / instruments / regimes were created, how many measurements
@@ -255,7 +255,7 @@ were ingested / skipped and why, and whether the user confirmed before saving.
 ## Completion Checklist
 
 Before telling the user photometry is ingested, verify every item in the checklist below, per the
-**completion-checklist convention** in `references/astrodb-ingest-directions.md` — verify and report
+**completion-checklist convention** in `references/astrodb-ingest-instructions.md` — verify and report
 each item in your final message; do **not** write the checklist out to a file.
 
 - [ ] `database.toml` was located (you asked the user rather than inventing one when it wasn't found).

@@ -1,5 +1,5 @@
 ---
-name: astrodb-build-schema-match
+name: astrodb-build-03-schema-match
 description: Match columns from an astronomical data table to fields in the AstroDB template database schema. Use this skill whenever the user wants to ingest, import, or load a data table (FITS, CSV, ECSV, etc.) into an AstroDB database, wants to know which database table or field a column belongs to, asks about schema mapping, column mapping, or data ingestion, or has output from the astrodb-build-parse-table skill and wants to figure out where each column goes. This skill should also trigger when the user shares a table of columns (with names, descriptions, units, types) and asks about AstroDB, SIMPLE, or any astrodb-toolkit database. Always use this skill proactively after astrodb-build-parse-table runs if the user seems to be working toward database ingestion.
 compatibility: python, astropy
 metadata:
@@ -14,7 +14,7 @@ exactly which table and field each column belongs to before ingesting data.
 
 ## Directions Document
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context and decisions from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
@@ -185,7 +185,7 @@ Tell the user the exact file paths to both the markdown table and the HTML file 
 
 ## Final Step: Update `build-workflow.md`
 
-Follow the convention in `references/astrodb-build-directions.md`. Append one new entry to
+Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
 `astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it
 doesn't exist yet). Record: any Low/Medium confidence matches and why that mapping was
 chosen, all Unmatched columns and how the user resolved each one, any new tables or fields
@@ -195,7 +195,7 @@ proposed, and any decisions made without `astrodb-build-artifacts/directions.md`
 
 Before telling the user the mapping is done, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`.
+`references/astrodb-build-instructions.md`.
 
 - [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-parse-table` on it first and worked from its output.
 - [ ] You read `references/schema.md` before mapping, and applied all three matching layers — name patterns, units (normalizing astropy's spaced forms like `km / s` to their compact equivalents), and description — plus the special-case rules in `references/column-patterns.md`. Any directions-document guidance was honored over the default heuristics.
@@ -204,4 +204,4 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
 - [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
 - [ ] You gave a short plain-text summary in the chat and told the user the paths to both files.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

@@ -1,5 +1,5 @@
 ---
-name: astrodb-build-schema-validate
+name: astrodb-build-04-schema-validate
 description: Validate an AstroDB schema mapping by checking that data columns are compatible with the schema fields they've been mapped to. Use this skill whenever the user has completed a schema mapping (e.g., from the astrodb-build-schema-match skill) and wants to check whether the actual data is safe to ingest — specifically (1) are there null values in data columns that map to non-nullable schema fields, and (2) do data column types match the expected types in schema.yaml? Always use this skill proactively after astrodb-build-schema-match produces a mapping, before the user proceeds to write ingestion code. Trigger on phrases like "validate","check my mapping", "will this ingest cleanly", "are there any type mismatches", "null check", "nullable violations", or "verify schema compatibility".
 compatibility: python, astropy, pyyaml
 metadata:
@@ -13,7 +13,7 @@ contains against what the schema requires.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may describe
@@ -127,7 +127,7 @@ to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool —
 
 Before telling the user validation is done, verify every item in your section of the workflow checklist file and reproduce
 the evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-build-directions.md`.
+`references/astrodb-build-instructions.md`.
 
 - [ ] You had the mapping table, the data file path, and the schema.yaml path — asking the user for any that were missing rather than guessing.
 - [ ] You parsed schema.yaml for each field's datatype, nullable flag, and length.
@@ -135,4 +135,4 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
 - [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

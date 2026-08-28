@@ -1,5 +1,5 @@
 {
-  "skill_name": "astrodb-ingest-publications",
+  "skill_name": "astrodb-ingest-01-publications",
   "evals": [
     {
       "id": 1,

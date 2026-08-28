@@ -1,5 +1,5 @@
 ---
-name: astrodb-ingest-sources
+name: astrodb-ingest-02-sources
 description: "Generate and run a Python script that ingests sources (astronomical objects) into an AstroDB Sources table from a data table. Use this skill when the user says: ingest sources, ingest objects, add new sources to the database, add objects to the database, or provides a FITS/CSV/ECSV file and wants to populate the Sources table. Works standalone or as the step after match-schema."
 compatibility: python, astropy, astrodb_utils, astroquery
 ---
@@ -14,7 +14,7 @@ parameter meanings, and common warnings with fixes.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-directions.md` — it defines the workflow that you should use.
+1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
 2. Check whether `workflow.md` exists in the current working directory. If it does, read it
    to carry forward context from prior skills.
 3. Record this skill's checklist per the completion-checklist convention — create the artifact
@@ -236,7 +236,7 @@ After a successful dry run, ask the user:
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-directions.md`. **Prepend** one dated entry (most
+Follow the convention in `references/astrodb-ingest-instructions.md`. **Prepend** one dated entry (most
 recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
 it doesn't exist yet). Record: which sources were ingested / skipped and why, how source names were
 resolved against SESAME/SIMBAD, any missing publications you offered to ingest, and whether the user
@@ -246,7 +246,7 @@ explicitly confirmed before saving.
 
 Before telling the user sources are ingested, verify every item below and reproduce the
 evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-ingest-directions.md` — verify and report each item in your final message; do
+`references/astrodb-ingest-instructions.md` — verify and report each item in your final message; do
 **not** write the checklist out to a file.
 
 - [ ] `database.toml` was located (you asked the user rather than inventing one when it wasn't found).
@@ -256,4 +256,4 @@ evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{REF}_sources.py` uses the user's real column names and paths, includes only optional columns that are actually present, uses the correct DB column names, and sets `SAVE_DB = False`.
 - [ ] A dry run was executed, and you reported how many sources were ingested / skipped (with warnings) and that the database was not saved.
 - [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.
-- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-directions.md` — or there was none worth logging.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
