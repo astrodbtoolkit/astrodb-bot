@@ -99,6 +99,12 @@ from the wrong paper is worse than an empty one. Always resolve and verify first
 
 ## Step 1: Gather the references and pick the mode
 
+If the references to ingest are given only as shortnames or author+year (not DOIs/bibcodes),
+ask the user whether they have a `.bib` file, ADS library export, or other reference
+compilation — it narrows down the correct paper faster and more reliably than a fresh
+search per reference. Skip this ask when DOIs/bibcodes are already provided, or when the
+user has already pointed you at such a file.
+
 Identify which mode applies:
 
 - **Single paper** — the user names one paper, shortname, author+year, DOI, or bibcode.
