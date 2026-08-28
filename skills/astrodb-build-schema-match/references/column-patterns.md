@@ -109,6 +109,7 @@ user to confirm the SVO ID.
 
 **Classification:**
 - `spectral_type`, `spt`, `SpT`, `sp_type`, `sp_type_adopted` → `SourceTypes.source_type`
+  (see "Special case: spectral types" below — offer the richer `SpectralTypes` table instead)
 - `association`, `moving_group`, `young_association`, `cluster` → `Associations.association`
 
 Use the data to also populate the SourceTypeList and AssociationList tables with needed values.
@@ -160,6 +161,43 @@ value. It is set at ingestion time, not carried in from a data column.
   never to `adopted`.
 - Only map an input column to `adopted` if that column is itself a genuine boolean/flag (0/1,
   True/False, "adopted"/"") indicating the preferred value — which is rare in source tables.
+
+## Special case: spectral types — offer the richer `SpectralTypes` table
+
+The template's `SourceTypes` table (`source, source_type, comments, adopted, reference`) is
+generic — meant for any object classification, not spectral types specifically. When the
+matched data is a genuine **spectral classification** (spectral type strings like `M6`, `L2`,
+`T4.5` — not a morphological or variability classification), ask the user once, in the same
+message as the Checkpoint question in SKILL.md:
+
+> Your data includes spectral types. The template's `SourceTypes` table is fairly generic.
+> SIMPLE-db defines a richer `SpectralTypes` table with a numeric spectral type code, an
+> uncertainty field, a spectral regime, and an "is this photometric?" flag — see
+> [SIMPLE-db's SpectralTypes schema](https://github.com/SIMPLE-AstroDB/SIMPLE-db/blob/main/docs/schema/SpectralTypes.md).
+> Would you like to map these to a renamed `SpectralTypes` table using that schema instead of
+> the template's `SourceTypes`?
+
+If the user agrees:
+
+- Map the spectral type string column to `SpectralTypes.spectral_type_string` (instead of
+  `SourceTypes.source_type`).
+- Route any matching uncertainty column to `SpectralTypes.spectral_type_error`, and any
+  regime/bandpass context (e.g. "NIR spectral type" vs "optical spectral type") to
+  `SpectralTypes.regime` — the template's existing `RegimeList` lookup table (already used by
+  `Photometry.regime` and `Spectra.regime`) covers this FK, so no new lookup table is needed.
+- `SpectralTypes` itself is **not** part of the current template schema, so treat the whole
+  table as a **proposed new table** (confidence `Proposed (new table)`), flowing through the
+  "Add new table" path in SKILL.md and the **Proposed Schema Additions** section of the HTML
+  output. List its full column set there — `source, spectral_type_string, spectral_type_code,
+  spectral_type_error, regime, adopted, photometric, comments, reference` — so
+  `astrodb-build-schema-generate` has everything it needs to write the Felis YAML.
+- `spectral_type_code` is a derived numeric code (60=M0, 69=M9, 70=L0, 80=T0, 90=Y0) with no
+  direct column in most input data. Note in Proposed Schema Additions that it needs to be
+  computed at ingest — do not invent values for it.
+
+If the user declines (or doesn't respond), map spectral type columns to `SourceTypes.source_type`
+as usual, and populate `SourceTypeList` per the Lookup Table Checklist rules in
+`references/html-output.md`.
 
 ## Catch-all tables for unmapped physical parameters
 
