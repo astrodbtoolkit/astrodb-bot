@@ -149,7 +149,7 @@ through the rest of setup:
 mkdir -p <repo-dir>/astrodb-build-artifacts
 ```
 
-## Step 4: Remove generated schema representations from the template
+## Step 4: Remove generated schema representations and placeholder sources from the template
 
 The template ships with pre-generated schema files that reflect the *template* schema, not the user's
 new database. Delete them now so they don't mislead anyone and so they can be regenerated fresh once
@@ -170,6 +170,20 @@ while looking like it worked — so confirm the file is actually gone rather tha
 ```bash
 ls <repo-dir>/docs/figures/schema_erd.png 2>/dev/null && echo "STILL PRESENT — check the path" || echo "removed"
 ```
+
+The template also ships `data/source/` pre-populated with a handful of example sources (e.g. Gl 229b,
+WASP-76b, HAT-P-12b) that demonstrate the JSON format. These are demo data, not a starting point for the
+user's database — left in place, they get ingested alongside the user's real sources and silently pollute
+the database, and they break the downstream `astrodb-build-create-db` skill's assumption that a freshly
+created database starts with zero sources. Clear them out now, before any real data arrives:
+
+```bash
+rm -f <repo-dir>/data/source/*.json
+ls <repo-dir>/data/source/ 2>/dev/null   # confirm it's empty
+```
+
+Leave `data/reference/` alone — those files are reusable lookup tables (telescopes, instruments, filters,
+regimes, etc.), not source-specific placeholders, and later skills expect them to still be there.
 
 ## Step 5: Set the database name in database.toml
 
@@ -404,6 +418,7 @@ of the document. What doesn't count is neither asking nor finding it written dow
 - [ ] **Directions** — if the user gave a path, or `astrodb-build-artifacts/directions.md` existed, you read it before asking anything it could have answered, and told the user what you took from it.
 - [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
 - [ ] The template's pre-generated schema representations were removed — `docs/figures/schema_erd.png` and `docs/schema/*.md` no longer exist in the repo (you confirmed the ERD is actually gone, not just that `rm -f` returned success).
+- [ ] The template's placeholder example sources were removed — `data/source/` is empty (you confirmed this, not just that `rm -f` returned success). `data/reference/` was left intact.
 - [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
 - [ ] **README** — the title + description reflect this database, from the directions document or from the user's answer (or they explicitly skipped). Removed: the astrodb-utils line and the template ERD image link. Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
 - [ ] **CLAUDE.md** — if the repo has one, its project description reflects the user's database, the Git/GitHub instructions are gone, and no `astrodb-template` references remain (or the user explicitly skipped). If the repo has no `CLAUDE.md`, this is a no-op.
