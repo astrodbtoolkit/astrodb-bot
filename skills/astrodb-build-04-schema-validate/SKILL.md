@@ -13,14 +13,10 @@ contains against what the schema requires.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
-   to carry forward context from prior skills.
-3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it may describe
-   known nullable or type edge cases relevant to this validation.
-4. Record this skill's checklist per the completion-checklist convention — create the artifact
-   directory if needed, then add a `## astrodb-build-schema-validate` section holding the items from
-   `## Completion Checklist` (bottom of this file) to `astrodb-build-artifacts/checklists.md`.
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-build-instructions.md` (build-specific conventions) — together they cover the
+artifact folder, decision log, directions document, and completion-checklist conventions this skill
+follows.
 
 Two classes of problems can block a clean ingest:
 1. **Nullable violations** — the schema marks a field as `nullable: false`, but the data

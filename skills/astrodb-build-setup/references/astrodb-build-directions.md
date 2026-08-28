@@ -1,1 +1,0 @@
-../../astrodb-build-directions.md

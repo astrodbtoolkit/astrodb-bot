@@ -16,12 +16,9 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
-   to carry forward context from prior skills.
-3. Record this skill's checklist per the completion-checklist convention — create the artifact
-   directory if needed, then add a `## astrodb-ingest-publications` section holding the items from
-   `## Completion Checklist` (bottom of this file) to `astrodb-ingest-artifacts/checklists.md`.
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-ingest-instructions.md` (ingest-specific conventions) — together they cover the
+artifact folder, decision log, and completion-checklist conventions this skill follows.
 
 ## Reference naming convention
 

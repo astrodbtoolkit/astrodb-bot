@@ -12,35 +12,12 @@ metadata:
 ## Instructions
 Parse the data table file `$ARGUMENTS` and extract column information.
 
-### Step 0: Read context documents and set up
+### Step 0: Read context documents
 
-1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it to carry
-   forward context from prior skills.
-3. Create the artifact folder:
-
-   ```bash
-   mkdir -p astrodb-build-artifacts
-   ```
-
-   If this fails, stop and tell the user you cannot create the output directory.
-4. Record this skill's checklist per the completion-checklist convention: add a
-   `## astrodb-build-parse-table` section holding the items from `## Completion Checklist` (bottom of
-   this file) to `astrodb-build-artifacts/checklists.md`.
-5. Look for a **directions document** — the user's own notes on this dataset (columns to skip, how to
-   handle edge cases, schema decisions already made). Work through these in order and stop at the first
-   hit:
-   - **The user provided a path** (e.g. in their opening message). Read it, then copy it to
-     `astrodb-build-artifacts/directions.md` so later skills — and later runs of this one — pick it up
-     without the user having to re-supply the path every time.
-   - **`astrodb-build-artifacts/directions.md` already exists** from a prior run. Read it as-is; it's
-     already in its canonical home, so there's nothing to copy.
-   - **Neither.** Proceed without one. It's optional, so don't stop to ask for it.
-
-   When you do find one, let its guidance override the default heuristics in this skill. The user wrote
-   it precisely because they know something about this data that the general rules don't capture — a
-   column that looks like photometry but isn't, a unit that's mislabeled upstream. Silently applying the
-   defaults over an explicit instruction is the failure this lookup exists to prevent.
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-build-instructions.md` (build-specific conventions) — together they cover the
+artifact folder, decision log, directions document, and completion-checklist conventions this skill
+follows.
 
 ### Step 1: Make sure Python is installed and the necessary libraries are available
 
@@ -266,7 +243,7 @@ corrections, apply them and update the output files before asking again. Do not 
 `astrodb-build-schema-match` or any downstream skill until the user confirms the table is ready.
 
 If the user asks why you chose a particular file format or reader, explain your choice and
-record it in `workflow.md` (see Step 7). Never assume a format decision was obvious — if there
+record it in `build-workflow.md` (see Final Step). Never assume a format decision was obvious — if there
 was any ambiguity, the user may want to know or change it.
 
 > **Note:** `schema.yaml` is not created in this step or in `astrodb-build-schema-match`.

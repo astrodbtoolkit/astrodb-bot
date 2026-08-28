@@ -20,14 +20,9 @@ warnings with fixes.
 
 ## Step 0: Read context documents
 
-1. Read `references/astrodb-ingest-instructions.md` — the conventions for the ingest workflow: the
-   `ingest-workflow.md` decision log and the completion-checklist convention. It points to
-   `references/astrodb-instructions.md` for the shared artifact-folder and "ask, don't assume" rules.
-2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
-   prior ingest skills.
-
-(The ingest skills **verify** their completion checklist and report it in the final message — they do
-not write it out to a file. See `references/astrodb-ingest-instructions.md`.)
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-ingest-instructions.md` (ingest-specific conventions) — together they cover the
+artifact folder, decision log, and completion-checklist conventions this skill follows.
 
 ## Prerequisites
 

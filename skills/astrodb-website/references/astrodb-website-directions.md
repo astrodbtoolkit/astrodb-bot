@@ -1,1 +1,0 @@
-../../astrodb-website-directions.md

@@ -12,15 +12,12 @@ metadata:
 Map columns from an astronomical data table to the AstroDB template database schema, so you know
 exactly which table and field each column belongs to before ingesting data.
 
-## Directions Document
+## Step 0: Read context documents
 
-1. Read `references/astrodb-instructions.md` — it defines the workflow that you should use.
-2. Check whether `workflow.md` exists in the current working directory. If it does, read it
-   to carry forward context and decisions from prior skills.
-3. Check whether `astrodb-build-artifacts/directions.md` exists. If it does, read it — it contains
-   dataset-specific decisions (which columns go where, what to ignore, custom tables, known
-   edge cases) that should directly inform how you map columns. Honor any explicit direction
-   over the default matching heuristics.
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-build-instructions.md` (build-specific conventions) — together they cover the
+artifact folder, decision log, directions document, and completion-checklist conventions this skill
+follows.
 
 **All outputs from this skill must be written inside a folder named `astrodb-build-artifacts/` in the current working directory.** 
 

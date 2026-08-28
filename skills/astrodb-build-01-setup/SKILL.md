@@ -8,8 +8,8 @@ metadata:
 
 # AstroDB Setup
 
-Read `references/astrodb-instructions.md` before starting — it defines the workflow that
-you should use.
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-build-instructions.md` (build-specific conventions) before starting.
 
 This is the **first step** in standing up a new AstroDB, and its whole job is to get a correctly
 structured, named database repository onto the user's machine — nothing more. It deliberately stops
@@ -22,36 +22,14 @@ repository. The right way to begin is not to clone that template directly — it
 their *own* repository from it (so they own the history and can push their work), and then we clone
 that. Work through the steps in order.
 
-## The directions document: read it before you ask the user anything
+## The directions document: setup's special case
 
-A **directions document** is where the user records decisions about their database up front —
-its name and description, how the license should read, and (for later skills) dataset-specific
-notes like columns to skip and known issues. `references/directions_example.md` shows the shape.
-
-Several steps below ask the user a question. **Every one of those questions should first be looked
-for in the directions document.** Ask only for what the document doesn't answer. This matters because
-a user who has written a directions document has already answered you — being asked again for
-something they wrote down reads as though you never opened it, and it's the fastest way to make the
-document feel pointless. The whole reason it exists is so the decisions live in one durable place
-instead of being re-elicited in conversation every run.
-
-So read it at the earliest moment you have access to one:
-
-- **The user gave you a path** (in their opening message, say) — read it right away, before Step 1.
-  This is the only source available before the repo exists, and it may already name the database.
-- **You're inside a repo** (Path B, or after cloning in Step 2) — check
-  `astrodb-build-artifacts/directions.md`, where a prior run would have persisted one.
-- **Neither** — proceed and ask normally. The document is optional; never block on it.
-
-When you find one, tell the user what you took from it rather than silently acting on it, so they can
-correct a stale note before it propagates:
-
-> I read your directions document — using "<name>" as the database name and the description from its
-> Database section. I'll still need the license details, which it doesn't cover.
-
-Treat it as the user's own words with the authority that implies, but not as a licence to invent: if
-its Database section is missing or says nothing about, say, the license, that's an unanswered question
-and you should ask it. Never infer a person's name or a description from surrounding data.
+See the directions-document convention in `references/astrodb-build-instructions.md` — the example it
+points to, `references/directions_example.md`, lives in this skill. The general lookup order collapses
+to one branch here, because the repo (and so `astrodb-build-artifacts/`) doesn't exist yet at the start:
+if the user gave you a path, read it right away, before Step 1 — it's the only source available before
+the repo exists, and it may already name the database. Every question below should be checked against
+it first, and asked only if it doesn't answer.
 
 ## Step 0: Decide which path you're on (do this first, explicitly)
 
