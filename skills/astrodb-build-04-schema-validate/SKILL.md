@@ -1,0 +1,156 @@
+---
+name: astrodb-build-04-schema-validate
+description: Validate an AstroDB schema mapping by checking that data columns are compatible with the schema fields they've been mapped to. Use this skill whenever the user has completed a schema mapping (e.g., from the astrodb-build-schema-match skill) and wants to check whether the actual data is safe to ingest — specifically (1) are there null values in data columns that map to non-nullable schema fields, and (2) do data column types match the expected types in schema.yaml? Always use this skill proactively after astrodb-build-schema-match produces a mapping, before the user proceeds to write ingestion code. Trigger on phrases like "validate","check my mapping", "will this ingest cleanly", "are there any type mismatches", "null check", "nullable violations", or "verify schema compatibility".
+compatibility: python, astropy, pyyaml
+metadata:
+  authors: ["Claude"]
+---
+
+# Validate Schema Mapping
+
+Check that a completed column mapping is safe to ingest by comparing what the data actually
+contains against what the schema requires.
+
+## Step 0: Read context documents
+
+Read `references/astrodb-instructions.md` (shared conventions) and
+`references/astrodb-build-instructions.md` (build-specific conventions) — together they cover the
+artifact folder, decision log, directions document, and completion-checklist conventions this skill
+follows.
+
+Two classes of problems can block a clean ingest:
+1. **Nullable violations** — the schema marks a field as `nullable: false`, but the data
+   column has missing/null values. Inserting these rows will raise a database constraint error.
+2. **Type mismatches** — the schema specifies a type (e.g., `double`, `string`, `boolean`)
+   but the data column holds a different type (e.g., a float column mapped to a string field,
+   or a string column mapped to a numeric field). These may cause silent truncation, coercion
+   errors, or failed inserts.
+
+## Inputs
+
+You need three things:
+
+1. **The mapping table** — the markdown table from astrodb-build-schema-match, with columns:
+   `Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes`
+   (or a similar structure — adapt if column names differ slightly)
+
+2. **The data file path** — the original astronomical table (FITS, CSV, ECSV, HDF5, VOTable, etc.)
+
+3. **The schema.yaml path** — the Felis-format schema file for the target database.
+   Common locations to check if not provided: `schema/schema.yaml`, `schema.yaml`,
+   `<db-name>/schema.yaml`. Ask the user if you can't find it.
+
+If the user doesn't provide the data file or schema.yaml paths, ask for them before
+proceeding — you cannot do this validation without both.
+
+## Step 1: Parse the schema.yaml
+
+Load the schema.yaml using PyYAML. For each table, extract every column's `name`, `datatype`,
+`nullable` (defaults to `true` if absent), and any `length` constraint. Build a lookup
+structure indexed as `schema_fields[table_name][field_name]` → `{datatype, nullable, length}`.
+
+The Felis `datatype` values map to Python/numpy types roughly as:
+
+| Felis datatype | Compatible Python/numpy types |
+|---|---|
+| `string` | `str`, `object`, `bytes` |
+| `double` | `float64`, `float32`, `float16` |
+| `float` | `float32`, `float64` |
+| `int` / `long` | `int32`, `int64`, `int16`, `int8` |
+| `boolean` | `bool` |
+| `timestamp` | `datetime64`, `str` (ISO format) |
+
+A float32 mapped to a `double` field is **compatible** (widening). A string mapped to a
+`double` field is **incompatible**. Use broad compatibility rather than strict equality —
+the goal is to catch real problems, not flag harmless precision differences.
+
+## Step 2: Load the data and check each mapping
+
+For each row in the mapping table where DB Table and DB Field are filled in (skip unmapped
+rows and rows mapped to "—" or "N/A"):
+
+Write a short Python script to:
+- Load the data file. First check for the sidecar written by astrodb-build-parse-table:
+  ```python
+  import json, os
+  sidecar = "astrodb-build-artifacts/astrodb-parse-result.json"
+  if os.path.exists(sidecar):
+      meta = json.load(open(sidecar))
+      reader      = meta["reader"]        # "astropy" or "pandas"
+      fmt         = meta["format"]        # astropy format hint, or None
+      pandas_meth = meta["pandas_method"] # e.g. "read_csv", or None
+  else:
+      reader, fmt, pandas_meth = "astropy", None, None
+  ```
+  Then load with the same reader that astrodb-build-parse-table already verified:
+  ```python
+  from astropy.table import Table
+  import pandas as pd
+
+  if reader == "astropy":
+      kwargs = {"format": fmt} if fmt else {}
+      t = Table.read(data_file, **kwargs)
+  else:
+      t = getattr(pd, pandas_meth)(data_file)
+  ```
+  Fall back to `astropy.table.Table.read()` with no arguments if neither path works.
+- (use `astropy.table.Table.read()` — it handles FITS, ECSV, CSV, VOTable, HDF5)
+- For each mapped column:
+  - Count null/missing values: `np.sum(np.isnan(col))` for floats, `np.sum(col == None)` / masked array checks for strings. For FITS masked arrays, check `.mask` if present.
+  - Get the column's numpy dtype
+
+Save the script to `astrodb-build-artifacts/validate_mapping.py` and run it to get the per-column null counts and dtypes.
+
+## Step 3: Produce the validation report
+
+Follow the exact report structure in `references/validation-report.md`, and write the full report
+to `astrodb-build-artifacts/schema-validation-report.md` with the Write tool — the same
+`astrodb-build-artifacts/` directory the Step 2 script went to. Tell the user the path.
+
+## Edge cases to handle gracefully
+
+- **Column not in data file**: warn that the mapped column name wasn't found in the data —
+  this usually means the mapping used a renamed/transformed column, not the raw column name.
+- **Schema field not found**: warn if a DB Table/Field from the mapping doesn't exist in
+  schema.yaml — possible if the mapping used a custom table.
+- **All-null columns**: flag these explicitly — they'll violate any non-nullable constraint
+  and may indicate a parsing problem upstream.
+- **FITS masked arrays**: treat masked values as nulls.
+- **String columns with empty strings**: count `""` as effectively null for non-nullable
+  string fields — empty strings often slip through where None would be caught.
+
+## Checkpoint: Confirm before proceeding
+
+After writing the validation report, present a brief summary in chat:
+- Total mapped columns checked
+- Number of nullable violations and type mismatches found, if any
+- Any edge cases hit (columns not found in data/schema, all-null columns, etc.)
+
+Then ask the user to review the report and confirm:
+
+> I've written the validation report to `<path>`. Please review it and let me know:
+> 1. For any nullable violations — should the schema field become nullable, or does the data
+>    need to be cleaned/filled before ingest?
+> 2. For any type mismatches — is the mapping correct, or does the schema field's type need to
+>    change?
+> 3. Are you ready to proceed to `astrodb-build-schema-generate`?
+
+**Wait for the user's explicit confirmation before this skill is complete.** If they request
+changes to the mapping or schema, apply them and re-run validation before asking again. Do not
+proceed to `astrodb-build-schema-generate` or any downstream skill until the user confirms the
+report is ready — even a clean report (zero violations) should still get an explicit go-ahead.
+
+## Completion Checklist
+
+Before telling the user validation is done, verify every item in your section of the workflow checklist file and reproduce
+the evidence-annotated list here, per the **completion-checklist convention** in
+`references/astrodb-build-instructions.md`.
+
+- [ ] You had the mapping table, the data file path, and the schema.yaml path — asking the user for any that were missing rather than guessing.
+- [ ] You parsed schema.yaml for each field's datatype, nullable flag, and length.
+- [ ] You ran a script (saved to `astrodb-build-artifacts/validate_mapping.py`) that loaded the data with the reader recorded in the parse-table sidecar when present and, for each mapped column, counted null/missing values — including FITS masked values and empty strings for non-nullable string fields — and read its dtype.
+- [ ] You checked both classes of problem: nullable violations and type mismatches (using broad compatibility, not strict equality).
+- [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
+- [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
+- [ ] You asked the user to review the report and confirm before proceeding, and waited for their explicit confirmation (applying and re-validating any requested changes) before treating this skill as done.
+- [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

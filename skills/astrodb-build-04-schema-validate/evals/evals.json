@@ -1,0 +1,118 @@
+{
+  "skill_name": "astrodb-build-04-schema-validate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just ran astrodb-build-03-schema-match on my parallax catalog and here's the mapping I got. Can you validate this against the actual data file to make sure it's safe to ingest?\n\nData file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/parallax_catalog_with_nulls.ecsv\n\nSchema file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source_id | Primary identifier | — | str | Sources | source | High | Primary key |\n| ra | Right ascension | deg | float64 | Sources | ra_deg | High | |\n| dec | Declination | deg | float64 | Sources | dec_deg | High | |\n| plx | Parallax | mas | float64 | Parallaxes | parallax_mas | High | |\n| e_plx | Parallax uncertainty | mas | float64 | Parallaxes | parallax_error | High | |\n| ref | Reference bibcode | — | str | Publications | reference | High | |",
+      "expected_output": "A validation report identifying that the 'plx' column (mapped to Parallaxes.parallax_mas) has 3 null values out of 8 rows. The schema should show that parallax_mas is nullable (or warn about null values). Report should also confirm clean types for all columns and produce a summary.",
+      "files": [
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/parallax_catalog_with_nulls.ecsv",
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml"
+      ],
+      "assertions": [
+        {
+          "id": "eval1_null_count_detected",
+          "text": "The report identifies that the 'plx' column has 3 null/missing values (3 out of 8 rows)"
+        },
+        {
+          "id": "eval1_e_plx_no_nulls",
+          "text": "The 'e_plx' column is reported as having no null values"
+        },
+        {
+          "id": "eval1_schema_nullable_check",
+          "text": "The report checks the schema's nullable setting for Parallaxes.parallax_mas and reports it"
+        },
+        {
+          "id": "eval1_type_compatibility",
+          "text": "The float64 type of plx and e_plx columns is confirmed compatible with the schema's double/float type"
+        },
+        {
+          "id": "eval1_report_written",
+          "text": "A validation report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
+        },
+        {
+          "id": "eval1_summary_section",
+          "text": "The output includes a clear summary section counting the number of nullable violations and type mismatches found"
+        },
+        {
+          "id": "eval1_directions_path",
+          "text": "In Step 0, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
+        },
+        {
+          "id": "eval1_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes the mapped columns checked and the nullable-violation and type-mismatch counts, then asks the user to review the report and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's my schema mapping for a photometry catalog. Please check it against the data — I'm especially worried about the magnitude column since some entries might not be numbers.\n\nData file: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/photometry_type_mismatch.ecsv\n\nSchema: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| name | Source designation | — | str | Sources | source | High | Primary key |\n| band | Filter name | — | str | PhotometryFilters | band | High | Needs SVO ID |\n| mag | Magnitude | mag | str | Photometry | magnitude | High | |\n| mag_err | Magnitude uncertainty | mag | float64 | Photometry | magnitude_error | High | |\n| telescope | Telescope name | — | str | Telescopes | telescope | High | |\n| ref | Reference | — | str | Publications | reference | High | |",
+      "expected_output": "A validation report flagging that 'mag' column is type string but Photometry.magnitude expects a double/float — this is a type mismatch. The report should also note that values like 'sat' and 'nd' in the mag column are the cause. No nullable violations expected.",
+      "files": [
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/photometry_type_mismatch.ecsv",
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml"
+      ],
+      "assertions": [
+        {
+          "id": "eval2_type_mismatch_detected",
+          "text": "The report flags that the 'mag' column (data type string/object) is incompatible with Photometry.magnitude which expects a numeric (double/float) type"
+        },
+        {
+          "id": "eval2_mag_err_ok",
+          "text": "The 'mag_err' column is reported as type-compatible with magnitude_error (both float)"
+        },
+        {
+          "id": "eval2_no_nullable_violations",
+          "text": "No nullable violations are reported (no null values found in non-nullable fields in this dataset)"
+        },
+        {
+          "id": "eval2_next_steps",
+          "text": "The report includes a recommendation about how to handle the type mismatch — e.g., filter out non-numeric values or cast the column"
+        },
+        {
+          "id": "eval2_summary_counts",
+          "text": "The summary correctly shows 1 type mismatch and 0 nullable violations"
+        },
+        {
+          "id": "eval2_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes the mapped columns checked and the nullable-violation and type-mismatch counts, then asks the user to review the report and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I mapped my radial velocity catalog to AstroDB and want to double-check everything looks good before I write the ingestion script. Here's the mapping:\n\nData: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/clean_rv_catalog.ecsv\n\nSchema: /Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source | Source identifier | — | str | Sources | source | High | Foreign key to Sources |\n| rv_kms | Radial velocity | km/s | float64 | RadialVelocities | rv_kms | High | |\n| rv_error | RV uncertainty | km/s | float64 | RadialVelocities | rv_error | High | |\n| reference | Reference bibcode | — | str | Publications | reference | High | |",
+      "expected_output": "A clean validation report with no issues — all columns have correct types and no null values. Report should confirm all 4 mappings passed and give the user a green light to proceed with ingestion.",
+      "files": [
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrodb-bot/.claude/skills/astrodb-validate-schema-mapping/evals/data/clean_rv_catalog.ecsv",
+        "/Users/kelle/Hunter College Dropbox/Kelle Cruz/SIMPLE/astrotemplate-db/schema.yaml"
+      ],
+      "assertions": [
+        {
+          "id": "eval3_all_clear",
+          "text": "The report confirms no nullable violations and no type mismatches"
+        },
+        {
+          "id": "eval3_clean_count",
+          "text": "The report shows that all 4 mapped columns passed validation"
+        },
+        {
+          "id": "eval3_rv_kms_type_ok",
+          "text": "The 'rv_kms' column (float64) is confirmed compatible with RadialVelocities.rv_kms schema type"
+        },
+        {
+          "id": "eval3_positive_summary",
+          "text": "The summary clearly states the mapping is clean and it is safe to proceed with ingestion"
+        },
+        {
+          "id": "eval3_report_written",
+          "text": "A report file is written to astrodb-build-artifacts/schema-validation-report.md and the path is given to the user"
+        },
+        {
+          "id": "eval3_checkpoint_confirm",
+          "text": "Ends with a checkpoint: even though the report is clean (zero nullable violations and zero type mismatches), still asks the user for an explicit go-ahead before proceeding to the schema-generate step rather than declaring the skill done on its own"
+        }
+      ]
+    }
+  ]
+}

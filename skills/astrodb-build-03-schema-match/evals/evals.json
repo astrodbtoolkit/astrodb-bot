@@ -1,0 +1,361 @@
+{
+  "skill_name": "astrodb-build-03-schema-match",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I ran astrodb-build-02-parse-table on my catalog and got this output. Can you tell me which AstroDB table and field each column belongs to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| source_id | Primary source identifier | — | str |\n| alt_name | Alternative catalog name | — | str |\n| ra | Right ascension (J2000) | deg | float64 |\n| dec | Declination (J2000) | deg | float64 |\n| plx | Parallax | mas | float64 |\n| e_plx | Parallax uncertainty | mas | float64 |\n| pmRA | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| e_pmRA | Uncertainty in pmRA | mas/yr | float64 |\n| pmDE | Proper motion in declination | mas/yr | float64 |\n| e_pmDE | Uncertainty in pmDE | mas/yr | float64 |\n| RV | Heliocentric radial velocity | km/s | float64 |\n| e_RV | RV uncertainty | km/s | float64 |\n| SpT | Spectral type | — | str |\n| assoc | Moving group or association membership | — | str |\n| ref | Reference bibcode | — | str |",
+      "expected_output": "A markdown table mapping each column to the correct AstroDB table and field with confidence levels and ingestion notes.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval1_all_columns_mapped",
+          "text": "All 15 input columns appear in the output table and each has a non-empty DB Table and DB Field assignment (no blanks or N/A for well-known columns)"
+        },
+        {
+          "id": "eval1_plx_parallaxes",
+          "text": "Column 'plx' is mapped to Parallaxes table and parallax_mas field"
+        },
+        {
+          "id": "eval1_e_plx_parallax_error",
+          "text": "Column 'e_plx' is mapped to Parallaxes table and parallax_error field"
+        },
+        {
+          "id": "eval1_pmRA_proper_motions",
+          "text": "Column 'pmRA' is mapped to ProperMotions table and pm_ra field"
+        },
+        {
+          "id": "eval1_pmDE_proper_motions",
+          "text": "Column 'pmDE' is mapped to ProperMotions table and pm_dec field"
+        },
+        {
+          "id": "eval1_RV_radial_velocities",
+          "text": "Column 'RV' is mapped to RadialVelocities table and rv_kms field"
+        },
+        {
+          "id": "eval1_SpT_source_types",
+          "text": "Column 'SpT' is mapped to SourceTypes table and source_type field"
+        },
+        {
+          "id": "eval1_SpT_offers_spectraltypes",
+          "text": "Because 'SpT' is a spectral type column, the agent offers the user the richer SpectralTypes table (numeric spectral type code, uncertainty, regime, photometric flag) as an alternative to the template's generic SourceTypes, and asks this in the same message as the Checkpoint confirmation question rather than as a separate round trip"
+        },
+        {
+          "id": "eval1_assoc_associations",
+          "text": "Column 'assoc' is mapped to Associations table"
+        },
+        {
+          "id": "eval1_source_id_sources",
+          "text": "Column 'source_id' is mapped to Sources table and source field"
+        },
+        {
+          "id": "eval1_alt_name_names",
+          "text": "Column 'alt_name' is mapped to Names table and other_name field"
+        },
+        {
+          "id": "eval1_ingestion_note_source_fk",
+          "text": "The ingestion notes section mentions that each data table row requires a source foreign key (source identifier is required in each data table)"
+        },
+        {
+          "id": "eval1_directions_path",
+          "text": "In the Context Documents step, the agent checks for `astrodb-build-artifacts/directions.md` (not `artifacts/directions.md`) and reads it if present"
+        },
+        {
+          "id": "eval1_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's the column table from astrodb-build-02-parse-table for a multi-band photometry catalog. Please map these to the right AstroDB fields:\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| name | Object designation (2MASS or WISE) | — | str |\n| Jmag | 2MASS J-band magnitude | mag | float64 |\n| eJmag | J-band magnitude uncertainty | mag | float64 |\n| Hmag | 2MASS H-band magnitude | mag | float64 |\n| eHmag | H-band uncertainty | mag | float64 |\n| Kmag | 2MASS Ks-band magnitude | mag | float64 |\n| eKmag | Ks-band uncertainty | mag | float64 |\n| W1mag | WISE W1 magnitude | mag | float64 |\n| eW1mag | W1 uncertainty | mag | float64 |\n| W2mag | WISE W2 magnitude | mag | float64 |\n| eW2mag | W2 uncertainty | mag | float64 |\n| Teff | Effective temperature from SED fit | K | float64 |\n| e_Teff | Teff uncertainty | K | float64 |\n| logL | Log luminosity from SED fit | Lsun | float64 |\n| e_logL | logL uncertainty | Lsun | float64 |",
+      "expected_output": "Band magnitude columns map to Photometry.magnitude, errors to Photometry.magnitude_error, with multi-row ingestion note. Teff and logL map to ModeledParameters.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval2_name_sources",
+          "text": "Column 'name' is mapped to Sources table and source field"
+        },
+        {
+          "id": "eval2_Jmag_photometry",
+          "text": "Column 'Jmag' is mapped to Photometry table and magnitude field"
+        },
+        {
+          "id": "eval2_eJmag_photometry_error",
+          "text": "Column 'eJmag' is mapped to Photometry table and magnitude_error field"
+        },
+        {
+          "id": "eval2_W1mag_photometry",
+          "text": "Column 'W1mag' is mapped to Photometry table and magnitude field"
+        },
+        {
+          "id": "eval2_Teff_modeled_params",
+          "text": "Column 'Teff' is mapped to ModeledParameters table"
+        },
+        {
+          "id": "eval2_logL_modeled_params",
+          "text": "Column 'logL' is mapped to ModeledParameters table"
+        },
+        {
+          "id": "eval2_multirow_note",
+          "text": "The ingestion notes mention that each photometry band becomes a separate row in the Photometry table (one row per band per source, not one column per band)"
+        },
+        {
+          "id": "eval2_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I have a catalog of nearby brown dwarfs with columns from astrodb-build-02-parse-table below. I want to ingest this into my AstroDB database. What table/field does each column map to?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| designation | Source name | — | str |\n| RA_ICRS | Right ascension ICRS | deg | float64 |\n| DE_ICRS | Declination ICRS | deg | float64 |\n| dist_pc | Distance | pc | float64 |\n| e_dist | Distance uncertainty | pc | float64 |\n| vsini | Projected rotational velocity | km/s | float64 |\n| e_vsini | vsini uncertainty | km/s | float64 |\n| Prot | Rotation period | d | float64 |\n| e_Prot | Period uncertainty | d | float64 |\n| sep_arcsec | Projected separation from companion | arcsec | float64 |\n| companion_name | Name of companion object | — | str |\n| Gmag | Gaia G magnitude | mag | float64 |\n| BPmag | Gaia BP magnitude | mag | float64 |\n| RPmag | Gaia RP magnitude | mag | float64 |\n| notes | Free-form notes | — | str |",
+      "expected_output": "Handles tricky unit conversions (dist→parallax, days→hours), companion columns, Gaia photometry, and notes field.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval3_designation_sources",
+          "text": "Column 'designation' is mapped to Sources table and source field"
+        },
+        {
+          "id": "eval3_dist_pc_flagged",
+          "text": "Column 'dist_pc' is flagged as needing conversion — either note about converting to parallax_mas (1000/dist_pc) for Parallaxes table, or suggesting ModeledParameters as alternative"
+        },
+        {
+          "id": "eval3_Prot_rotational_params",
+          "text": "Column 'Prot' is mapped to RotationalParameters table and period_hr field"
+        },
+        {
+          "id": "eval3_Prot_unit_conversion",
+          "text": "There is a note about unit conversion for Prot from days to hours"
+        },
+        {
+          "id": "eval3_vsini_rotational_params",
+          "text": "Column 'vsini' is mapped to RotationalParameters table and v_sin_i_kms field"
+        },
+        {
+          "id": "eval3_sep_arcsec_companion",
+          "text": "Column 'sep_arcsec' is mapped to CompanionRelationships table and projected_separation_arcsec field"
+        },
+        {
+          "id": "eval3_Gmag_photometry",
+          "text": "Column 'Gmag' is mapped to Photometry table and magnitude field"
+        },
+        {
+          "id": "eval3_notes_comments",
+          "text": "Column 'notes' is mapped to a comments field in some table"
+        },
+        {
+          "id": "eval3_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I ran astrodb-build-02-parse-table on NearbyGalaxies_Jan2021_PUBLIC.fits and want to load it into AstroDB. Here's the column summary — can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| GalaxyName | Galaxy name | — | str (16-char) |\n| RA | Right Ascension (hours minutes seconds) | — | str (10-char) |\n| Dec | Declination (degrees arcminutes arcseconds) | — | str (11-char) |\n| EB-V | Reddening E(B-V) | mag | float32 |\n| dmod | Distance modulus (m-M)0 | mag | float32 |\n| dmod+ | Upper uncertainty on dmod | mag | float32 |\n| dmod- | Lower uncertainty on dmod | mag | float32 |\n| vh | Heliocentric radial velocity | km / s | float32 |\n| vh+ | Upper uncertainty on vh | km / s | float32 |\n| vh- | Lower uncertainty on vh | km / s | float32 |\n| Vmag | Apparent V magnitude (Vega mags) | mag | float32 |\n| Vmag+ | Upper uncertainty on Vmag | mag | float32 |\n| Vmag- | Lower uncertainty on Vmag | mag | float32 |\n| PA | Position angle | deg | float32 |\n| PA+ | Upper uncertainty on PA | deg | float32 |\n| PA- | Lower uncertainty on PA | deg | float32 |\n| e=1-b/a | Projected ellipticity, e=1-b/a | dimensionless_unscaled | float32 |\n| e+ | Upper uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| e- | Lower uncertainty on e=1-b/a | dimensionless_unscaled | float32 |\n| muVo | Central V surface brightness | mag / arcsec2 | float32 |\n| muVo+ | Upper uncertainty on muVo | mag / arcsec2 | float32 |\n| muVo- | Lower uncertainty on muVo | mag / arcsec2 | float32 |\n| rh | Half-light radius measured on major axis | arcmin | float32 |\n| rh+ | Upper uncertainty on rh | arcmin | float32 |\n| rh- | Lower uncertainty on rh | arcmin | float32 |\n| sigma_s | Stellar radial velocity dispersion | km / s | float32 |\n| sigma_s+ | Upper uncertainty on sigma_s | km / s | float32 |\n| sigma_s- | Lower uncertainty on sigma_s | km / s | float32 |\n| vrot_s | Stellar peak/max rotation velocity | km / s | float32 |\n| vrot_s+ | Upper uncertainty on vrot_s | km / s | float32 |\n| vrot_s- | Lower uncertainty on vrot_s | km / s | float32 |\n| MHI | HI mass | solMass | float32 |\n| sigma_g | HI radial velocity dispersion | km / s | float32 |\n| sigma_g+ | Upper uncertainty on sigma_g | km / s | float32 |\n| sigma_g- | Lower uncertainty on sigma_g | km / s | float32 |\n| vrot_g | HI peak/max rotation velocity | km / s | float32 |\n| vrot_g+ | Upper uncertainty on vrot_g | km / s | float32 |\n| vrot_g- | Lower uncertainty on vrot_g | km / s | float32 |\n| [Fe/H] | Stellar mean metallicity | dex | float32 |\n| feh+ | Upper uncertainty on [Fe/H] | dex | float32 |\n| feh- | Lower uncertainty on [Fe/H] | dex | float32 |\n| F | Flag | — | int16 |\n| pmra | Proper motion in right ascension | mas / yr | float32 |\n| epmra+ | Upper uncertainty on pmra | mas / yr | float32 |\n| epmra- | Lower uncertainty on pmra | mas / yr | float32 |\n| pmdec | Proper motion in declination | mas / yr | float32 |\n| epmdec+ | Upper uncertainty on pmdec | mas / yr | float32 |\n| epmdec- | Lower uncertainty on pmdec | mas / yr | float32 |\n| References | Literature references | — | str (53-char) |",
+      "expected_output": "Galaxy catalog mapped with astropy-format units. vh (km / s) → RadialVelocities.rv_kms, pmra/pmdec (mas / yr) → ProperMotions, e=1-b/a (dimensionless_unscaled) → Morphology.ellipticity, rh (arcmin) → Morphology.half_light_radius_arcmin, MHI (solMass) → ModeledParameters. F flag column marked Unmatched with user prompt. RA/Dec sexagesimal conversion noted.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval4_galaxyname_sources",
+          "text": "Column 'GalaxyName' is mapped to Sources table and source field"
+        },
+        {
+          "id": "eval4_vh_radial_velocities",
+          "text": "Column 'vh' with units 'km / s' (astropy format) is correctly mapped to RadialVelocities table and rv_kms field"
+        },
+        {
+          "id": "eval4_Vmag_photometry",
+          "text": "Column 'Vmag' is mapped to Photometry table and magnitude field"
+        },
+        {
+          "id": "eval4_pmra_proper_motions",
+          "text": "Column 'pmra' with units 'mas / yr' (astropy format) is mapped to ProperMotions table and pm_ra field"
+        },
+        {
+          "id": "eval4_pmdec_proper_motions",
+          "text": "Column 'pmdec' with units 'mas / yr' (astropy format) is mapped to ProperMotions table and pm_dec field"
+        },
+        {
+          "id": "eval4_feh_modeled_params",
+          "text": "Column '[Fe/H]' is mapped to ModeledParameters table"
+        },
+        {
+          "id": "eval4_ellipticity_morphology",
+          "text": "Column 'e=1-b/a' with units 'dimensionless_unscaled' is mapped to Morphology table and ellipticity field"
+        },
+        {
+          "id": "eval4_rh_morphology",
+          "text": "Column 'rh' is mapped to Morphology table and half_light_radius_arcmin field"
+        },
+        {
+          "id": "eval4_F_flag_unmatched",
+          "text": "Column 'F' (flag, int16) is marked Unmatched and the output asks the user what to do with it (options like pre-ingestion filtering, a proposed Misc table, or ignoring it) — it is NOT dumped into Sources.comments"
+        },
+        {
+          "id": "eval4_ra_dec_conversion_noted",
+          "text": "The output notes that RA and Dec are strings in sexagesimal format and need conversion to decimal degrees before ingestion"
+        },
+        {
+          "id": "eval4_asymmetric_errors_noted",
+          "text": "The output notes that asymmetric error columns (e.g. dmod+/dmod-) are non-standard for AstroDB and explains handling options"
+        },
+        {
+          "id": "eval4_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I ran astrodb-build-02-parse-table on arecibo_radar_observed_objects_list.csv and got this column summary. Can you map each column to the right AstroDB table and field?\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| Number | Identifier number of the observed object | — | str |\n| Name | Common name of the observed object | — | str |\n| Designation | Provisional or permanent designation (e.g., asteroid number) | — | str |\n| Category | Category/type of object (e.g., Planet, Moon, MBA, Comet) | — | str |\n| Components | Number of components in the system | dimensionless_unscaled | float64 |\n| Absolute Magnitute | Absolute magnitude of the object (note: column name contains typo — should be \"Magnitude\") | mag | float64 |\n| Quality Code for Best Images | Quality code for best radar images (numeric scale) | — | float64 |\n| NASA Link | URL link to the NASA page for the object | — | str |",
+      "expected_output": "Solar system catalog: identifiers map to Sources/Names, Absolute Magnitute marked Unmatched (absolute not apparent mag), NASA Link marked Unmatched (generic URL), Quality Code marked Unmatched (quality flag). User is asked what to do with all three Unmatched columns.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval5_identifier_sources",
+          "text": "At least one of Name/Designation/Number is mapped to Sources.source as a primary identifier"
+        },
+        {
+          "id": "eval5_absolute_mag_unmatched",
+          "text": "Column 'Absolute Magnitute' is NOT mapped directly to Photometry.magnitude without a caveat — it is either marked Unmatched or mapped to ModeledParameters, with a note explaining that AstroDB Photometry stores apparent magnitudes only"
+        },
+        {
+          "id": "eval5_nasa_link_unmatched",
+          "text": "Column 'NASA Link' is marked Unmatched and the output asks the user what to do with the URL (options like Spectra.access_url if it's a spectrum, a proposed Misc table, or skip) — it is NOT dumped into Sources.comments as the default"
+        },
+        {
+          "id": "eval5_quality_code_unmatched",
+          "text": "Column 'Quality Code for Best Images' is marked Unmatched and the output asks the user what to do (options like pre-ingestion filtering or skip)"
+        },
+        {
+          "id": "eval5_unmatched_count",
+          "text": "At least 3 of the 8 columns are marked Unmatched or flagged with strong caveats — this is a solar system catalog and most columns fall outside AstroDB's stellar schema"
+        },
+        {
+          "id": "eval5_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Here's the astrodb-build-02-parse-table output for my Gaia ultracool dwarf sample. Map each column to the right AstroDB table and field — Sources should stay bare.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| gucds_name | Canonical GUCDS source name | — | str |\n| gucds_shortname | GUCDS short-form name | — | str |\n| twomass_designation | 2MASS designation | — | str |\n| wise_designation | WISE designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| pmra | Proper motion in RA*cos(dec) | mas/yr | float64 |\n| pmdec | Proper motion in declination | mas/yr | float64 |\n| rv | Radial velocity | km/s | float64 |\n| survey_flag | Internal survey membership flag | — | int16 |\n| vizier_url | Link to the VizieR catalog page | — | str |",
+      "expected_output": "Exactly one column (gucds_name) becomes Sources.source; gucds_shortname, twomass_designation, and wise_designation all map to Names.other_name (High confidence), NOT to Sources. pmra/pmdec map to ProperMotions and rv to RadialVelocities — never to Sources. Sources receives only source, ra_deg, dec_deg. survey_flag and vizier_url are marked Unmatched and routed to a proposed Misc table (or ignored), not dumped into Sources.comments.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval6_one_canonical_source",
+          "text": "Exactly one column (gucds_name) is mapped to Sources.source as the canonical primary identifier"
+        },
+        {
+          "id": "eval6_shortname_to_names",
+          "text": "Column 'gucds_shortname' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_twomass_to_names",
+          "text": "Column 'twomass_designation' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_wise_to_names",
+          "text": "Column 'wise_designation' is mapped to Names.other_name, NOT to Sources"
+        },
+        {
+          "id": "eval6_pm_not_sources",
+          "text": "Columns 'pmra' and 'pmdec' are mapped to ProperMotions (pm_ra / pm_dec), not to Sources"
+        },
+        {
+          "id": "eval6_rv_not_sources",
+          "text": "Column 'rv' is mapped to RadialVelocities.rv_kms, not to Sources"
+        },
+        {
+          "id": "eval6_sources_stays_bare",
+          "text": "The only columns mapped to the Sources table are gucds_name (source), ra_deg, and dec_deg — no names, measurements, flags, or URLs are placed in Sources"
+        },
+        {
+          "id": "eval6_misc_not_sources_comments",
+          "text": "Columns 'survey_flag' and 'vizier_url' are marked Unmatched and offered a proposed Misc table (or ignore) — they are NOT dumped into Sources.comments and NOT proposed as new fields on the Sources table"
+        },
+        {
+          "id": "eval6_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Map this parsed table into AstroDB. Note the boolean flag columns.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| source | Source identifier | — | str |\n| plx | Parallax | mas | float64 |\n| e_plx | Parallax uncertainty | mas | float64 |\n| plx_is_adopted | Whether this parallax is the adopted value for the source | — | bool |\n| rv | Radial velocity | km/s | float64 |\n| e_rv | Radial velocity uncertainty | km/s | float64 |\n| teff_adopted | Adopted effective temperature | K | float64 |",
+      "expected_output": "plx → Parallaxes.parallax_mas, e_plx → Parallaxes.parallax_error, and the genuine boolean plx_is_adopted → Parallaxes.adopted. The continuous column teff_adopted must NOT be mapped to any 'adopted' field (adopted is boolean-only) — it goes to ModeledParameters. No continuous or string column is mapped onto an adopted field.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval7_plx_parallaxes",
+          "text": "Column 'plx' is mapped to Parallaxes.parallax_mas"
+        },
+        {
+          "id": "eval7_bool_flag_to_adopted",
+          "text": "The boolean column 'plx_is_adopted' is mapped to Parallaxes.adopted (a genuine boolean flag is the only valid mapping target for adopted)"
+        },
+        {
+          "id": "eval7_teff_not_adopted",
+          "text": "Column 'teff_adopted' (a continuous temperature value) is NOT mapped to any 'adopted' field — it is mapped to ModeledParameters instead"
+        },
+        {
+          "id": "eval7_no_continuous_to_adopted",
+          "text": "No continuous or string column anywhere in the mapping is assigned to an 'adopted' field — adopted is treated as boolean-only"
+        },
+        {
+          "id": "eval7_checkpoint_confirm",
+          "text": "Ends with a checkpoint: summarizes how many columns matched at each confidence level, how many were Unmatched, and how many Proposed Schema Additions were generated, then asks the user to review the mapping files and explicitly confirm before proceeding to the schema-generate step"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Here's the astrodb-parse-data-table output for my ultracool dwarf spectral classification catalog. Map each column to the right AstroDB table and field. If you offer me an alternative table for the spectral types, assume my answer is yes — go ahead and map them that way.\n\n| Column | Description | Units | Type |\n|--------|-------------|-------|------|\n| name | Source designation | — | str |\n| ra_deg | Right ascension (ICRS) | deg | float64 |\n| dec_deg | Declination (ICRS) | deg | float64 |\n| spt_opt | Optical spectral type (e.g. M6, L2) | — | str |\n| e_spt_opt | Uncertainty in optical spectral type (subtypes) | — | float64 |\n| spt_nir | Near-infrared spectral type (e.g. T4.5) | — | str |\n| e_spt_nir | Uncertainty in near-infrared spectral type (subtypes) | — | float64 |\n| spt_ref | Reference bibcode for the spectral types | — | str |",
+      "expected_output": "The agent offers the richer SpectralTypes table in place of the generic SourceTypes, and because the user pre-approved it, maps spt_opt and spt_nir to SpectralTypes.spectral_type_string (as separate rows distinguished by regime, not separate fields), e_spt_opt/e_spt_nir to SpectralTypes.spectral_type_error, and the optical/NIR context to SpectralTypes.regime using the existing RegimeList lookup. SpectralTypes is not in the template schema, so it is flagged as a proposed new table with its full column set listed under Proposed Schema Additions, and spectral_type_code is called out as derived at ingest rather than mapped or invented.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "eval8_offers_spectraltypes",
+          "text": "The agent offers the richer SpectralTypes table as an alternative to the template's generic SourceTypes, rather than silently mapping to either one"
+        },
+        {
+          "id": "eval8_spt_to_spectral_type_string",
+          "text": "Columns 'spt_opt' and 'spt_nir' are mapped to SpectralTypes.spectral_type_string, NOT to SourceTypes.source_type"
+        },
+        {
+          "id": "eval8_errors_to_spectral_type_error",
+          "text": "Columns 'e_spt_opt' and 'e_spt_nir' are mapped to SpectralTypes.spectral_type_error"
+        },
+        {
+          "id": "eval8_regime_from_context",
+          "text": "The optical vs near-infrared distinction is carried by SpectralTypes.regime, and the output notes that the template's existing RegimeList lookup table covers this foreign key so no new lookup table is needed for it"
+        },
+        {
+          "id": "eval8_separate_rows_not_fields",
+          "text": "The optical and near-infrared spectral types become separate rows in SpectralTypes distinguished by regime — they are NOT mapped to two different fields of the same row"
+        },
+        {
+          "id": "eval8_proposed_new_table",
+          "text": "SpectralTypes is flagged as a proposed new table (e.g. confidence 'Proposed (new table)') and appears in a Proposed Schema Additions section, since it is not part of the current template schema"
+        },
+        {
+          "id": "eval8_full_column_set_listed",
+          "text": "The Proposed Schema Additions entry lists the full SpectralTypes column set — source, spectral_type_string, spectral_type_code, spectral_type_error, regime, adopted, photometric, comments, reference — so astrodb-build-schema-generate has what it needs"
+        },
+        {
+          "id": "eval8_spectral_type_code_derived",
+          "text": "spectral_type_code is described as a derived numeric code computed at ingest (e.g. 60=M0, 70=L0, 80=T0) with no corresponding input column — no values are invented for it and no input column is mapped to it"
+        },
+        {
+          "id": "eval8_no_sourcetypelist",
+          "text": "Spectral type values are not added to SourceTypeList in the Lookup Table Checklist, since SourceTypes is not the target table for these columns"
+        },
+        {
+          "id": "eval8_ref_to_reference",
+          "text": "Column 'spt_ref' is mapped to the reference field of the spectral type table (SpectralTypes.reference), not left unmatched"
+        }
+      ]
+    }
+  ]
+}

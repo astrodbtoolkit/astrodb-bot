@@ -1,0 +1,125 @@
+{
+  "skill_name": "astrodb-build-05-schema-generate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've just run astrodb-build-03-schema-match on my nearby brown dwarf astrometry catalog and everything matched cleanly. Here's the mapping:\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source_id | Primary source identifier | — | str | Sources | source | High | Name pattern maps to primary identifier |\n| ra | Right ascension (J2000) | deg | float64 | Sources | ra_deg | High | Name + units match |\n| dec | Declination (J2000) | deg | float64 | Sources | dec_deg | High | Name + units match |\n| plx | Parallax | mas | float64 | Parallaxes | parallax_mas | High | Name + units match |\n| e_plx | Parallax uncertainty | mas | float64 | Parallaxes | parallax_error | High | Error prefix variant |\n| pmRA | Proper motion in RA | mas/yr | float64 | ProperMotions | pm_ra | High | Name + units match |\n| e_pmRA | Uncertainty in pmRA | mas/yr | float64 | ProperMotions | pm_ra_error | High | Error prefix |\n| pmDE | Proper motion in Dec | mas/yr | float64 | ProperMotions | pm_dec | High | Name + units match |\n| e_pmDE | Uncertainty in pmDE | mas/yr | float64 | ProperMotions | pm_dec_error | High | Error prefix |\n| ref | Publication reference | — | str | Publications | reference | High | Name + description match |\n\nThe validation report came back clean — no nullable violations, no type mismatches. Can you generate the Felis YAML schema for this? Call it 'BrownDwarfAstrometry'.",
+      "expected_output": "A valid Felis YAML schema file saved to /tmp/BrownDwarfAstrometry-schema.yaml. The schema should: (1) have name: BrownDwarfAstrometry at the top level; (2) include tables for Sources, Parallaxes, ProperMotions, and Publications; (3) use correct Felis syntax including @id references in the format #TableName.columnName; (4) set nullable: false for primary key columns (source, reference); (5) include fits:tunit for columns with units (deg, mas, mas/yr); (6) include foreign key constraints linking source and reference fields to their parent tables; (7) run felis validate on the generated file and report that it passed; (8) NOT reproduce the full YAML inline in the chat — just reference the file path.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "schema-name-correct",
+          "text": "The output YAML has 'name: BrownDwarfAstrometry' at the top level"
+        },
+        {
+          "id": "uses-at-id-syntax",
+          "text": "Column @id values follow the format '#TableName.columnName' (e.g. '#Sources.source')"
+        },
+        {
+          "id": "file-saved-to-tmp",
+          "text": "The schema was saved to a separate .yaml file (e.g. /tmp/BrownDwarfAstrometry-schema.yaml)"
+        },
+        {
+          "id": "primary-keys-non-nullable",
+          "text": "Primary key columns (source in Sources, reference in Publications) have nullable: false"
+        },
+        {
+          "id": "units-in-fits-tunit",
+          "text": "Columns with units (ra/dec in deg, parallax in mas, proper motions in mas/yr) have fits:tunit set"
+        },
+        {
+          "id": "foreign-key-constraints-present",
+          "text": "Foreign key constraints are included linking source and reference fields to their parent tables"
+        },
+        {
+          "id": "felis-validate-passes",
+          "text": "felis validate was run on the generated YAML and passed (no errors reported)"
+        },
+        {
+          "id": "yaml-not-reproduced-in-chat",
+          "text": "The full YAML is NOT reproduced inline in the chat response — the response references the file path instead"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Here's the astrodb-build-03-schema-match output for my radial velocity survey of M dwarfs. Most columns matched, but a few didn't:\n\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| designation | 2MASS designation | — | str | Sources | source | High | Primary identifier |\n| rv | Heliocentric radial velocity | km/s | float64 | RadialVelocities | rv_kms | High | Name + units match |\n| e_rv | RV uncertainty | km/s | float64 | RadialVelocities | rv_error | High | Error prefix |\n| sn_ratio | Signal-to-noise ratio of the spectrum | — | float32 | — | — | — | Unmatched: no SN ratio field in schema |\n| obs_date | Date of observation (MJD) | d | float64 | — | — | — | Unmatched: observation date not in schema |\n| instrument | Instrument used | — | str | — | — | — | Unmatched: no direct instrument field on RadialVelocities |\n| ref | Publication reference | — | str | Publications | reference | High | Standard reference field |\n\nFor the unmatched columns: add sn_ratio and obs_date as new fields in the RadialVelocities table, and skip the instrument column entirely. Please generate the Felis YAML schema for this — name it 'MDwarfRV'.",
+      "expected_output": "A valid Felis YAML schema file saved to /tmp/MDwarfRV-schema.yaml. The schema should: (1) include the RadialVelocities table with all matched columns (rv_kms, rv_error, source, reference) PLUS the two new user-requested fields (sn_ratio as float or double, obs_date as double with fits:tunit: d); (2) NOT include the instrument column; (3) include the Sources and Publications tables with appropriate columns; (4) use correct @id syntax throughout; (5) include foreign key constraints for source and reference; (6) summarize which columns were added vs skipped in the chat; (7) run felis validate and report it passed; (8) NOT reproduce the full YAML inline in the chat.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "schema-name-correct",
+          "text": "The output YAML has 'name: MDwarfRV' at the top level"
+        },
+        {
+          "id": "new-columns-added",
+          "text": "sn_ratio and obs_date columns are present in the RadialVelocities table"
+        },
+        {
+          "id": "instrument-excluded",
+          "text": "The instrument column is NOT present in any table in the generated schema"
+        },
+        {
+          "id": "file-saved-to-tmp",
+          "text": "The schema was saved to a separate .yaml file (e.g. /tmp/MDwarfRV-schema.yaml)"
+        },
+        {
+          "id": "skipped-columns-noted",
+          "text": "The response notes that the instrument column was skipped"
+        },
+        {
+          "id": "obs-date-has-units",
+          "text": "The obs_date column has fits:tunit: d (day/MJD units)"
+        },
+        {
+          "id": "felis-validate-passes",
+          "text": "felis validate was run on the generated YAML and passed (no errors reported)"
+        },
+        {
+          "id": "yaml-not-reproduced-in-chat",
+          "text": "The full YAML is NOT reproduced inline in the chat response — the response references the file path instead"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I ran both astrodb-build-03-schema-match and astrodb-build-04-schema-validate on my photometry catalog. Here's what I've got:\n\n**Mapping:**\n| Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes |\n|---|---|---|---|---|---|---|---|\n| source | Source name | — | str | Sources | source | High | Primary identifier |\n| Jmag | J-band magnitude | mag | float32 | Photometry | magnitude | High | Band = 2MASS.J |\n| eJmag | J-band uncertainty | mag | float32 | Photometry | magnitude_error | High | Error on Jmag |\n| band | Filter identifier | — | str | Photometry | band | High | Maps to PhotometryFilters.band |\n| ref | Reference | — | str | Publications | reference | High | Standard reference |\n\n**Validation report:**\n## Schema Mapping Validation Report\n\n### Nullable Violations (1 issue)\n| Data Column | Maps To | Null Count | Total Rows | % Null |\n|---|---|---|---|---|\n| eJmag | Photometry.magnitude_error | 23 | 500 | 4.6% |\n\n### Type Mismatches (0 issues)\n\n### Summary\n- 1 nullable violation: eJmag has nulls but magnitude_error is non-nullable in the template schema\n- 0 type mismatches\n- 4 columns passed cleanly\n\nFor the nullable violation: please mark magnitude_error as nullable in the new schema (some objects don't have error estimates). Generate the Felis YAML — name it 'Photometry2MASSJ'.",
+      "expected_output": "A valid Felis YAML schema file saved to /tmp/Photometry2MASSJ-schema.yaml. The schema should: (1) include Sources, Photometry, PhotometryFilters, and Publications tables (all referenced by FK constraints must be defined); (2) critically, the magnitude_error column in Photometry must have nullable: true (or omit nullable entirely) — NOT nullable: false; (3) use float or double for magnitude and magnitude_error columns; (4) include foreign key constraints; (5) note in the chat that magnitude_error was made nullable per user request; (6) run felis validate and report it passed; (7) NOT reproduce the full YAML inline in the chat.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "schema-name-correct",
+          "text": "The output YAML has 'name: Photometry2MASSJ' at the top level"
+        },
+        {
+          "id": "magnitude-error-nullable",
+          "text": "The magnitude_error column in the Photometry table does NOT have nullable: false — it is either omitted (defaults to nullable) or explicitly set to nullable: true"
+        },
+        {
+          "id": "file-saved-to-tmp",
+          "text": "The schema was saved to a separate .yaml file (e.g. /tmp/Photometry2MASSJ-schema.yaml)"
+        },
+        {
+          "id": "nullable-violation-noted",
+          "text": "The response mentions that magnitude_error was made nullable due to the validation finding (4.6% null rate)"
+        },
+        {
+          "id": "float-datatype-used",
+          "text": "The magnitude and magnitude_error columns use 'float' or 'double' datatype (not 'string' or 'int'), matching the float32 input type"
+        },
+        {
+          "id": "felis-validate-passes",
+          "text": "felis validate was run on the generated YAML and passed (no errors reported)"
+        },
+        {
+          "id": "yaml-not-reproduced-in-chat",
+          "text": "The full YAML is NOT reproduced inline in the chat response — the response references the file path instead"
+        },
+        {
+          "id": "all-fk-tables-defined",
+          "text": "All tables referenced in FK constraints (Sources, Publications, PhotometryFilters) are defined in the schema tables list"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "skill_name": "astrodb-ingest-01-publications",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add the discovery paper for the GD-1 stellar stream by Bonaca et al. 2020 to my Publications table. database.toml is in the project root.",
+      "expected_output": "No DOI is given, so the skill searches Google Scholar/ADS/Crossref using the GD-1 stream as disambiguating context, resolves DOI 10.3847/2041-8213/ab800c (bibcode 2020ApJ...892L..37B), assigns shortname Bona20 (first 4 letters of Bonaca + 2-digit year), shows the resolved paper for user confirmation, then writes it with a find_publication dedup check and SAVE_DB=False.",
+      "files": [],
+      "expectations": [
+        "Recognizes that NO DOI was provided and searches Google Scholar, NASA ADS, or Crossref — does NOT call ingest_publication with a bare author+year string",
+        "Resolves to the CORRECT paper: 'High-resolution Spectroscopy of the GD-1 Stellar Stream...', DOI 10.3847/2041-8213/ab800c, bibcode 2020ApJ...892L..37B — not some other Bonaca 2020 paper",
+        "Uses the GD-1 stream as disambiguating context and verifies author/year/title match before writing",
+        "Assigns shortname Bona20 (first 4 letters of 'Bonaca' + two-digit year '20') — does NOT use Bonaca2020 or Bona20a",
+        "Shows the resolved reference->title->DOI/bibcode table to the user and waits for confirmation before ingesting",
+        "find_publication dedup is called before ingest_publication, SAVE_DB is False, and the user is asked to confirm before saving"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Look at the Publications table in this database and fill everything out. The file is evals/data/stellar_streams_sample.sqlite.",
+      "expected_output": "All 15 references have blank bibcode/doi/description. The skill derives each reference's stream from the Associations table to disambiguate, searches for each paper, resolves the correct DOI/bibcode/title per reference, shows the resolved table for confirmation, and fills all 15 rows via direct UPDATE on a copy — zero remaining NULLs.",
+      "files": ["evals/data/stellar_streams_sample.sqlite"],
+      "expectations": [
+        "Identifies that all 15 Publications references have blank bibcode/doi/description",
+        "Derives each reference's stream/object from the Associations table to disambiguate — does NOT treat bare shortnames as self-evident",
+        "Searches Google Scholar, NASA ADS, or Crossref for each paper; does NOT call ingest_publication with bare shortnames",
+        "Resolves the CORRECT paper for spot-checked references using stream context: Bonaca2020->GD-1 doi 10.3847/2041-8213/ab800c; Ibata2024->STREAMFINDER atlas doi 10.3847/1538-4357/ad382d; Yang2023->M3 doi 10.3847/1538-4357/acdee2; Shipp2020->Palomar 13 doi 10.3847/1538-3881/abbd3a; Koposov2023->Orphan-Chenab doi 10.1093/mnras/stad551",
+        "Shows the resolved reference->DOI/title table to the user and waits for confirmation before writing",
+        "Fills via a direct UPDATE on the sqlite after user confirmation (the rows already exist, so re-ingesting would collide on the reference primary key)",
+        "Verifies zero rows still have NULL bibcode/doi/description after writing",
+        "If the backfill required deviating from the skill's written path (for example the documented route failing on the existing reference primary key), that deviation is logged in gotchas.md with Kind, Where, What happened, Workaround, and a concrete Suggested change — classified `gotcha` if another user backfilling a table would hit it again",
+        "Any `gotcha` logged is named in the completion message with a pointer to https://github.com/astrodbtoolkit/astrodb-bot/issues/new, and the skill does not open the issue itself or run gh",
+        "Per-reference lookup reasoning (which stream disambiguated which shortname) goes to workflow.md, not gotchas.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add the publication with DOI 10.1088/0004-637X/748/2/93 to my Publications table. database.toml is in the project root.",
+      "expected_output": "A DOI is supplied, so no lookup is needed: find_publication dedup check, ingest_publication(doi=...), ADS-token check, SAVE_DB=False, confirm before saving.",
+      "files": [],
+      "expectations": [
+        "Recognizes that a DOI is provided and skips the Google Scholar/ADS/Crossref lookup step",
+        "Calls ingest_publication with doi=\"10.1088/0004-637X/748/2/93\" after a find_publication dedup check",
+        "Checks for an ADS token and explains the consequence if missing rather than failing silently",
+        "SAVE_DB is False and the user is asked to confirm before saving",
+        "A missing ADS token is not logged as a `gotcha` — the skill documents the check, so a condition it warned about is an environment issue (at most `one-off`), not a defect in the skill"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Make sure every reference in evals/data/discovery_refs.csv exists in my Publications table, and add any that are missing. database.toml is in the project root.",
+      "expected_output": "The CSV lists six made-up sources with a stream context column but no DOIs. The skill extracts the unique references, uses the stream column to resolve each to the correct paper via Google Scholar/ADS/Crossref, shows the resolved table for confirmation, dedups with find_publication, and ingests the missing ones with SAVE_DB=False.",
+      "files": ["evals/data/discovery_refs.csv"],
+      "expectations": [
+        "Extracts the unique references from the reference column (Shipp2019, Koposov2023, Vasiliev2021, Grillmair2022, Shipp2020, Li2021)",
+        "Treats all six as needing lookup (no DOI in the table) — does NOT call ingest_publication with bare shortnames",
+        "Uses the stream column as disambiguating context for each reference before searching",
+        "Searches Google Scholar, NASA ADS, or Crossref to resolve DOIs; resolves at least the spot-checked references to the CORRECT paper: Vasiliev2021->'Tango for three' Sagittarius doi 10.1093/mnras/staa3673; Shipp2020->Palomar 13 doi 10.3847/1538-3881/abbd3a",
+        "Shows the resolved reference->title->DOI/bibcode table to the user and waits for confirmation before ingesting",
+        "Uses find_publication so already-present references are skipped, SAVE_DB is False, and confirms before saving"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Add the paper 'Cruz03' to my Publications table. database.toml is in the project root.",
+      "expected_output": "The shortname 'Cruz03' is ambiguous — there are many Cruz 2003 papers. The skill does NOT call ingest_publication directly. It first checks the database for any object or stream context attached to this reference. Finding none (Publications table is empty or has no Associations context), it asks the user which paper they mean — author full name, topic, journal, or a DOI — rather than guessing.",
+      "files": [],
+      "expectations": [
+        "Recognizes that 'Cruz03' is an ambiguous shortname with no DOI or bibcode provided — does NOT call ingest_publication with it directly",
+        "Attempts to disambiguate using database context: queries Associations, Sources, or other tables for what object 'Cruz03' is attached to",
+        "If no disambiguating context is found in the database, asks the user to clarify which Cruz 2003 paper they mean (topic, full author list, journal, DOI) rather than guessing",
+        "If the user supplies enough context, searches Google Scholar/ADS/Crossref and resolves to a specific DOI/bibcode before ingesting",
+        "Does NOT ingest any row until the correct paper has been verified and the user has confirmed the resolved metadata"
+      ]
+    }
+  ]
+}
