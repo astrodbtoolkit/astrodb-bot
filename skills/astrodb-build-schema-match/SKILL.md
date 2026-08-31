@@ -61,6 +61,8 @@ Read `references/column-patterns.md` for the full matching rules. It covers thre
 
 It also documents how to handle uncertainty columns (`_error`, `_error_upper`, `_error_lower`) and catch-all tables (`ModeledParameters`, `CompanionParameters`) for unmapped physical parameters. It also lists column types that commonly fall through all three layers (absolute magnitudes, generic URLs, quality flags) — see "Resolving Unmatched Columns" below for what to do with them.
 
+If any column maps to spectral type, read the "Special case: spectral types" section of `references/column-patterns.md` — it offers the user a richer `SpectralTypes` table in place of the template's generic `SourceTypes`, ask about it at the same time as the Checkpoint below.
+
 Read the **guiding principle at the top of `references/column-patterns.md` first**: `Sources` is deliberately minimal (only `source`, `ra_deg`, `dec_deg`, `epoch_year`, `equinox`, `reference`, `other_references`, `comments`) and is **never** a catch-all. Alternate names and survey shortnames go to `Names.other_name`; measured quantities go to their own tables (`ProperMotions`, `RadialVelocities`, `Parallaxes`, …); the `adopted` field is a boolean flag, not a mapping target; and genuinely miscellaneous non-physical columns are routed to a proposed `Misc` table rather than dumped into `Sources.comments`.
 
 ## Photometry Filter IDs
@@ -82,8 +84,12 @@ table and present it to the user:
 > Please confirm each one, override with a different `Table.Field`, or say "ignore" to leave
 > it unmatched. I won't write the output files until you've reviewed these.
 
-**Wait for the user's response before writing any files.** Apply any overrides before
-producing the final output.
+If any column matched to `SourceTypes.source_type` (a spectral type), include the
+"Special case: spectral types" question from `references/column-patterns.md` in this same
+message, asking whether to use the richer `SpectralTypes` table instead.
+
+**Wait for the user's response before writing any files.** Apply any overrides — and the
+spectral-types table choice, if asked — before producing the final output.
 
 For **High** confidence matches, no confirmation is needed — they can be written directly.
 
@@ -200,6 +206,7 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-parse-table` on it first and worked from its output.
 - [ ] You read `references/schema.md` before mapping, and applied all three matching layers — name patterns, units (normalizing astropy's spaced forms like `km / s` to their compact equivalents), and description — plus the special-case rules in `references/column-patterns.md`. Any directions-document guidance was honored over the default heuristics.
 - [ ] Any photometry band names were resolved to SVO Filter Profile Service IDs per `references/photometry-filters.md`.
+- [ ] If any column matched `SourceTypes.source_type` (a spectral type), you asked the user whether to use the richer `SpectralTypes` table instead, per the special case in `references/column-patterns.md` — or there were no spectral type columns.
 - [ ] Every input column has a row with DB Table, DB Field, Confidence, and Notes — columns with nowhere to go are marked **Unmatched** rather than dropped.
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
 - [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
