@@ -1,6 +1,6 @@
 ---
 name: astrodb-build-04-schema-validate
-description: Validate an AstroDB schema mapping by checking that data columns are compatible with the schema fields they've been mapped to. Use this skill whenever the user has completed a schema mapping (e.g., from the astrodb-build-schema-match skill) and wants to check whether the actual data is safe to ingest — specifically (1) are there null values in data columns that map to non-nullable schema fields, and (2) do data column types match the expected types in schema.yaml? Always use this skill proactively after astrodb-build-schema-match produces a mapping, before the user proceeds to write ingestion code. Trigger on phrases like "validate","check my mapping", "will this ingest cleanly", "are there any type mismatches", "null check", "nullable violations", or "verify schema compatibility".
+description: Validate an AstroDB schema mapping by checking that data columns are compatible with the schema fields they've been mapped to. Use this skill whenever the user has completed a schema mapping (e.g., from the astrodb-build-03-schema-match skill) and wants to check whether the actual data is safe to ingest — specifically (1) are there null values in data columns that map to non-nullable schema fields, and (2) do data column types match the expected types in schema.yaml? Always use this skill proactively after astrodb-build-03-schema-match produces a mapping, before the user proceeds to write ingestion code. Trigger on phrases like "validate","check my mapping", "will this ingest cleanly", "are there any type mismatches", "null check", "nullable violations", or "verify schema compatibility".
 compatibility: python, astropy, pyyaml
 metadata:
   authors: ["Claude"]
@@ -30,7 +30,7 @@ Two classes of problems can block a clean ingest:
 
 You need three things:
 
-1. **The mapping table** — the markdown table from astrodb-build-schema-match, with columns:
+1. **The mapping table** — the markdown table from astrodb-build-03-schema-match, with columns:
    `Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes`
    (or a similar structure — adapt if column names differ slightly)
 
@@ -70,7 +70,7 @@ For each row in the mapping table where DB Table and DB Field are filled in (ski
 rows and rows mapped to "—" or "N/A"):
 
 Write a short Python script to:
-- Load the data file. First check for the sidecar written by astrodb-build-parse-table:
+- Load the data file. First check for the sidecar written by astrodb-build-02-parse-table:
   ```python
   import json, os
   sidecar = "astrodb-build-artifacts/astrodb-parse-result.json"
@@ -82,7 +82,7 @@ Write a short Python script to:
   else:
       reader, fmt, pandas_meth = "astropy", None, None
   ```
-  Then load with the same reader that astrodb-build-parse-table already verified:
+  Then load with the same reader that astrodb-build-02-parse-table already verified:
   ```python
   from astropy.table import Table
   import pandas as pd
@@ -133,12 +133,20 @@ Then ask the user to review the report and confirm:
 >    need to be cleaned/filled before ingest?
 > 2. For any type mismatches — is the mapping correct, or does the schema field's type need to
 >    change?
-> 3. Are you ready to proceed to `astrodb-build-schema-generate`?
+> 3. Are you ready to proceed to `astrodb-build-05-schema-generate`?
 
 **Wait for the user's explicit confirmation before this skill is complete.** If they request
 changes to the mapping or schema, apply them and re-run validation before asking again. Do not
-proceed to `astrodb-build-schema-generate` or any downstream skill until the user confirms the
+proceed to `astrodb-build-05-schema-generate` or any downstream skill until the user confirms the
 report is ready — even a clean report (zero violations) should still get an explicit go-ahead.
+
+## Final Step: Update `build-workflow.md`
+
+Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
+`astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it doesn't
+exist yet). Record: which data file and schema were validated, each nullable violation and type
+mismatch found and how the user chose to handle it, any edge case that changed how a column was
+checked, and anything deferred for the schema-generate step to resolve.
 
 ## Completion Checklist
 
@@ -153,4 +161,5 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Edge cases were handled (column not in data, field not in schema, all-null columns) rather than crashing or skipping silently.
 - [ ] You wrote the validation report to `astrodb-build-artifacts/schema-validation-report.md` (structured per `references/validation-report.md`) and told the user the path.
 - [ ] You asked the user to review the report and confirm before proceeding, and waited for their explicit confirmation (applying and re-validating any requested changes) before treating this skill as done.
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
