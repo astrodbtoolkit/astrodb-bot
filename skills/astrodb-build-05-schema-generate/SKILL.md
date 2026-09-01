@@ -1,6 +1,6 @@
 ---
 name: astrodb-build-05-schema-generate
-description: Generate a Felis YAML schema for a user-provided astronomical data file, using the output of the astrodb-build-schema-match and astrodb-build-schema-validate skills. Produces a standards-compliant schema.yaml covering each mapped table and column, with proper Felis syntax (@id references, datatypes, nullable flags, units, and foreign key constraints). Always use this skill when the user has completed a schema mapping (with or without validation) and wants to produce a Felis YAML, create a schema file for their data, generate schema.yaml, export their mapping as a schema, or document their database tables. Also trigger when the user says "generate schema", "create felis yaml", "make a schema file", or "turn this mapping into a schema".
+description: Generate a Felis YAML schema for a user-provided astronomical data file, using the output of the astrodb-build-03-schema-match and astrodb-build-04-schema-validate skills. Produces a standards-compliant schema.yaml covering each mapped table and column, with proper Felis syntax (@id references, datatypes, nullable flags, units, and foreign key constraints). Always use this skill when the user has completed a schema mapping (with or without validation) and wants to produce a Felis YAML, create a schema file for their data, generate schema.yaml, export their mapping as a schema, or document their database tables. Also trigger when the user says "generate schema", "create felis yaml", "make a schema file", or "turn this mapping into a schema".
 compatibility: python, pyyaml
 metadata:
   authors: ["Claude"]
@@ -49,19 +49,19 @@ Hold this name for use in Step 3 (`name:` and `@id:`) and Step 4 (output filenam
 
 You need at minimum:
 
-1. **The mapping table** from `astrodb-build-schema-match` — rows like:
+1. **The mapping table** from `astrodb-build-03-schema-match` — rows like:
    `Input Column | Description | Units | Type | DB Table | DB Field | Confidence | Notes`
 
 2. **Schema name** — confirmed in Step 0 above. Do not re-derive or re-ask here.
 
 Optionally also accept:
 
-3. **The validation report** from `astrodb-build-schema-validate` — identifies nullable violations
+3. **The validation report** from `astrodb-build-04-schema-validate` — identifies nullable violations
    and type mismatches. If provided, use it to set `nullable` flags and resolve type conflicts.
 
 4. **The data file path** — used to infer datatypes for any columns that need them.
 
-If the user hasn't run `astrodb-build-schema-validate` yet, note that the schema will be generated
+If the user hasn't run `astrodb-build-04-schema-validate` yet, note that the schema will be generated
 without null/type checks, and suggest they validate before ingesting.
 
 ## Step 1: Identify unmatched and problematic columns
@@ -174,6 +174,15 @@ felis validate astrodb-build-artifacts/<schema-name>-schema.yaml
 
 Fix the errors, rewrite the file, and re-run validation. Repeat until the schema passes, then tell the user it passed (and briefly mention what was fixed if anything needed fixing).
 
+## Final Step: Update `build-workflow.md`
+
+Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
+`astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it doesn't
+exist yet). Record: the schema name and who chose it, how each unmatched or problematic column was
+resolved (new field, new table, skipped) and why, any primary key that was inferred rather than
+given, any nullable flag or datatype that departs from the template schema, and any default string
+length applied.
+
 ## Completion Checklist
 
 Before telling the user the schema is generated, verify every item in your section of the workflow checklist file and
@@ -187,4 +196,5 @@ reproduce the evidence-annotated list here, per the **completion-checklist conve
 - [ ] The schema was written to a real file at `astrodb-build-artifacts/<schema-name>-schema.yaml` — you gave the user the path rather than reproducing the full YAML in the chat.
 - [ ] `felis validate` was actually run on the file and **passes** — if it failed, you fixed the errors, rewrote the file, and re-ran until it passed.
 - [ ] You reported the file path, the table/column counts, any skipped or flagged columns, and any assumptions made (inferred primary keys, default string lengths).
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
