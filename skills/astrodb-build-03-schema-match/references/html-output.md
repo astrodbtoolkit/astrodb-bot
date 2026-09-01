@@ -1,4 +1,4 @@
-# HTML Output Spec for astrodb-match-schema
+# HTML Output Spec for astrodb-build-03-schema-match
 
 This file defines the visual design for the `tmp/schema-match-result.html` output file.
 
