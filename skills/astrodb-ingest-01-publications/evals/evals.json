@@ -30,7 +30,7 @@
         "Verifies zero rows still have NULL bibcode/doi/description after writing",
         "If the backfill required deviating from the skill's written path (for example the documented route failing on the existing reference primary key), that deviation is logged in gotchas.md with Kind, Where, What happened, Workaround, and a concrete Suggested change — classified `gotcha` if another user backfilling a table would hit it again",
         "Any `gotcha` logged is named in the completion message with a pointer to https://github.com/astrodbtoolkit/astrodb-bot/issues/new, and the skill does not open the issue itself or run gh",
-        "Per-reference lookup reasoning (which stream disambiguated which shortname) goes to workflow.md, not gotchas.md"
+        "Per-reference lookup reasoning (which stream disambiguated which shortname) goes to ingest-workflow.md, not gotchas.md"
       ]
     },
     {

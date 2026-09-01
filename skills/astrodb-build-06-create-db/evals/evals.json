@@ -37,7 +37,7 @@
     },
     {
       "id": 1,
-      "prompt": "I have a Felis schema at test_schema_photometry.yaml that I generated earlier. Can you initialize a new AstroDB database from it? Put everything in /tmp/photcat-db/.",
+      "prompt": "I have a Felis schema at data/test_schema_photometry.yaml that I generated earlier. Can you initialize a new AstroDB database from it? Put everything in /tmp/photcat-db/.",
       "expected_output": "The skill validates the schema, creates the astrodb-template-db directory structure under /tmp/photcat-db/ (data/reference/, data/source/, schema.yaml, database.toml), runs create_db.py to produce PhotometryCatalog.sqlite, runs generate_tests.py to create a tests/ directory, runs pytest to confirm all tests pass, and reports all file paths.",
       "files": [
         "data/test_schema_photometry.yaml"
@@ -63,7 +63,7 @@
     },
     {
       "id": 2,
-      "prompt": "I have a schema.yaml sitting in test_schema_brown_dwarfs.yaml — I'm not sure if felis validate was run on it. Make the sqlite database at /tmp/bd-db-check/.",
+      "prompt": "I have a schema.yaml sitting in data/test_schema_brown_dwarfs.yaml — I'm not sure if felis validate was run on it. Make the sqlite database at /tmp/bd-db-check/.",
       "expected_output": "The skill explicitly runs felis validate on the schema before proceeding (because validation status is uncertain). If validation passes, it creates the full directory structure, database, and tests/ directory with all tests passing. It does NOT silently skip validation just because the user said they might not have done it.",
       "files": [
         "data/test_schema_brown_dwarfs.yaml"

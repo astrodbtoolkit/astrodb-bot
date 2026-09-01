@@ -341,7 +341,7 @@
         },
         {
           "id": "eval8_full_column_set_listed",
-          "text": "The Proposed Schema Additions entry lists the full SpectralTypes column set — source, spectral_type_string, spectral_type_code, spectral_type_error, regime, adopted, photometric, comments, reference — so astrodb-build-schema-generate has what it needs"
+          "text": "The Proposed Schema Additions entry lists the full SpectralTypes column set — source, spectral_type_string, spectral_type_code, spectral_type_error, regime, adopted, photometric, comments, reference — so astrodb-build-05-schema-generate has what it needs"
         },
         {
           "id": "eval8_spectral_type_code_derived",

@@ -109,7 +109,7 @@
           "text": "astropy was used as the reader (not a pandas fallback)"
         },
         {
-          "text": "The 999 fill-value finding is treated as a property of this dataset — it goes in the output notes (and astrodb-build-workflow.md if logged at all), NOT in gotchas.md, which is only for problems with the skills themselves"
+          "text": "The 999 fill-value finding is treated as a property of this dataset — it goes in the output notes (and build-workflow.md if logged at all), NOT in gotchas.md, which is only for problems with the skills themselves"
         },
         {
           "text": "No gotchas.md entry is written about MRT detection or the sentinel scan: the skill already documents both (references/file-formats.md and Step 3), and a warning that worked is not a gotcha"
