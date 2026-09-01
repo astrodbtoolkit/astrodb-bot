@@ -16,9 +16,11 @@ signatures, ADS token setup, the reference naming convention, and common warning
 
 ## Step 0: Read context documents
 
-Read `references/astrodb-instructions.md` (shared conventions) and
-`references/astrodb-ingest-instructions.md` (ingest-specific conventions) — together they cover the
-artifact folder, decision log, and completion-checklist conventions this skill follows.
+1. Read `references/astrodb-ingest-instructions.md` — the ingest-phase conventions (decision log,
+   completion-checklist behavior). It points to `references/astrodb-instructions.md` for the shared
+   artifact-folder, `gotchas.md`, and "ask, don't assume" rules.
+2. If `astrodb-ingest-artifacts/ingest-workflow.md` exists, read it to carry forward context from
+   prior ingest skills.
 
 ## Reference naming convention
 
@@ -98,6 +100,12 @@ from the wrong paper is worse than an empty one. Always resolve and verify first
 ---
 
 ## Step 1: Gather the references and pick the mode
+
+If the references to ingest are given only as shortnames or author+year (not DOIs/bibcodes),
+ask the user whether they have a `.bib` file, ADS library export, or other reference
+compilation — it narrows down the correct paper faster and more reliably than a fresh
+search per reference. Skip this ask when DOIs/bibcodes are already provided, or when the
+user has already pointed you at such a file.
 
 Identify which mode applies:
 
@@ -218,18 +226,15 @@ verify zero rows still have NULL `bibcode`/`doi`/`description`.
 
 ## Final Step: Update `ingest-workflow.md`
 
-Follow the convention in `references/astrodb-ingest-instructions.md`. **Prepend** one dated entry (most
-recent on top) to `astrodb-ingest-artifacts/ingest-workflow.md` (create it with the standard header if
-it doesn't exist yet). Record: which references were ingested, any that were already present or
-failed, how ambiguous shortnames were resolved, and whether the user explicitly confirmed
-before saving.
+Follow the convention in `references/astrodb-ingest-instructions.md` to log an entry in
+`astrodb-ingest-artifacts/ingest-workflow.md`. Record: which references were ingested, any that were
+already present or failed, how ambiguous shortnames were resolved, and whether the user explicitly
+confirmed before saving.
 
 ## Completion Checklist
 
 Before telling the user publications are ingested, verify every item below and reproduce the
-evidence-annotated list here, per the **completion-checklist convention** in
-`references/astrodb-ingest-instructions.md` — verify and report each item in your final message; do
-**not** write the checklist out to a file.
+evidence-annotated list in your final message, per `references/astrodb-ingest-instructions.md`.
 
 - [ ] The database was located — a `database.toml` or standalone `.sqlite` the user pointed you to or that you found in the project root; you asked rather than inventing a path when it wasn't found.
 - [ ] You checked for an ADS token with `check_ads_token()`; if it was missing, you offered to set it up or proceeded with `ignore_ads=True` and hand-supplied metadata.
