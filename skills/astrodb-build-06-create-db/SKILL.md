@@ -232,6 +232,14 @@ appropriate upstream skill — `astrodb-build-05-schema-generate` for schema-lev
 patching the `.sqlite` file directly with ad hoc SQL. Do not proceed to the ingest skills until
 the user confirms the database looks right.
 
+## Final Step: Update `build-workflow.md`
+
+Follow the convention in `references/astrodb-build-instructions.md`. Append one new entry to
+`astrodb-build-artifacts/build-workflow.md` (create it with the standard header if it doesn't
+exist yet). Record: which schema the database was built from, the project root the user confirmed,
+whether `database.toml` was created or an existing one reused, any felis or pytest failure and how
+it was resolved, and anything about the generated test suite the user should know.
+
 ## Completion Checklist
 
 Before telling the user the database is created, verify every item in your section of the workflow checklist file and
@@ -246,4 +254,5 @@ do not proceed past a failure.
 - [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
 - [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.
 - [ ] You asked the user to inspect the `.sqlite` file in a database browser and confirm before proceeding, and waited for their explicit confirmation before treating this skill as done.
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
