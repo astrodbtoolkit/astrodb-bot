@@ -1,6 +1,6 @@
 # HTML Output Spec for astrodb-build-03-schema-match
 
-This file defines the visual design for the `tmp/schema-match-result.html` output file.
+This file defines the visual design for the `astrodb-build-artifacts/<base>-schema-match.html` output file.
 
 ## Two phases
 
