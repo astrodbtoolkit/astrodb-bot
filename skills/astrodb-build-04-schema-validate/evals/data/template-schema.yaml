@@ -1033,7 +1033,7 @@ tables:
         - "#CompanionRelationships.companion"
         referencedColumns:
         - "#CompanionList.companion"
-      - name: CompanionRelationships_reference_Publications_reference"
+      - name: CompanionRelationships_reference_Publications_reference
         "@type": "ForeignKey"
         "@id": "#FK_CompanionRelationships_reference_Publications_reference"
         description: Link CompanionRelationships reference to Publications table
