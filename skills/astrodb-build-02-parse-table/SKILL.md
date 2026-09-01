@@ -105,7 +105,7 @@ except Exception:
         for col in df.columns:
             print(col, df[col].dtype)
 
-# Write sidecar so downstream skills (e.g. astrodb-build-schema-match, astrodb-build-schema-validate)
+# Write sidecar so downstream skills (e.g. astrodb-build-03-schema-match, astrodb-build-04-schema-validate)
 # can reuse the same reader without re-discovering the format.
 # Output file paths are added to the sidecar in Step 5.
 with open("astrodb-build-artifacts/astrodb-parse-result.json", "w") as f:
@@ -237,18 +237,18 @@ Then ask the user to open the HTML file and explicitly confirm the results:
 > 1. Does the column list look complete?
 > 2. Are any descriptions, units, or types wrong or missing?
 > 3. Are there columns that should be skipped in the schema-match step?
-> 4. Are you ready to proceed to `astrodb-build-schema-match`?
+> 4. Are you ready to proceed to `astrodb-build-03-schema-match`?
 
 **Wait for the user's explicit confirmation before this skill is complete.** If they request
 corrections, apply them and update the output files before asking again. Do not proceed to
-`astrodb-build-schema-match` or any downstream skill until the user confirms the table is ready.
+`astrodb-build-03-schema-match` or any downstream skill until the user confirms the table is ready.
 
 If the user asks why you chose a particular file format or reader, explain your choice and
 record it in `build-workflow.md` (see Final Step). Never assume a format decision was obvious — if there
 was any ambiguity, the user may want to know or change it.
 
-> **Note:** `schema.yaml` is not created in this step or in `astrodb-build-schema-match`.
-> It is generated later by `astrodb-build-schema-generate`.
+> **Note:** `schema.yaml` is not created in this step or in `astrodb-build-03-schema-match`.
+> It is generated later by `astrodb-build-05-schema-generate`.
 
 ## Final Step: Update `build-workflow.md`
 
@@ -269,7 +269,8 @@ the evidence-annotated list here, per the **completion-checklist convention** in
 - [ ] Numeric columns were spot-checked for sentinel fill values (e.g. `999`, `-999`); any found are noted in the output rather than reported as real data.
 - [ ] Missing descriptions/units were inferred where possible; for any still missing, you asked the user (when fewer than 10) or noted at the end how many remain.
 - [ ] dtypes are shown as human-readable strings (e.g. `float64`, `str`), not raw numpy codes like `>f8`.
-- [ ] Output went to a fresh `astrodb-build-artifacts/<base>-parsed-data-table/` directory (an existing one was not overwritten), and both the `.md` and `.html` files were written, each beginning with the metadata block.
+- [ ] Both the `.md` and `.html` files were written directly inside `astrodb-build-artifacts/` — no subdirectory — as `<base>-parsed-data-table.md`/`.html`, each beginning with the metadata block. An existing file was not overwritten; a `-1`/`-2` suffix was appended instead.
 - [ ] The file was successfully read (astropy first, pandas fallback) in a verified Python 3.11+ environment, and the sidecar `astrodb-build-artifacts/astrodb-parse-result.json` records the reader, format, and row count — then was updated with the output file paths.
 - [ ] You showed links to both files in the chat (the table was not dumped inline), asked the user to review and confirm before proceeding, and waited for their explicit confirmation (applying and re-confirming any requested corrections) before treating this skill as done.
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.
