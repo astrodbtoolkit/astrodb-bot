@@ -82,10 +82,10 @@ current working directory — *not* inside a phase's artifact directory, because
 addressed to this repo's maintainers rather than to this database. It and the decision log answer
 different questions and should not be mixed:
 
-| File | Question it answers | Written for |
-|------|---------------------|-------------|
-| the phase's decision log | Why did the skill decide *that* for *this dataset*? | whoever works on this database later |
-| `gotchas.md` | What tripped the skill up, and what should change in the skill? | the maintainers of the astrodb-bot repo |
+| File                     | Question it answers                                             | Written for                             |
+|--------------------------|-----------------------------------------------------------------|-----------------------------------------|
+| the phase's decision log | Why did the skill decide *that* for *this dataset*?             | whoever works on this database later    |
+| `gotchas.md`             | What tripped the skill up, and what should change in the skill? | the maintainers of the astrodb-bot repo |
 
 Without this file, everything learned the hard way during a run disappears when the conversation ends, and
 the next user rediscovers the same trap. Create `gotchas.md` with the standard header below if it does not
