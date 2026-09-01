@@ -50,7 +50,7 @@ Log any non-obvious choice a future reader might question:
 - Why a column was skipped, ignored, or marked Unmatched
 - Why a new table or field was proposed instead of mapping to an existing one
 - What the user confirmed when the skill stopped to ask for input
-- Any assumption made in the absence of explicit directions from the phase's `directions.md`
+- Any assumption made in the absence of explicit instructions from the phase's `astrodb-<phase>-instructions.md`
 - Why a file format was converted from one type to another
 
 Do **not** log mechanical steps (creating directories, opening files, installing packages,
@@ -187,7 +187,7 @@ verify-and-report only, to avoid bloat. Follow your phase's rule.
 
 ## Skills must ask, not assume
 
-If the decision log and the phase's `directions.md` do not address a decision the current skill must make,
+If the decision log and the phase's `astrodb-<phase>-instructions.md` do not address a decision the current skill must make,
 **stop and ask the user** rather than silently applying a default. Record the user's answer in the
 decision log. The log is most valuable when it captures real, explicit choices — silent guesses are not
 helpful to a future reader.
