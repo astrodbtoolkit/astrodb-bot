@@ -785,7 +785,7 @@ tables:
       ivoa:ucd: pos.parallax
       nullable: false
     - name: parallax_error
-      "@id": "#Parallaxes.magnitude_error"
+      "@id": "#Parallaxes.parallax_error"
       datatype: double
       description: Uncertainty of the parallax value
       fits:tunit: mas
@@ -1033,7 +1033,7 @@ tables:
         - "#CompanionRelationships.companion"
         referencedColumns:
         - "#CompanionList.companion"
-      - name: CompanionRelationships_reference_Publications_reference"
+      - name: CompanionRelationships_reference_Publications_reference
         "@type": "ForeignKey"
         "@id": "#FK_CompanionRelationships_reference_Publications_reference"
         description: Link CompanionRelationships reference to Publications table

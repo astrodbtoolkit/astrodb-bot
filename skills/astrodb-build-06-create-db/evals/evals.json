@@ -3,7 +3,7 @@
   "evals": [
     {
       "id": 0,
-      "prompt": "I just ran the astrodb-build-05-schema-generate skill and it wrote my schema to test_schema_brown_dwarfs.yaml — felis validate passed. Now I want to set up the actual database. Please create it for me in /tmp/bdsurvey-project/.",
+      "prompt": "I just ran the astrodb-build-05-schema-generate skill and it wrote my schema to data/test_schema_brown_dwarfs.yaml — felis validate passed. Now I want to set up the actual database. Please create it for me in /tmp/bdsurvey-project/.",
       "expected_output": "The skill runs felis validate on the schema, creates /tmp/bdsurvey-project/ with data/reference/ and data/source/ subdirectories, copies schema.yaml, creates database.toml, runs create_db.py to produce BrownDwarfSurvey.sqlite, runs generate_tests.py to create a tests/ directory with adapted test files (including test_contents_spectraltypes.py for the non-template SpectralTypes table), runs pytest to confirm all tests pass, and reports all file paths.",
       "files": [
         "data/test_schema_brown_dwarfs.yaml"
