@@ -50,7 +50,7 @@ Log any non-obvious choice a future reader might question:
 - Why a column was skipped, ignored, or marked Unmatched
 - Why a new table or field was proposed instead of mapping to an existing one
 - What the user confirmed when the skill stopped to ask for input
-- Any assumption made in the absence of explicit directions from the phase's `directions.md`
+- Any assumption made in the absence of explicit directions from a directions document defined for the phase
 - Why a file format was converted from one type to another
 
 Do **not** log mechanical steps (creating directories, opening files, installing packages,
