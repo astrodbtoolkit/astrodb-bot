@@ -1,7 +1,7 @@
 # AstroDB Instructions: Shared Skill Conventions
 
 This document collects the conventions that **every** skill in the AstroDB pipeline follows, so they
-live in one place instead of being repeated in each `SKILL.md`. It covers the `workflow.md` decision
+live in one place instead of being repeated in each `SKILL.md`. It covers the per-phase decision
 log, the artifact-folder convention, the `gotchas.md` problem log, and the completion-checklist
 convention. Each skill's `references/astrodb-instructions.md` is a symlink to this file, so a skill reads
 them all by reading it.
@@ -50,7 +50,7 @@ Log any non-obvious choice a future reader might question:
 - Why a column was skipped, ignored, or marked Unmatched
 - Why a new table or field was proposed instead of mapping to an existing one
 - What the user confirmed when the skill stopped to ask for input
-- Any assumption made in the absence of explicit directions from `artifacts/directions.md`
+- Any assumption made in the absence of explicit directions from the phase's `directions.md`
 - Why a file format was converted from one type to another
 
 Do **not** log mechanical steps (creating directories, opening files, installing packages,
@@ -77,13 +77,14 @@ If this fails, stop and tell the user you cannot create the output directory.
 
 ## Problem log: `gotchas.md`
 
-`gotchas.md` is a running log of problems with **the skills themselves**, kept in the user's current
-working directory alongside `workflow.md`. The two files answer different questions and should not be
-mixed:
+`gotchas.md` is a running log of problems with **the skills themselves**, kept at the root of the user's
+current working directory — *not* inside a phase's artifact directory, because it spans every phase and is
+addressed to this repo's maintainers rather than to this database. It and the decision log answer
+different questions and should not be mixed:
 
 | File | Question it answers | Written for |
 |------|---------------------|-------------|
-| `workflow.md` | Why did the skill decide *that* for *this dataset*? | whoever works on this database later |
+| the phase's decision log | Why did the skill decide *that* for *this dataset*? | whoever works on this database later |
 | `gotchas.md`  | What tripped the skill up, and what should change in the skill? | the maintainers of the astrodb-bot repo |
 
 Without this file, everything learned the hard way during a run disappears when the conversation ends, and
@@ -114,7 +115,7 @@ Log it if any of these are true:
 
 Do **not** log:
 
-- Dataset-specific quirks and the reasoning around them — those belong in `workflow.md`.
+- Dataset-specific quirks and the reasoning around them — those belong in the phase's decision log.
 - Transient failures: a dropped connection, an ADS timeout, a file locked by another program.
 - A user typo or wrong path that was corrected immediately.
 - Anything the skill already documents — if it warned you and the warning worked, the skill did its job.
@@ -186,7 +187,7 @@ verify-and-report only, to avoid bloat. Follow your phase's rule.
 
 ## Skills must ask, not assume
 
-If the decision log and `artifacts/directions.md` do not address a decision the current skill must make,
+If the decision log and the phase's `directions.md` do not address a decision the current skill must make,
 **stop and ask the user** rather than silently applying a default. Record the user's answer in the
 decision log. The log is most valuable when it captures real, explicit choices — silent guesses are not
 helpful to a future reader.
