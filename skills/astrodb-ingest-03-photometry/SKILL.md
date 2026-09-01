@@ -132,7 +132,7 @@ with it — this feeds both Step 4 (filter setup) and the ingest loop.
 `PhotometryFilters`. So resolve and create the filters before any magnitude is ingested.
 
 1. **Map each band to an SVO Filter Profile Service ID** (`Facility/Instrument.Band`). See the table
-   in `references/ingest_photometry_api.md` (and `astrodb-build-schema-match/references/photometry-filters.md`).
+   in `references/ingest_photometry_api.md` (and `astrodb-build-03-schema-match/references/photometry-filters.md`).
    Examples: `J → 2MASS/2MASS.J`, `W1 → WISE/WISE.W1`, `g → SDSS/SDSS.g`, `G → Gaia/Gaia3.G`,
    `V → Generic/Johnson.V`.
    **If a band's telescope/instrument is ambiguous** (e.g. a bare `V` that could be Johnson or Gaia),

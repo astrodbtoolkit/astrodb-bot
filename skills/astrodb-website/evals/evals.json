@@ -10,7 +10,7 @@
         "The output includes verification of the /browse endpoint using curl",
         "The model clones the Astro-Web repository",
         "The model runs setup_website.py with ra_deg and dec_deg",
-        "No gotchas.md entry is invented for this run — the documented steps worked, so nothing is logged, and database-specific details (discovered column names, table names) go to workflow.md instead"
+        "No gotchas.md entry is invented for this run — the documented steps worked, so nothing is logged, and database-specific details (discovered column names, table names) go to website-workflow.md instead"
       ],
       "files": [
         ".agents/skills/astrodb-website/evals/data/astrodb-template.sqlite",

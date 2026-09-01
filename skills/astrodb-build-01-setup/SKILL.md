@@ -140,7 +140,7 @@ user what's absent and have them confirm they used **Use this template** on astr
 going on.
 
 Now that the repo is in place, record this skill's checklist per the **completion-checklist convention**
-in `references/astrodb-build-instructions.md`. Create the artifact directory and add a `## astrodb-build-setup`
+in `references/astrodb-build-instructions.md`. Create the artifact directory and add a `## astrodb-build-01-setup`
 section holding the items from `## Completion Checklist` (bottom of this file) to
 `<repo-dir>/astrodb-build-artifacts/checklists.md`, then tick items with evidence as you complete them
 through the rest of setup:
@@ -320,7 +320,7 @@ generated schema, and the directions document if there is one. Standing up the e
 cheap and makes the convention visible; it commits the user to nothing.
 
 A **directions document** captures dataset-specific decisions, known issues, and ingestion notes.
-Downstream skills (`astrodb-build-parse-table`, `astrodb-build-schema-match`, etc.) accept it as an
+Downstream skills (`astrodb-build-02-parse-table`, `astrodb-build-03-schema-match`, etc.) accept it as an
 optional input — either as a user-provided file path, or from `astrodb-build-artifacts/directions.md`
 if it was saved there in a prior run.
 
@@ -411,4 +411,5 @@ of the document. What doesn't count is neither asking nor finding it written dow
 - [ ] **Artifacts** — `astrodb-build-artifacts/` exists. If the user supplied a directions document by path, it has been copied to `astrodb-build-artifacts/directions.md`. It contains `directions.md` only if the user actually wrote one or supplied a path; you did not leave an unfilled template behind.
 - [ ] You told the user the cloned directory is their project directory from here on, and named the next step (parse a data table).
 - [ ] If — and only if — the repo name and `db_name` differ, you raised the mismatch at the end and offered the `git remote set-url` fix.
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

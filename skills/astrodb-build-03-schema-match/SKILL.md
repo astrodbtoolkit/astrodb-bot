@@ -1,6 +1,6 @@
 ---
 name: astrodb-build-03-schema-match
-description: Match columns from an astronomical data table to fields in the AstroDB template database schema. Use this skill whenever the user wants to ingest, import, or load a data table (FITS, CSV, ECSV, etc.) into an AstroDB database, wants to know which database table or field a column belongs to, asks about schema mapping, column mapping, or data ingestion, or has output from the astrodb-build-parse-table skill and wants to figure out where each column goes. This skill should also trigger when the user shares a table of columns (with names, descriptions, units, types) and asks about AstroDB, SIMPLE, or any astrodb-toolkit database. Always use this skill proactively after astrodb-build-parse-table runs if the user seems to be working toward database ingestion.
+description: Match columns from an astronomical data table to fields in the AstroDB template database schema. Use this skill whenever the user wants to ingest, import, or load a data table (FITS, CSV, ECSV, etc.) into an AstroDB database, wants to know which database table or field a column belongs to, asks about schema mapping, column mapping, or data ingestion, or has output from the astrodb-build-02-parse-table skill and wants to figure out where each column goes. This skill should also trigger when the user shares a table of columns (with names, descriptions, units, types) and asks about AstroDB, SIMPLE, or any astrodb-toolkit database. Always use this skill proactively after astrodb-build-02-parse-table runs if the user seems to be working toward database ingestion.
 compatibility: python, astropy
 metadata:
   authors: ["Claude"]
@@ -25,11 +25,11 @@ follows.
 
 Accept input in either form:
 
-1. **A markdown table** (e.g., output from the `astrodb-build-parse-table` skill) with columns: Column,
+1. **A markdown table** (e.g., output from the `astrodb-build-02-parse-table` skill) with columns: Column,
    Description, Units, Type
-2. **A data file path** — run the `astrodb-build-parse-table` skill on it first, then proceed with its output
+2. **A data file path** — run the `astrodb-build-02-parse-table` skill on it first, then proceed with its output
 
-If given a file path, invoke `astrodb-build-parse-table` first and wait for its output before continuing.
+If given a file path, invoke `astrodb-build-02-parse-table` first and wait for its output before continuing.
 
 ## The AstroDB Template Schema
 
@@ -38,7 +38,7 @@ It covers all Lookup Tables, Main Tables, and Data Tables with every field name.
 
 ## Astropy Unit Normalization
 
-When input comes from the `astrodb-build-parse-table` skill, units may be in astropy's canonical spaced
+When input comes from the `astrodb-build-02-parse-table` skill, units may be in astropy's canonical spaced
 format. Treat these as equivalent to their compact forms when matching:
 
 | Astropy format | Equivalent to |
@@ -90,12 +90,12 @@ spectral-types table choice, if asked — before producing the final output.
 
 For **High** confidence matches, no confirmation is needed — they can be written directly.
 
-If `artifacts/directions.md` already addresses a match, do not ask the user about it again —
+If `astrodb-build-artifacts/directions.md` already addresses a match, do not ask the user about it again —
 honor the direction. But if the directions file is silent on a case and your match is Low or
 Medium, you must stop and ask; do not fill in a silent default.
 
 > **Note:** This skill produces a **column mapping document**, not a `schema.yaml`.
-> `schema.yaml` is generated later by `astrodb-build-schema-generate`.
+> `schema.yaml` is generated later by `astrodb-build-05-schema-generate`.
 
 ## Resolving Unmatched Columns
 
@@ -145,12 +145,12 @@ For every "Add new field" or "Add new table" choice, also add a row to the **Pro
 Additions** section of the HTML output (see `references/html-output.md`). Keep this lightweight
 — the proposed table/field name plus unit and datatype (taken from the input column where
 known) and a short description is enough. Don't try to work out Felis-level details like
-nullability or primary keys here; that's what `astrodb-build-schema-generate` does next, using this
+nullability or primary keys here; that's what `astrodb-build-05-schema-generate` does next, using this
 proposal as its starting point.
 
 ## Output
 
-Output the results as a markdown table, adding columns onto the output from `astrodb-build-parse-table` for the matched AstroDB Table, AstroDB Field, Confidence level, and Notes on the match.
+Output the results as a markdown table, adding columns onto the output from `astrodb-build-02-parse-table` for the matched AstroDB Table, AstroDB Field, Confidence level, and Notes on the match.
 
 Write both output files directly inside `astrodb-build-artifacts/` — no subdirectory. Name them
 after the input file's base name with a `-schema-match` suffix. **Do not overwrite existing
@@ -172,7 +172,7 @@ choices, also generate the **Proposed Schema Additions** section described in
 
 After writing the file, give a short plain-text summary in the chat (2–4 sentences) noting how
 many columns matched at each confidence level and flagging anything critical. If there are
-proposed schema additions, mention that running `astrodb-build-schema-generate` next can turn them
+proposed schema additions, mention that running `astrodb-build-05-schema-generate` next can turn them
 into `schema.yaml` changes.
 Tell the user the exact file paths to both the markdown table and the HTML file inside `astrodb-build-artifacts/`.
 
@@ -201,11 +201,11 @@ Then give the user a chance to review the complete mapping before moving on:
 > 1. Does every column's DB Table.Field assignment look right?
 > 2. Do the Proposed Schema Additions (if any) look right before they become part of
 >    `schema.yaml`?
-> 3. Are you ready to proceed to `astrodb-build-schema-generate`?
+> 3. Are you ready to proceed to `astrodb-build-05-schema-generate`?
 
 **Wait for the user's explicit confirmation before this skill is complete.** If they request
 corrections, apply them and update both the `.md` and `.html` output files before asking again.
-Do not proceed to `astrodb-build-schema-generate` or any downstream skill until the user confirms
+Do not proceed to `astrodb-build-05-schema-generate` or any downstream skill until the user confirms
 the mapping is ready.
 
 ## Final Step: Update `build-workflow.md`
@@ -222,13 +222,14 @@ Before telling the user the mapping is done, verify every item in your section o
 the evidence-annotated list here, per the **completion-checklist convention** in
 `references/astrodb-build-instructions.md`.
 
-- [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-parse-table` on it first and worked from its output.
+- [ ] If the input was a raw data file path rather than an already-parsed mapping table, you ran `astrodb-build-02-parse-table` on it first and worked from its output.
 - [ ] You read `references/schema.md` before mapping, and applied all three matching layers — name patterns, units (normalizing astropy's spaced forms like `km / s` to their compact equivalents), and description — plus the special-case rules in `references/column-patterns.md`. Any directions-document guidance was honored over the default heuristics.
 - [ ] Any photometry band names were resolved to SVO Filter Profile Service IDs per `references/photometry-filters.md`.
 - [ ] If any column matched `SourceTypes.source_type` (a spectral type), you asked the user whether to use the richer `SpectralTypes` table instead, per the special case in `references/column-patterns.md` — or there were no spectral type columns.
 - [ ] Every input column has a row with DB Table, DB Field, Confidence, and Notes — columns with nowhere to go are marked **Unmatched** rather than dropped.
 - [ ] Unmatched columns were raised with the user in a single combined question; if they responded, their choices were applied (and any new field/table added to Proposed Schema Additions).
-- [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — in a fresh `astrodb-build-artifacts/<base>-schema-match/` directory (an existing one was not overwritten) — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
+- [ ] Output was written both as a markdown table and as an HTML file per `references/html-output.md` — directly inside `astrodb-build-artifacts/` (no subdirectory) as `<base>-schema-match.md`/`.html`, appending a `-1`/`-2` suffix rather than overwriting an existing file — including the Lookup Table Checklist section (and Proposed Schema Additions if any were proposed).
 - [ ] You gave a short plain-text summary in the chat and told the user the paths to both files.
 - [ ] You asked the user to review the complete mapping and confirm before proceeding, and waited for their explicit confirmation (applying and re-confirming any requested corrections) before treating this skill as done.
+- [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

@@ -190,7 +190,7 @@ If the user agrees:
   "Add new table" path in SKILL.md and the **Proposed Schema Additions** section of the HTML
   output. List its full column set there — `source, spectral_type_string, spectral_type_code,
   spectral_type_error, regime, adopted, photometric, comments, reference` — so
-  `astrodb-build-schema-generate` has everything it needs to write the Felis YAML.
+  `astrodb-build-05-schema-generate` has everything it needs to write the Felis YAML.
 - `spectral_type_code` is a derived numeric code (60=M0, 69=M9, 70=L0, 80=T0, 90=Y0) with no
   direct column in most input data. Note in Proposed Schema Additions that it needs to be
   computed at ingest — do not invent values for it.
@@ -225,7 +225,7 @@ key/value store:
 | `comments` | optional note |
 | `reference` | provenance, when known |
 
-Do not work out Felis-level details (nullability, primary keys) here — `astrodb-build-schema-generate`
+Do not work out Felis-level details (nullability, primary keys) here — `astrodb-build-05-schema-generate`
 finalizes those from the proposal.
 
 **Fallback ordering (so `Misc` doesn't cannibalize real homes).** Try these in order before
