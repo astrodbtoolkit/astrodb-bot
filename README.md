@@ -17,6 +17,7 @@ To install this in another agent, you can copy the `skills/` directory to whatev
 - [`astrodb-build-04-schema-validate`](skills/astrodb-build-04-schema-validate/SKILL.md) — Identify problems with nulls and inconsistent data types.
 - [`astrodb-build-05-schema-generate`](skills/astrodb-build-05-schema-generate/SKILL.md) — Create a Felis-format schema.yaml file using outputs of previous skills.
 - [`astrodb-build-06-create-db`](skills/astrodb-build-06-create-db/SKILL.md) — Create an empty SQLite AstroDB database from a Felis-validated schema.yaml.
+- [`astrodb-build-07-erd`](skills/astrodb-build-07-erd/SKILL.md) — Generate an entity relationship diagram from a Felis schema.yaml, using whatever diagram tooling is already available (defaults to Mermaid — no extra dependencies, renders natively on GitHub).
 
 ### Ingest
 
@@ -39,6 +40,7 @@ To install this in another agent, you can copy the `skills/` directory to whatev
   - `astrodbkit`
   - `astrodb_utils`
   - `pytest`
+- (optional) a diagram backend for the ERD skill — **none is required**; it uses `d2`, `mermaid-cli`, or `graphviz` only if one is already on your `PATH`. See [`backends.md`](skills/astrodb-build-07-erd/references/backends.md).
 
 ## License
 

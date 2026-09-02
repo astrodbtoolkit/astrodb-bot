@@ -171,6 +171,10 @@ while looking like it worked — so confirm the file is actually gone rather tha
 ls <repo-dir>/docs/figures/schema_erd.png 2>/dev/null && echo "STILL PRESENT — check the path" || echo "removed"
 ```
 
+Tell the user the diagram is coming back, so a deleted ERD doesn't read as a missing feature: the
+`astrodb-build-07-erd` skill regenerates one from *their* `schema.yaml` once it exists, and it needs
+nothing installed to do it.
+
 The template also ships `data/source/` pre-populated with a handful of example sources (e.g. Gl 229b,
 WASP-76b, HAT-P-12b) that demonstrate the JSON format. These are demo data, not a starting point for the
 user's database — left in place, they get ingested alongside the user's real sources and silently pollute
@@ -234,7 +238,8 @@ Update `README.md` in two places:
 
 Remove the text that refers to the astrodb-utils package. Also remove the entity relationship diagram
 (ERD) image link — it points to `docs/figures/schema_erd.png`, which Step 4 deleted, so the link would
-now be broken.
+now be broken. Don't leave a placeholder in its place: `astrodb-build-07-erd` can add a Schema section
+later that links to a diagram of the user's own schema. Say so, so the removal reads as temporary.
 
 Keep the Acknowledgements section and the credit line at the bottom that acknowledges the AstroDB Toolkit and template.
 
@@ -417,10 +422,10 @@ of the document. What doesn't count is neither asking nor finding it written dow
 
 - [ ] **Directions** — if the user gave a path, or `astrodb-build-artifacts/directions.md` existed, you read it before asking anything it could have answered, and told the user what you took from it.
 - [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
-- [ ] The template's pre-generated schema representations were removed — `docs/figures/schema_erd.png` and `docs/schema/*.md` no longer exist in the repo (you confirmed the ERD is actually gone, not just that `rm -f` returned success).
+- [ ] The template's pre-generated schema representations were removed — `docs/figures/schema_erd.png` and `docs/schema/*.md` no longer exist in the repo (you confirmed the ERD is actually gone, not just that `rm -f` returned success), and you told the user `astrodb-build-07-erd` regenerates a diagram from their own schema later.
 - [ ] The template's placeholder example sources were removed — `data/source/` is empty (you confirmed this, not just that `rm -f` returned success). `data/reference/` was left intact.
 - [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
-- [ ] **README** — the title + description reflect this database, from the directions document or from the user's answer (or they explicitly skipped). Removed: the astrodb-utils line and the template ERD image link. Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
+- [ ] **README** — the title + description reflect this database, from the directions document or from the user's answer (or they explicitly skipped). Removed: the astrodb-utils line and the template ERD image link (with no placeholder left behind — you noted `astrodb-build-07-erd` can add a Schema link later). Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
 - [ ] **CLAUDE.md** — if the repo has one, its project description reflects the user's database, the Git/GitHub instructions are gone, and no `astrodb-template` references remain (or the user explicitly skipped). If the repo has no `CLAUDE.md`, this is a no-op.
 - [ ] **LICENSE** — the copyright/license reflects what the directions document or the user specified: new name(s) on the BSD 3-Clause copyright, or a different license with the year and name filled in (no placeholder left behind) — or they explicitly declined. You never put a name on it that neither the user nor the directions document gave.
 - [ ] **Artifacts** — `astrodb-build-artifacts/` exists. If the user supplied a directions document by path, it has been copied to `astrodb-build-artifacts/directions.md`. It contains `directions.md` only if the user actually wrote one or supplied a path; you did not leave an unfilled template behind.
