@@ -89,7 +89,7 @@ Skills are designed to chain in order:
 4. **`astrodb-build-04-schema-validate`** — Check for nullable violations and type mismatches between data and schema.yaml.
 5. **`astrodb-build-05-schema-generate`** — Produce a Felis YAML `schema.yaml` from the mapping. Runs `felis validate` at the end.
 6. **`astrodb-build-06-create-db`** — Create an empty SQLite database from the validated schema using `astrodbkit`. Runs `scripts/create_db.py` and `scripts/generate_tests.py`.
-7. **`astrodb-build-07-erd`** — Generate an entity relationship diagram from `schema.yaml`. Probes for available backends with `scripts/detect_erd_backends.py` and defaults to a built-in, dependency-free Felis→Mermaid emitter (`scripts/felis_to_mermaid.py`); uses `d2`/`mmdc`/`dot` only if already on `PATH`. Never requires graphviz and never installs anything. Writes to `astrodb-build-artifacts/` and, with permission, to `docs/figures/schema_erd.md` plus a link in the user's `README.md`.
+7. **`astrodb-build-07-erd`** — Generate an entity relationship diagram from `schema.yaml`. Probes for available backends with `scripts/detect_erd_backends.py` and defaults to a built-in, dependency-free Felis→Mermaid emitter (`scripts/felis_to_mermaid.py`); uses `d2`/`mmdc`/`dot` only if already on `PATH`. Never requires graphviz and never installs anything. Writes to `astrodb-build-artifacts/` and to `docs/figures/schema_erd.md` plus a link in the user's `README.md`.
 
 #### Ingest
 

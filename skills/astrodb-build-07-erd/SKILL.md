@@ -156,9 +156,13 @@ Overview plus clusters:
 
 ```bash
 uv run python <skill-dir>/scripts/felis_to_mermaid.py \
-  --schema <schema-path> --split astrodb-build-artifacts/erd/ \
+  --schema <schema-path> --split astrodb-build-artifacts/<schema-name>-erd \
   --detail full --format md --stats
 ```
+
+This writes flat files in `astrodb-build-artifacts/` — no subdirectory:
+`<schema-name>-erd-overview.md`, `<schema-name>-erd-lookup.md`, `<schema-name>-erd-main.md`,
+`<schema-name>-erd-data.md` (skipping any empty cluster).
 
 Useful flags — the full list is in the script's `--help`:
 
@@ -232,7 +236,9 @@ uv run python <skill-dir>/scripts/felis_to_mermaid.py \
 creating the file with them if it does not exist, so regenerating later is idempotent and never
 touches anything a user has written around it.
 
-If you generated per-cluster diagrams in Step 5, write those to `docs/schema/erd.md` as well.
+If you generated per-cluster diagrams in Step 5, copy the flat cluster files into `docs/schema/`
+(e.g. `docs/schema/erd-overview.md`, `docs/schema/erd-lookup.md`, …) using the same
+`--split docs/schema/erd` prefix pattern.
 
 Then give `README.md` a Schema section, **only if it does not already have one** — never overwrite a
 section the user wrote. Use the `Edit` tool, not `sed`, so the rest of the file stays intact. Put it
@@ -333,7 +339,7 @@ convention** in `references/astrodb-build-instructions.md`.
 - [ ] For a schema past ~10 tables, you proposed the overview-plus-clusters split and had the user confirm the grouping before generating — per the "skills must ask, not assume" rule.
 - [ ] The diagram files were written to `astrodb-build-artifacts/`, and the character count is under the budget. If the script exited on the size guard, you took one of the remedies it named rather than raising `--max-chars`.
 - [ ] You verified the output beyond the exit code: the file starts with `erDiagram`, and the relationship count matches the schema's `ForeignKey` constraint count. If a parse check was possible you ran it; if not, you said so rather than implying the diagram was validated.
-- [ ] The diagram was written to `docs/figures/schema_erd.md` (and `docs/schema/erd.md` if you split it), and `README.md` has a Schema section **linking** to it — not an inline mermaid block, not an image link. An existing Schema section was left alone rather than overwritten.
+- [ ] The diagram was written to `docs/figures/schema_erd.md` (and flat `docs/schema/erd-*.md` cluster files if you split it), and `README.md` has a Schema section **linking** to it — not an inline mermaid block, not an image link. An existing Schema section was left alone rather than overwritten.
 - [ ] You reported the backend used, the file paths, the table/column/relationship and character counts, which repo files changed, and the one-line command to regenerate (and to `--check` for staleness in CI).
 - [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

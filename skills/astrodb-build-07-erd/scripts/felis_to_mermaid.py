@@ -4,7 +4,7 @@
 Usage:
     python felis_to_mermaid.py --schema schema.yaml
     python felis_to_mermaid.py --schema schema.yaml --format md --out docs/figures/schema_erd.md
-    python felis_to_mermaid.py --schema schema.yaml --split docs/schema/
+    python felis_to_mermaid.py --schema schema.yaml --split docs/schema/erd
     python felis_to_mermaid.py --schema schema.yaml --inject docs/figures/schema_erd.md --check
 
 No system binaries, no graphviz, no node. The output is text that GitHub renders
@@ -451,7 +451,7 @@ def check_budget(diagram, max_chars, detail, comments, splitting=False):
         # Already split: suggesting --split again would be useless advice.
         remedies.append("draw this cluster in pieces with --tables")
     else:
-        remedies.append("split the diagram with --split DIR")
+        remedies.append("split the diagram with --split PREFIX")
     print(
         "ERROR: the diagram is %d characters, over the %d budget.\n"
         "GitHub's mermaid limit is %d and it is NOT configurable there - past it the diagram\n"
@@ -509,7 +509,11 @@ def build_arg_parser():
         choices=["lookup", "main", "data"],
         help="Emit one cluster (see references/clusters.md)",
     )
-    parser.add_argument("--split", help="Write overview plus one file per cluster into this directory")
+    parser.add_argument(
+        "--split",
+        help="Write overview plus one file per cluster as PREFIX-overview.md, PREFIX-lookup.md, ... "
+        "(flat files; parent dirs are created as needed)",
+    )
     parser.add_argument("--title", help="Heading used when --format md")
     parser.add_argument("--inject", help="Replace the block between the ERD markers in this file")
     parser.add_argument(
@@ -569,22 +573,31 @@ def boundary_context(names, rels, exclude):
     return context - exclude
 
 
+def split_output_path(prefix, part, format):
+    """Build a flat output path: PREFIX-overview.md, PREFIX-lookup.md, etc."""
+    base = Path(prefix.rstrip("/\\"))
+    ext = "md" if format == "md" else "mmd"
+    return str(base.parent / ("%s-%s.%s" % (base.name, part, ext)))
+
+
 def run_split(args, tables, rels, clusters):
-    """Handle --split: write an overview plus one diagram per cluster into a directory."""
+    """Handle --split: write an overview plus one diagram per cluster as flat PREFIX-*.md files."""
     all_names = list(tables)
     exclude = {n.strip() for n in (args.exclude or "").split(",") if n.strip()}
-    outdir = Path(args.split)
-    outdir.mkdir(parents=True, exist_ok=True)
+    prefix = args.split.rstrip("/\\")
+    written = []
 
     overview_names = [n for n in all_names if n not in exclude]
     overview = render(tables, rels, overview_names, detail="keys", comments=False)
     check_budget(overview, args.max_chars, "keys", False)
+    overview_path = split_output_path(prefix, "overview", args.format)
     write_output(
         wrap_markdown(overview, "Schema overview", args.marker_prefix)
         if args.format == "md"
         else overview,
-        str(outdir / ("overview.md" if args.format == "md" else "overview.mmd")),
+        overview_path,
     )
+    written.append(overview_path)
     if args.stats:
         report_stats(tables, rels, overview_names, [], overview, args.max_chars, "overview")
 
@@ -597,17 +610,21 @@ def run_split(args, tables, rels, clusters):
             tables, rels, names, detail=args.detail, comments=args.comments, context=context
         )
         check_budget(diagram, args.max_chars, args.detail, args.comments, splitting=True)
+        cluster_path = split_output_path(prefix, cluster, args.format)
         write_output(
             wrap_markdown(diagram, CLUSTER_TITLES[cluster], args.marker_prefix)
             if args.format == "md"
             else diagram,
-            str(outdir / ("%s.%s" % (cluster, "md" if args.format == "md" else "mmd"))),
+            cluster_path,
         )
+        written.append(cluster_path)
         if args.stats:
             report_stats(tables, rels, names, sorted(context), diagram, args.max_chars, cluster)
 
-    print("Wrote overview plus %d cluster diagrams to %s" % (
-        sum(1 for c in ("lookup", "main", "data") if clusters[c]), outdir))
+    print(
+        "Wrote overview plus %d cluster diagram(s): %s"
+        % (len(written) - 1, ", ".join(written))
+    )
 
 
 def resolve_selection(args, tables, rels, clusters):
