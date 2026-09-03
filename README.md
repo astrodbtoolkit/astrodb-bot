@@ -40,7 +40,6 @@ To install this in another agent, you can copy the `skills/` directory to whatev
   - `astrodbkit`
   - `astrodb_utils`
   - `pytest`
-- (optional) a diagram backend for the ERD skill — **none is required**; it uses `d2`, `mermaid-cli`, or `graphviz` only if one is already on your `PATH`. See [`backends.md`](skills/astrodb-build-07-erd/references/backends.md).
 
 ## License
 
