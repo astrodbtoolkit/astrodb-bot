@@ -1,0 +1,4225 @@
+name: biglook
+'@id': '#biglook'
+description: Synthetic oversized schema for the ERD size-guard eval.
+tables:
+- name: Sources
+  '@id': '#Sources'
+  description: The central object table.
+  primaryKey:
+  - '#Sources.source'
+  columns:
+  - name: source
+    '@id': '#Sources.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+- name: Measurement01
+  '@id': '#Measurement01'
+  description: Measurements of kind 1.
+  primaryKey:
+  - '#Measurement01.source'
+  columns:
+  - name: source
+    '@id': '#Measurement01.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement01.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement01.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement01.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement01.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement01.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement01.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement01.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement01.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement01.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement01.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement01_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement01_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement01.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement02
+  '@id': '#Measurement02'
+  description: Measurements of kind 2.
+  primaryKey:
+  - '#Measurement02.source'
+  columns:
+  - name: source
+    '@id': '#Measurement02.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement02.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement02.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement02.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement02.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement02.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement02.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement02.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement02.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement02.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement02.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement02_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement02_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement02.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement03
+  '@id': '#Measurement03'
+  description: Measurements of kind 3.
+  primaryKey:
+  - '#Measurement03.source'
+  columns:
+  - name: source
+    '@id': '#Measurement03.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement03.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement03.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement03.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement03.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement03.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement03.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement03.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement03.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement03.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement03.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement03_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement03_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement03.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement04
+  '@id': '#Measurement04'
+  description: Measurements of kind 4.
+  primaryKey:
+  - '#Measurement04.source'
+  columns:
+  - name: source
+    '@id': '#Measurement04.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement04.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement04.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement04.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement04.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement04.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement04.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement04.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement04.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement04.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement04.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement04_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement04_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement04.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement05
+  '@id': '#Measurement05'
+  description: Measurements of kind 5.
+  primaryKey:
+  - '#Measurement05.source'
+  columns:
+  - name: source
+    '@id': '#Measurement05.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement05.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement05.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement05.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement05.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement05.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement05.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement05.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement05.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement05.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement05.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement05_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement05_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement05.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement06
+  '@id': '#Measurement06'
+  description: Measurements of kind 6.
+  primaryKey:
+  - '#Measurement06.source'
+  columns:
+  - name: source
+    '@id': '#Measurement06.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement06.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement06.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement06.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement06.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement06.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement06.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement06.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement06.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement06.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement06.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement06_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement06_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement06.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement07
+  '@id': '#Measurement07'
+  description: Measurements of kind 7.
+  primaryKey:
+  - '#Measurement07.source'
+  columns:
+  - name: source
+    '@id': '#Measurement07.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement07.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement07.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement07.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement07.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement07.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement07.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement07.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement07.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement07.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement07.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement07_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement07_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement07.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement08
+  '@id': '#Measurement08'
+  description: Measurements of kind 8.
+  primaryKey:
+  - '#Measurement08.source'
+  columns:
+  - name: source
+    '@id': '#Measurement08.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement08.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement08.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement08.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement08.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement08.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement08.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement08.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement08.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement08.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement08.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement08_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement08_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement08.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement09
+  '@id': '#Measurement09'
+  description: Measurements of kind 9.
+  primaryKey:
+  - '#Measurement09.source'
+  columns:
+  - name: source
+    '@id': '#Measurement09.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement09.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement09.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement09.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement09.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement09.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement09.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement09.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement09.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement09.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement09.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement09_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement09_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement09.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement10
+  '@id': '#Measurement10'
+  description: Measurements of kind 10.
+  primaryKey:
+  - '#Measurement10.source'
+  columns:
+  - name: source
+    '@id': '#Measurement10.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement10.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement10.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement10.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement10.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement10.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement10.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement10.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement10.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement10.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement10.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement10_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement10_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement10.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement11
+  '@id': '#Measurement11'
+  description: Measurements of kind 11.
+  primaryKey:
+  - '#Measurement11.source'
+  columns:
+  - name: source
+    '@id': '#Measurement11.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement11.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement11.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement11.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement11.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement11.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement11.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement11.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement11.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement11.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement11.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement11_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement11_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement11.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement12
+  '@id': '#Measurement12'
+  description: Measurements of kind 12.
+  primaryKey:
+  - '#Measurement12.source'
+  columns:
+  - name: source
+    '@id': '#Measurement12.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement12.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement12.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement12.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement12.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement12.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement12.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement12.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement12.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement12.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement12.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement12_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement12_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement12.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement13
+  '@id': '#Measurement13'
+  description: Measurements of kind 13.
+  primaryKey:
+  - '#Measurement13.source'
+  columns:
+  - name: source
+    '@id': '#Measurement13.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement13.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement13.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement13.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement13.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement13.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement13.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement13.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement13.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement13.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement13.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement13_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement13_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement13.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement14
+  '@id': '#Measurement14'
+  description: Measurements of kind 14.
+  primaryKey:
+  - '#Measurement14.source'
+  columns:
+  - name: source
+    '@id': '#Measurement14.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement14.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement14.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement14.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement14.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement14.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement14.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement14.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement14.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement14.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement14.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement14_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement14_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement14.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement15
+  '@id': '#Measurement15'
+  description: Measurements of kind 15.
+  primaryKey:
+  - '#Measurement15.source'
+  columns:
+  - name: source
+    '@id': '#Measurement15.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement15.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement15.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement15.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement15.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement15.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement15.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement15.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement15.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement15.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement15.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement15_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement15_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement15.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement16
+  '@id': '#Measurement16'
+  description: Measurements of kind 16.
+  primaryKey:
+  - '#Measurement16.source'
+  columns:
+  - name: source
+    '@id': '#Measurement16.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement16.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement16.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement16.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement16.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement16.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement16.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement16.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement16.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement16.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement16.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement16_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement16_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement16.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement17
+  '@id': '#Measurement17'
+  description: Measurements of kind 17.
+  primaryKey:
+  - '#Measurement17.source'
+  columns:
+  - name: source
+    '@id': '#Measurement17.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement17.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement17.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement17.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement17.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement17.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement17.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement17.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement17.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement17.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement17.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement17_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement17_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement17.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement18
+  '@id': '#Measurement18'
+  description: Measurements of kind 18.
+  primaryKey:
+  - '#Measurement18.source'
+  columns:
+  - name: source
+    '@id': '#Measurement18.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement18.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement18.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement18.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement18.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement18.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement18.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement18.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement18.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement18.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement18.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement18_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement18_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement18.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement19
+  '@id': '#Measurement19'
+  description: Measurements of kind 19.
+  primaryKey:
+  - '#Measurement19.source'
+  columns:
+  - name: source
+    '@id': '#Measurement19.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement19.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement19.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement19.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement19.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement19.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement19.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement19.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement19.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement19.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement19.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement19_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement19_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement19.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement20
+  '@id': '#Measurement20'
+  description: Measurements of kind 20.
+  primaryKey:
+  - '#Measurement20.source'
+  columns:
+  - name: source
+    '@id': '#Measurement20.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement20.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement20.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement20.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement20.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement20.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement20.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement20.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement20.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement20.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement20.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement20_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement20_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement20.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement21
+  '@id': '#Measurement21'
+  description: Measurements of kind 21.
+  primaryKey:
+  - '#Measurement21.source'
+  columns:
+  - name: source
+    '@id': '#Measurement21.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement21.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement21.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement21.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement21.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement21.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement21.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement21.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement21.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement21.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement21.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement21_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement21_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement21.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement22
+  '@id': '#Measurement22'
+  description: Measurements of kind 22.
+  primaryKey:
+  - '#Measurement22.source'
+  columns:
+  - name: source
+    '@id': '#Measurement22.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement22.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement22.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement22.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement22.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement22.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement22.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement22.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement22.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement22.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement22.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement22_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement22_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement22.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement23
+  '@id': '#Measurement23'
+  description: Measurements of kind 23.
+  primaryKey:
+  - '#Measurement23.source'
+  columns:
+  - name: source
+    '@id': '#Measurement23.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement23.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement23.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement23.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement23.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement23.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement23.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement23.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement23.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement23.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement23.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement23_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement23_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement23.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement24
+  '@id': '#Measurement24'
+  description: Measurements of kind 24.
+  primaryKey:
+  - '#Measurement24.source'
+  columns:
+  - name: source
+    '@id': '#Measurement24.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement24.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement24.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement24.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement24.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement24.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement24.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement24.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement24.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement24.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement24.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement24_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement24_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement24.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement25
+  '@id': '#Measurement25'
+  description: Measurements of kind 25.
+  primaryKey:
+  - '#Measurement25.source'
+  columns:
+  - name: source
+    '@id': '#Measurement25.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement25.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement25.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement25.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement25.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement25.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement25.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement25.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement25.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement25.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement25.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement25_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement25_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement25.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement26
+  '@id': '#Measurement26'
+  description: Measurements of kind 26.
+  primaryKey:
+  - '#Measurement26.source'
+  columns:
+  - name: source
+    '@id': '#Measurement26.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement26.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement26.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement26.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement26.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement26.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement26.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement26.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement26.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement26.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement26.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement26_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement26_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement26.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement27
+  '@id': '#Measurement27'
+  description: Measurements of kind 27.
+  primaryKey:
+  - '#Measurement27.source'
+  columns:
+  - name: source
+    '@id': '#Measurement27.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement27.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement27.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement27.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement27.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement27.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement27.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement27.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement27.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement27.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement27.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement27_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement27_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement27.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement28
+  '@id': '#Measurement28'
+  description: Measurements of kind 28.
+  primaryKey:
+  - '#Measurement28.source'
+  columns:
+  - name: source
+    '@id': '#Measurement28.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement28.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement28.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement28.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement28.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement28.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement28.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement28.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement28.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement28.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement28.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement28_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement28_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement28.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement29
+  '@id': '#Measurement29'
+  description: Measurements of kind 29.
+  primaryKey:
+  - '#Measurement29.source'
+  columns:
+  - name: source
+    '@id': '#Measurement29.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement29.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement29.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement29.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement29.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement29.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement29.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement29.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement29.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement29.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement29.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement29_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement29_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement29.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement30
+  '@id': '#Measurement30'
+  description: Measurements of kind 30.
+  primaryKey:
+  - '#Measurement30.source'
+  columns:
+  - name: source
+    '@id': '#Measurement30.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement30.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement30.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement30.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement30.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement30.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement30.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement30.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement30.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement30.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement30.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement30_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement30_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement30.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement31
+  '@id': '#Measurement31'
+  description: Measurements of kind 31.
+  primaryKey:
+  - '#Measurement31.source'
+  columns:
+  - name: source
+    '@id': '#Measurement31.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement31.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement31.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement31.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement31.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement31.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement31.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement31.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement31.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement31.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement31.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement31_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement31_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement31.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement32
+  '@id': '#Measurement32'
+  description: Measurements of kind 32.
+  primaryKey:
+  - '#Measurement32.source'
+  columns:
+  - name: source
+    '@id': '#Measurement32.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement32.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement32.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement32.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement32.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement32.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement32.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement32.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement32.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement32.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement32.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement32_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement32_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement32.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement33
+  '@id': '#Measurement33'
+  description: Measurements of kind 33.
+  primaryKey:
+  - '#Measurement33.source'
+  columns:
+  - name: source
+    '@id': '#Measurement33.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement33.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement33.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement33.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement33.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement33.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement33.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement33.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement33.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement33.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement33.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement33_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement33_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement33.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement34
+  '@id': '#Measurement34'
+  description: Measurements of kind 34.
+  primaryKey:
+  - '#Measurement34.source'
+  columns:
+  - name: source
+    '@id': '#Measurement34.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement34.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement34.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement34.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement34.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement34.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement34.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement34.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement34.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement34.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement34.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement34_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement34_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement34.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement35
+  '@id': '#Measurement35'
+  description: Measurements of kind 35.
+  primaryKey:
+  - '#Measurement35.source'
+  columns:
+  - name: source
+    '@id': '#Measurement35.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement35.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement35.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement35.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement35.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement35.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement35.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement35.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement35.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement35.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement35.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement35_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement35_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement35.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement36
+  '@id': '#Measurement36'
+  description: Measurements of kind 36.
+  primaryKey:
+  - '#Measurement36.source'
+  columns:
+  - name: source
+    '@id': '#Measurement36.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement36.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement36.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement36.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement36.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement36.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement36.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement36.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement36.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement36.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement36.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement36_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement36_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement36.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement37
+  '@id': '#Measurement37'
+  description: Measurements of kind 37.
+  primaryKey:
+  - '#Measurement37.source'
+  columns:
+  - name: source
+    '@id': '#Measurement37.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement37.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement37.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement37.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement37.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement37.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement37.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement37.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement37.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement37.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement37.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement37_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement37_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement37.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement38
+  '@id': '#Measurement38'
+  description: Measurements of kind 38.
+  primaryKey:
+  - '#Measurement38.source'
+  columns:
+  - name: source
+    '@id': '#Measurement38.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement38.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement38.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement38.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement38.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement38.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement38.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement38.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement38.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement38.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement38.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement38_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement38_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement38.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement39
+  '@id': '#Measurement39'
+  description: Measurements of kind 39.
+  primaryKey:
+  - '#Measurement39.source'
+  columns:
+  - name: source
+    '@id': '#Measurement39.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement39.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement39.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement39.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement39.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement39.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement39.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement39.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement39.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement39.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement39.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement39_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement39_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement39.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement40
+  '@id': '#Measurement40'
+  description: Measurements of kind 40.
+  primaryKey:
+  - '#Measurement40.source'
+  columns:
+  - name: source
+    '@id': '#Measurement40.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement40.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement40.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement40.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement40.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement40.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement40.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement40.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement40.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement40.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement40.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement40_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement40_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement40.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement41
+  '@id': '#Measurement41'
+  description: Measurements of kind 41.
+  primaryKey:
+  - '#Measurement41.source'
+  columns:
+  - name: source
+    '@id': '#Measurement41.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement41.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement41.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement41.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement41.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement41.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement41.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement41.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement41.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement41.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement41.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement41_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement41_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement41.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement42
+  '@id': '#Measurement42'
+  description: Measurements of kind 42.
+  primaryKey:
+  - '#Measurement42.source'
+  columns:
+  - name: source
+    '@id': '#Measurement42.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement42.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement42.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement42.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement42.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement42.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement42.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement42.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement42.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement42.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement42.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement42_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement42_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement42.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement43
+  '@id': '#Measurement43'
+  description: Measurements of kind 43.
+  primaryKey:
+  - '#Measurement43.source'
+  columns:
+  - name: source
+    '@id': '#Measurement43.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement43.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement43.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement43.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement43.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement43.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement43.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement43.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement43.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement43.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement43.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement43_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement43_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement43.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement44
+  '@id': '#Measurement44'
+  description: Measurements of kind 44.
+  primaryKey:
+  - '#Measurement44.source'
+  columns:
+  - name: source
+    '@id': '#Measurement44.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement44.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement44.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement44.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement44.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement44.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement44.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement44.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement44.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement44.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement44.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement44_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement44_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement44.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement45
+  '@id': '#Measurement45'
+  description: Measurements of kind 45.
+  primaryKey:
+  - '#Measurement45.source'
+  columns:
+  - name: source
+    '@id': '#Measurement45.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement45.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement45.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement45.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement45.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement45.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement45.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement45.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement45.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement45.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement45.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement45_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement45_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement45.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement46
+  '@id': '#Measurement46'
+  description: Measurements of kind 46.
+  primaryKey:
+  - '#Measurement46.source'
+  columns:
+  - name: source
+    '@id': '#Measurement46.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement46.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement46.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement46.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement46.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement46.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement46.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement46.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement46.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement46.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement46.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement46_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement46_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement46.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement47
+  '@id': '#Measurement47'
+  description: Measurements of kind 47.
+  primaryKey:
+  - '#Measurement47.source'
+  columns:
+  - name: source
+    '@id': '#Measurement47.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement47.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement47.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement47.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement47.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement47.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement47.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement47.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement47.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement47.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement47.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement47_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement47_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement47.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement48
+  '@id': '#Measurement48'
+  description: Measurements of kind 48.
+  primaryKey:
+  - '#Measurement48.source'
+  columns:
+  - name: source
+    '@id': '#Measurement48.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement48.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement48.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement48.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement48.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement48.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement48.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement48.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement48.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement48.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement48.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement48_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement48_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement48.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement49
+  '@id': '#Measurement49'
+  description: Measurements of kind 49.
+  primaryKey:
+  - '#Measurement49.source'
+  columns:
+  - name: source
+    '@id': '#Measurement49.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement49.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement49.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement49.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement49.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement49.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement49.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement49.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement49.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement49.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement49.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement49_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement49_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement49.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement50
+  '@id': '#Measurement50'
+  description: Measurements of kind 50.
+  primaryKey:
+  - '#Measurement50.source'
+  columns:
+  - name: source
+    '@id': '#Measurement50.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement50.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement50.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement50.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement50.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement50.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement50.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement50.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement50.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement50.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement50.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement50_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement50_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement50.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement51
+  '@id': '#Measurement51'
+  description: Measurements of kind 51.
+  primaryKey:
+  - '#Measurement51.source'
+  columns:
+  - name: source
+    '@id': '#Measurement51.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement51.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement51.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement51.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement51.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement51.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement51.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement51.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement51.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement51.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement51.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement51_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement51_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement51.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement52
+  '@id': '#Measurement52'
+  description: Measurements of kind 52.
+  primaryKey:
+  - '#Measurement52.source'
+  columns:
+  - name: source
+    '@id': '#Measurement52.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement52.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement52.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement52.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement52.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement52.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement52.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement52.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement52.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement52.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement52.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement52_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement52_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement52.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement53
+  '@id': '#Measurement53'
+  description: Measurements of kind 53.
+  primaryKey:
+  - '#Measurement53.source'
+  columns:
+  - name: source
+    '@id': '#Measurement53.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement53.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement53.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement53.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement53.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement53.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement53.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement53.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement53.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement53.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement53.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement53_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement53_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement53.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement54
+  '@id': '#Measurement54'
+  description: Measurements of kind 54.
+  primaryKey:
+  - '#Measurement54.source'
+  columns:
+  - name: source
+    '@id': '#Measurement54.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement54.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement54.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement54.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement54.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement54.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement54.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement54.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement54.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement54.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement54.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement54_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement54_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement54.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement55
+  '@id': '#Measurement55'
+  description: Measurements of kind 55.
+  primaryKey:
+  - '#Measurement55.source'
+  columns:
+  - name: source
+    '@id': '#Measurement55.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement55.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement55.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement55.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement55.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement55.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement55.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement55.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement55.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement55.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement55.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement55_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement55_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement55.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement56
+  '@id': '#Measurement56'
+  description: Measurements of kind 56.
+  primaryKey:
+  - '#Measurement56.source'
+  columns:
+  - name: source
+    '@id': '#Measurement56.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement56.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement56.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement56.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement56.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement56.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement56.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement56.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement56.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement56.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement56.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement56_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement56_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement56.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement57
+  '@id': '#Measurement57'
+  description: Measurements of kind 57.
+  primaryKey:
+  - '#Measurement57.source'
+  columns:
+  - name: source
+    '@id': '#Measurement57.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement57.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement57.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement57.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement57.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement57.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement57.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement57.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement57.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement57.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement57.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement57_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement57_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement57.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement58
+  '@id': '#Measurement58'
+  description: Measurements of kind 58.
+  primaryKey:
+  - '#Measurement58.source'
+  columns:
+  - name: source
+    '@id': '#Measurement58.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement58.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement58.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement58.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement58.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement58.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement58.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement58.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement58.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement58.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement58.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement58_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement58_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement58.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement59
+  '@id': '#Measurement59'
+  description: Measurements of kind 59.
+  primaryKey:
+  - '#Measurement59.source'
+  columns:
+  - name: source
+    '@id': '#Measurement59.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement59.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement59.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement59.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement59.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement59.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement59.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement59.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement59.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement59.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement59.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement59_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement59_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement59.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement60
+  '@id': '#Measurement60'
+  description: Measurements of kind 60.
+  primaryKey:
+  - '#Measurement60.source'
+  columns:
+  - name: source
+    '@id': '#Measurement60.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement60.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement60.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement60.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement60.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement60.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement60.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement60.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement60.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement60.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement60.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement60_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement60_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement60.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement61
+  '@id': '#Measurement61'
+  description: Measurements of kind 61.
+  primaryKey:
+  - '#Measurement61.source'
+  columns:
+  - name: source
+    '@id': '#Measurement61.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement61.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement61.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement61.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement61.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement61.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement61.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement61.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement61.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement61.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement61.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement61_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement61_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement61.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement62
+  '@id': '#Measurement62'
+  description: Measurements of kind 62.
+  primaryKey:
+  - '#Measurement62.source'
+  columns:
+  - name: source
+    '@id': '#Measurement62.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement62.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement62.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement62.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement62.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement62.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement62.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement62.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement62.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement62.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement62.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement62_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement62_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement62.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement63
+  '@id': '#Measurement63'
+  description: Measurements of kind 63.
+  primaryKey:
+  - '#Measurement63.source'
+  columns:
+  - name: source
+    '@id': '#Measurement63.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement63.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement63.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement63.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement63.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement63.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement63.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement63.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement63.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement63.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement63.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement63_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement63_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement63.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement64
+  '@id': '#Measurement64'
+  description: Measurements of kind 64.
+  primaryKey:
+  - '#Measurement64.source'
+  columns:
+  - name: source
+    '@id': '#Measurement64.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement64.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement64.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement64.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement64.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement64.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement64.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement64.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement64.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement64.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement64.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement64_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement64_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement64.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement65
+  '@id': '#Measurement65'
+  description: Measurements of kind 65.
+  primaryKey:
+  - '#Measurement65.source'
+  columns:
+  - name: source
+    '@id': '#Measurement65.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement65.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement65.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement65.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement65.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement65.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement65.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement65.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement65.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement65.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement65.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement65_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement65_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement65.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement66
+  '@id': '#Measurement66'
+  description: Measurements of kind 66.
+  primaryKey:
+  - '#Measurement66.source'
+  columns:
+  - name: source
+    '@id': '#Measurement66.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement66.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement66.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement66.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement66.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement66.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement66.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement66.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement66.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement66.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement66.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement66_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement66_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement66.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement67
+  '@id': '#Measurement67'
+  description: Measurements of kind 67.
+  primaryKey:
+  - '#Measurement67.source'
+  columns:
+  - name: source
+    '@id': '#Measurement67.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement67.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement67.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement67.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement67.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement67.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement67.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement67.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement67.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement67.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement67.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement67_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement67_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement67.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement68
+  '@id': '#Measurement68'
+  description: Measurements of kind 68.
+  primaryKey:
+  - '#Measurement68.source'
+  columns:
+  - name: source
+    '@id': '#Measurement68.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement68.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement68.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement68.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement68.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement68.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement68.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement68.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement68.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement68.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement68.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement68_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement68_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement68.source'
+    referencedColumns:
+    - '#Sources.source'
+- name: Measurement69
+  '@id': '#Measurement69'
+  description: Measurements of kind 69.
+  primaryKey:
+  - '#Measurement69.source'
+  columns:
+  - name: source
+    '@id': '#Measurement69.source'
+    datatype: string
+    length: 50
+    nullable: false
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_1
+    '@id': '#Measurement69.measured_quantity_1'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_2
+    '@id': '#Measurement69.measured_quantity_2'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_3
+    '@id': '#Measurement69.measured_quantity_3'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_4
+    '@id': '#Measurement69.measured_quantity_4'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_5
+    '@id': '#Measurement69.measured_quantity_5'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_6
+    '@id': '#Measurement69.measured_quantity_6'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_7
+    '@id': '#Measurement69.measured_quantity_7'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_8
+    '@id': '#Measurement69.measured_quantity_8'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_9
+    '@id': '#Measurement69.measured_quantity_9'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  - name: measured_quantity_10
+    '@id': '#Measurement69.measured_quantity_10'
+    datatype: double
+    description: A verbose column description of the kind survey schemas carry.
+  constraints:
+  - name: Measurement69_source
+    '@type': ForeignKey
+    '@id': '#FK_Measurement69_source'
+    description: Link to Sources
+    columns:
+    - '#Measurement69.source'
+    referencedColumns:
+    - '#Sources.source'

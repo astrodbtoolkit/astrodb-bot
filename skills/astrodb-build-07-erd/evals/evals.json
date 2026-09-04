@@ -1,0 +1,125 @@
+{
+  "skill_name": "astrodb-build-07-erd",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Make me an entity relationship diagram for my schema at data/test_schema_brown_dwarfs.yaml. I do not want to install graphviz.",
+      "expected_output": "The skill runs detect_erd_backends.py, reports what it found, tells the user the built-in Mermaid backend is sufficient and that graphviz is not required at all, installs nothing, and writes a Mermaid erDiagram into astrodb-build-artifacts/ with PK/FK markers and cardinality derived from the schema's primaryKey and nullable fields. It verifies the output beyond the exit code before reporting success.",
+      "files": [
+        "data/test_schema_brown_dwarfs.yaml"
+      ],
+      "assertions": [
+        {
+          "text": "Runs a backend detection step before generating anything and reports what it found",
+          "type": "output_contains"
+        },
+        {
+          "text": "States that graphviz is not required and does not ask the user to install it",
+          "type": "output_contains"
+        },
+        {
+          "text": "Runs no install command — no uv add, pip install, brew, or apt",
+          "type": "output_contains"
+        },
+        {
+          "text": "Writes a diagram file into astrodb-build-artifacts/ whose mermaid block starts with 'erDiagram'",
+          "type": "file_exists"
+        },
+        {
+          "text": "Marks primary-key columns PK and foreign-key columns FK, and uses ||--o{ style cardinality markers between related tables",
+          "type": "file_contains"
+        },
+        {
+          "text": "Verifies the generated file rather than trusting the script's exit code, and reports the table, column, and relationship counts",
+          "type": "output_contains"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I just finished create-db on the full AstroDB template schema (data/schema_template.yaml). Draw me a diagram and reference it from my README.",
+      "expected_output": "The skill sees 25 tables and 171 columns, proposes an overview at key-column detail plus per-cluster detailed diagrams, shows the Lookup/Main/Data grouping and asks the user to confirm it, then writes the diagram to docs/figures/schema_erd.md between ERD:BEGIN/ERD:END markers and adds only a short Schema section linking to it in README.md — not an inline mermaid block and not an image link to schema_erd.png. It reports the character count against the 50,000 limit.",
+      "files": [
+        "data/schema_template.yaml"
+      ],
+      "assertions": [
+        {
+          "text": "Proposes an overview plus per-cluster diagrams rather than one diagram of all 171 columns, and asks the user to confirm the Lookup/Main/Data grouping before generating",
+          "type": "output_contains"
+        },
+        {
+          "text": "Writes the diagram into the repo as part of doing the job \u2014 like the other build skills, which write their output rather than asking permission first \u2014 and reports which files it changed",
+          "type": "output_contains"
+        },
+        {
+          "text": "Writes the fenced mermaid block to docs/figures/schema_erd.md wrapped in ERD:BEGIN and ERD:END marker comments",
+          "type": "file_contains"
+        },
+        {
+          "text": "Adds only a link to the diagram in README.md — no inline mermaid block in the README and no image link to docs/figures/schema_erd.png",
+          "type": "file_contains"
+        },
+        {
+          "text": "Reports the diagram's character count and states it is under Mermaid's 50,000-character limit",
+          "type": "output_contains"
+        },
+        {
+          "text": "Renders the composite Spectra to Instruments foreign key as a single relationship labelled with all three columns (instrument, mode, telescope)",
+          "type": "file_contains"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Generate an ERD for data/test_schema_brown_dwarfs.yaml. I have graphviz and eralchemy2 installed already from an old project.",
+      "expected_output": "Detection finds graphviz on PATH. The skill warns that eralchemy2 is deprecated — merged into upstream eralchemy at v1.5.0, current v1.7.0 — still recommends the built-in Mermaid backend as the default because it renders on GitHub and needs nothing installed, but offers the graphviz path since it is genuinely already available. It presents the options and waits rather than choosing silently.",
+      "files": [
+        "data/test_schema_brown_dwarfs.yaml"
+      ],
+      "assertions": [
+        {
+          "text": "Warns that eralchemy2 is deprecated and names eralchemy 1.7 as the maintained successor",
+          "type": "output_contains"
+        },
+        {
+          "text": "Still recommends the built-in Mermaid backend as the default even though graphviz is available",
+          "type": "output_contains"
+        },
+        {
+          "text": "Presents the options and waits for the user's choice rather than silently selecting a backend",
+          "type": "output_contains"
+        },
+        {
+          "text": "Records the chosen backend in astrodb-build-artifacts/build-workflow.md",
+          "type": "file_contains"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Here's my schema: data/schema_large.yaml. Give me the full diagram with every column and all the descriptions included.",
+      "expected_output": "The generation hits the 45,000-character budget and exits 1. The skill explains that GitHub silently refuses to draw a mermaid diagram over 50,000 characters and that the limit is not configurable there, then takes one of the remedies the script names — splitting by cluster, lowering the detail level, or dropping comments — rather than raising --max-chars to force the oversized file through.",
+      "files": [
+        "data/schema_large.yaml"
+      ],
+      "assertions": [
+        {
+          "text": "Detects that the diagram would exceed the size limit and does not write an oversized file",
+          "type": "output_contains"
+        },
+        {
+          "text": "Explains that GitHub fails silently past 50,000 characters and that the limit cannot be configured there",
+          "type": "output_contains"
+        },
+        {
+          "text": "Does not raise --max-chars to get past the guard; instead splits, lowers --detail, or drops --comments",
+          "type": "output_contains"
+        },
+        {
+          "text": "Ends up producing a diagram the user can actually use, and reports its character count",
+          "type": "file_exists"
+        }
+      ]
+    }
+  ]
+}

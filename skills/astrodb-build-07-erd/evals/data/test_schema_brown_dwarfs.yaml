@@ -1,0 +1,61 @@
+name: BrownDwarfSurvey
+"@id": "#BrownDwarfSurvey"
+description: "A brown dwarf spectral survey from the BDSS catalog"
+version: "1.0"
+tables:
+  - name: Sources
+    "@id": "#Sources"
+    description: "Known sources in the survey"
+    primaryKey:
+      - "#Sources.source"
+    columns:
+      - name: source
+        "@id": "#Sources.source"
+        datatype: string
+        length: 100
+        nullable: false
+        description: "Unique source identifier"
+
+  - name: SpectralTypes
+    "@id": "#SpectralTypes"
+    description: "Spectral type classifications"
+    primaryKey:
+      - "#SpectralTypes.source"
+    columns:
+      - name: source
+        "@id": "#SpectralTypes.source"
+        datatype: string
+        length: 100
+        nullable: false
+        description: "Source identifier"
+      - name: spectral_type
+        "@id": "#SpectralTypes.spectral_type"
+        datatype: string
+        length: 10
+        nullable: true
+        description: "Spectral type classification (e.g. T8, L5)"
+      - name: spectral_type_error
+        "@id": "#SpectralTypes.spectral_type_error"
+        datatype: string
+        length: 10
+        nullable: true
+        description: "Uncertainty in spectral type"
+      - name: adopted
+        "@id": "#SpectralTypes.adopted"
+        datatype: boolean
+        nullable: true
+        description: "Whether this is the adopted spectral type"
+      - name: reference
+        "@id": "#SpectralTypes.reference"
+        datatype: string
+        length: 50
+        nullable: true
+        description: "Publication reference"
+    constraints:
+      - name: SpectralTypes_source_Sources_source
+        "@type": "ForeignKey"
+        "@id": "#FK_SpectralTypes_source_Sources_source"
+        columns:
+          - "#SpectralTypes.source"
+        referencedColumns:
+          - "#Sources.source"

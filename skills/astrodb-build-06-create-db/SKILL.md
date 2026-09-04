@@ -203,8 +203,10 @@ Data directory:   data/reference/  data/source/
 Tests:            tests/  (run with: uv run pytest tests/ -v)
 
 Next steps:
-  1. Add JSON data files to data/source/ and run your ingestion scripts.
-  2. Update the count assertions in tests/test_contents_*.py to match your data.
+  1. Generate an entity relationship diagram (astrodb-build-07-erd) — no extra
+     dependencies needed.
+  2. Add JSON data files to data/source/ and run your ingestion scripts.
+  3. Update the count assertions in tests/test_contents_*.py to match your data.
 ```
 
 ## Checkpoint: Confirm before proceeding
@@ -222,7 +224,10 @@ Then ask the user to visually inspect the new database before ingesting any data
 > 2. Table and column names look right — this is the easiest point to fix naming, before any
 >    data goes in.
 > 3. Tables are empty, as expected for a freshly created database.
-> 4. Are you ready to move on to ingesting data (starting with
+> 4. Would you like me to generate an entity relationship diagram of this schema
+>    (`astrodb-build-07-erd`) to help you check the table relationships? It needs
+>    nothing installed.
+> 5. Are you ready to move on to ingesting data (starting with
 >    `astrodb-ingest-01-publications`)?
 
 **Wait for the user's explicit confirmation before this skill is complete.** If they spot
@@ -253,6 +258,6 @@ do not proceed past a failure.
 - [ ] The empty SQLite database was created with `scripts/create_db.py`, and you verified the `.sqlite` file exists and is non-empty.
 - [ ] The test suite was generated with `scripts/generate_tests.py`, and `uv run pytest tests/ -v` was actually run and all tests pass.
 - [ ] You gave the final report: database path, schema location, config location, data directories, the tests directory with how to run them, and next steps.
-- [ ] You asked the user to inspect the `.sqlite` file in a database browser and confirm before proceeding, and waited for their explicit confirmation before treating this skill as done.
+- [ ] You asked the user to inspect the `.sqlite` file in a database browser and confirm before proceeding — including offering to generate an ERD (`astrodb-build-07-erd`) to help them check the table relationships — and waited for their explicit confirmation before treating this skill as done.
 - [ ] A decision-log entry was appended to `astrodb-build-artifacts/build-workflow.md` (created with the standard header if absent), recording the non-obvious choices this skill made and why — per the decision-log convention in `references/astrodb-build-instructions.md`.
 - [ ] Any problem with the skills themselves was logged in `gotchas.md`, following the problem-log convention in `references/astrodb-instructions.md` — or there was none worth logging.

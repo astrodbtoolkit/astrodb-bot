@@ -30,6 +30,10 @@
           "type": "output_contains"
         },
         {
+          "text": "Offers astrodb-build-07-erd as a next step for visualizing the schema, and notes it requires no additional dependencies",
+          "type": "output_contains"
+        },
+        {
           "text": "States that a missing or misnamed table or column should be fixed by returning to the schema-generate or schema-match skill and regenerating, not by patching the .sqlite directly with ad hoc SQL",
           "type": "output_contains"
         }

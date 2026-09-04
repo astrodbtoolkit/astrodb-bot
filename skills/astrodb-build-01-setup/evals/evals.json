@@ -28,7 +28,7 @@
     {
       "id": 2,
       "prompt": "I made my repo from the template, it's at https://github.com/kelle/test-astrodb . Call the database BdSurvey and get it set up.",
-      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, removes the generated schema representations (the ERD at docs/figures/schema_erd.png and the docs/schema/*.md files) and the template's placeholder example sources in data/source/ while leaving data/reference/ intact, updates db_name to 'BdSurvey', asks for a README description, and applies that description to both README.md and CLAUDE.md \u2014 also stripping CLAUDE.md's '## Git and GitHub' section and renaming astrodb-template references without breaking upstream template links. Prompts the user to update the LICENSE \u2014 putting their own name(s) on the copyright or choosing a different license, since none was given. In Step 8, creates the astrodb-build-artifacts/ directory and offers to help write a directions document, but does not write a directions.md file since the user never asked for one \u2014 no placeholder or template copy is left behind. Tells the user the cloned directory is their project directory. At the end \u2014 after setup is complete \u2014 notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
+      "expected_output": "Clones https://github.com/kelle/test-astrodb right away without asking where to put it, verifies structure, removes the generated schema representations (the ERD at docs/figures/schema_erd.png and the docs/schema/*.md files), noting that astrodb-build-07-erd regenerates a diagram from the user's own schema later, and the template's placeholder example sources in data/source/ while leaving data/reference/ intact, updates db_name to 'BdSurvey', asks for a README description, and applies that description to both README.md and CLAUDE.md \u2014 also stripping CLAUDE.md's '## Git and GitHub' section and renaming astrodb-template references without breaking upstream template links. Prompts the user to update the LICENSE \u2014 putting their own name(s) on the copyright or choosing a different license, since none was given. In Step 8, creates the astrodb-build-artifacts/ directory and offers to help write a directions document, but does not write a directions.md file since the user never asked for one \u2014 no placeholder or template copy is left behind. Tells the user the cloned directory is their project directory. At the end \u2014 after setup is complete \u2014 notes the repo/database name mismatch (test-astrodb vs BdSurvey), asks if they want to rename the repo on GitHub, and offers to run 'git remote set-url origin' with the new URL once they do. Optionally offers to rename the local directory too. Does not raise the mismatch before or during cloning.",
       "files": [],
       "assertions": [
         {
@@ -86,6 +86,10 @@
         {
           "id": "eval2_removes_readme_erd_link",
           "text": "Removes the ERD image link (![Entity Relationship Diagram](docs/figures/schema_erd.png)) from README.md, since Step 4 deleted the image it points to"
+        },
+        {
+          "id": "eval2_mentions_erd_regeneration",
+          "text": "Tells the user the deleted ERD and the removed README diagram link will be regenerated from their own schema by the astrodb-build-07-erd skill \u2014 rather than leaving the deletion unexplained or leaving a placeholder link behind"
         },
         {
           "id": "eval2_keeps_readme_credit_line",
