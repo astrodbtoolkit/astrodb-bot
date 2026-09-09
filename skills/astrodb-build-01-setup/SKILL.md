@@ -189,6 +189,47 @@ ls <repo-dir>/data/source/ 2>/dev/null   # confirm it's empty
 Leave `data/reference/` alone — those files are reusable lookup tables (telescopes, instruments, filters,
 regimes, etc.), not source-specific placeholders, and later skills expect them to still be there.
 
+The template also ships two GitHub Actions workflows that only make sense for the
+`astrodb-template-db` repo itself, not for a database forked from it:
+
+- **`.github/workflows/run_astrodb_utils.yml`** runs the `astrodb_utils` package's own test suite
+  against this branch of the database — it exists to catch breakage in the upstream tooling, and
+  matters only to maintainers of the `astrodbtoolkit` ecosystem. Remove it:
+
+  ```bash
+  rm -f <repo-dir>/.github/workflows/run_astrodb_utils.yml
+  ```
+
+- **`.github/workflows/run_tests.yml`** (the one that runs the real pytest suite against this
+  database) still carries the template's own name, `Test astrotemplate-db`. Rename it to reflect
+  this database instead, using the name from Step 1:
+
+  ```bash
+  grep '^name:' <repo-dir>/.github/workflows/run_tests.yml   # confirm it currently reads "Test astrotemplate-db"
+  ```
+
+  Use the `Edit` tool to change the `name:` line (line 4) from `Test astrotemplate-db` to
+  `Test <new-name>` — don't touch anything else in the file.
+
+- **`.github/workflows/generate_db.yml`** hardcodes the template's sqlite filename in its
+  "Create release copy" step:
+
+  ```bash
+  cp astrodb-template.sqlite astrodb-template-${release_tag}.sqlite
+  ```
+
+  Once Step 5 changes `db_name`, the database this workflow builds is named `<new-name>.sqlite`,
+  not `astrodb-template.sqlite` — left as-is, this `cp` fails on every release. Use the `Edit`
+  tool to replace both occurrences of `astrodb-template` on that line with `<new-name>`, so it
+  reads:
+
+  ```bash
+  cp <new-name>.sqlite <new-name>-${release_tag}.sqlite
+  ```
+
+  Don't touch anything else in the file — the rest of the workflow (`git add *.sqlite`, etc.)
+  is already name-agnostic.
+
 ## Step 5: Set the database name in database.toml
 
 Update the cloned `database.toml` so `db_name` is the name from Step 1. It ships as
@@ -424,6 +465,7 @@ of the document. What doesn't count is neither asking nor finding it written dow
 - [ ] The repo is present — you cloned it (Path A) or it was already cloned and you're inside it (Path B) — and you verified it has the template structure: a `data/` directory, a `database.toml`, and a `schema.yaml`.
 - [ ] The template's pre-generated schema representations were removed — `docs/figures/schema_erd.png` and `docs/schema/*.md` no longer exist in the repo (you confirmed the ERD is actually gone, not just that `rm -f` returned success), and you told the user `astrodb-build-07-erd` regenerates a diagram from their own schema later.
 - [ ] The template's placeholder example sources were removed — `data/source/` is empty (you confirmed this, not just that `rm -f` returned success). `data/reference/` was left intact.
+- [ ] **Workflows** — `.github/workflows/run_astrodb_utils.yml` no longer exists in the repo; `.github/workflows/run_tests.yml`'s `name:` line reads `Test <new-name>` instead of `Test astrotemplate-db`; and `.github/workflows/generate_db.yml`'s release-copy step reads `cp <new-name>.sqlite <new-name>-${release_tag}.sqlite` instead of `astrodb-template.sqlite`.
 - [ ] `db_name` in `database.toml` is set to the user's chosen name (it no longer reads `astrodb-template`).
 - [ ] **README** — the title + description reflect this database, from the directions document or from the user's answer (or they explicitly skipped). Removed: the astrodb-utils line and the template ERD image link (with no placeholder left behind — you noted `astrodb-build-07-erd` can add a Schema link later). Still intact: the bottom credit line acknowledging the AstroDB Toolkit/template.
 - [ ] **CLAUDE.md** — if the repo has one, its project description reflects the user's database, the Git/GitHub instructions are gone, and no `astrodb-template` references remain (or the user explicitly skipped). If the repo has no `CLAUDE.md`, this is a no-op.
