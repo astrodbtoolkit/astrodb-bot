@@ -50,6 +50,33 @@ PUBLICATIONS = [
 
 db = build_db_from_json(settings_file=SETTINGS_FILE)
 
+
+def find_existing(db, doi=None, bibcode=None):
+    """Return the reference of the row with this DOI or bibcode, or None.
+
+    Search by DOI and bibcode only — never pass `reference` to find_publication.
+    With a reference it falls back to a fuzzy "first 4 letters + 2-digit year"
+    match, so e.g. "Shipp2020" (or "Ship20") returns "Shipp2019" and the new
+    paper is wrongly skipped as already present.
+    """
+    for key, value in (("doi", doi), ("bibcode", bibcode)):
+        if value:
+            found, result = find_publication(db, **{key: value})
+            if found:
+                return result
+            if result:  # (False, N): N rows already share this DOI/bibcode
+                logger.warning(f"{result} rows already have {key} {value} — check for duplicates")
+                return f"{result} existing rows"
+    return None
+
+
+def reference_taken(db, reference):
+    """True if this exact shortname is already used (exact match, not fuzzy)."""
+    return bool(reference) and (
+        db.query(db.Publications).filter(db.Publications.c.reference == reference).count() > 0
+    )
+
+
 added = already_present = failed = 0
 for pub in PUBLICATIONS:
     doi = pub.get("doi")
@@ -58,10 +85,22 @@ for pub in PUBLICATIONS:
     label = reference or doi or bibcode
 
     # Deduplicate first — report existing rows instead of re-ingesting them.
-    found, result = find_publication(db, reference=reference, doi=doi, bibcode=bibcode)
-    if found:
+    existing = find_existing(db, doi=doi, bibcode=bibcode)
+    if existing:
         already_present += 1
-        logger.info(f"Already present, skipping: {label} ({result})")
+        logger.info(f"Already present, skipping: {label} ({existing})")
+        continue
+    if reference_taken(db, reference):
+        if doi or bibcode:
+            # Same shortname, different paper: a collision, not a duplicate.
+            failed += 1
+            logger.warning(
+                f"Shortname {reference} is already used by a different paper — "
+                "add the DOI suffix to both (see the naming convention) and re-run."
+            )
+        else:
+            already_present += 1
+            logger.info(f"Already present (exact shortname match), skipping: {reference}")
         continue
 
     try:
