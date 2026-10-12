@@ -1,0 +1,98 @@
+{
+  "skill_name": "astrodb-convert-spectra",
+  "setup": "Run `python evals/make_test_data.py` once to (re)generate the synthetic fixtures in evals/data/. evals/data/metadata.csv holds per-file metadata; its blank wave_unit/flux_unit cells are intentional.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Convert evals/data/img1d_wcs.fits into a specutils-readable FITS file for my AstroDB. Metadata is in evals/data/metadata.csv.",
+      "expected_output": "The inspector is run, the file is classified image-1d-wcs and auto-readable, a tailored script is written, and a *_SIMPLE.fits tabular-fits file is produced whose header has RA_TARG/DEC_TARG in degrees, DATE-OBS=2014-05-04, SPECBAND filled, and no leftover CRVAL1/CDELT1/BUNIT.",
+      "files": ["evals/data/img1d_wcs.fits", "evals/data/metadata.csv"],
+      "expectations": [
+        "scripts/inspect_spectrum.py is run before any conversion code is written",
+        "The script is written to astrodb-convert-artifacts/ and is tailored (no unused loaders, no placeholder values)",
+        "Sexagesimal RA/DEC '14:11:44.74' / '-45:24:15.3' are converted to degrees (~212.9364, ~-45.4043) in RA_TARG/DEC_TARG",
+        "DATE-OBS is 2014-05-04 from the metadata table, NOT parsed from the ambiguous header value '04/05/2014'",
+        "Output header contains no CRVAL1, CDELT1, CRPIX1, CUNIT1 or BUNIT cards",
+        "SPECBAND is not None",
+        "check_spectrum_plottable passes on the written file path",
+        "The original input file is unchanged"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Convert evals/data/spex_stack.fits. specutils can't read it.",
+      "expected_output": "Classified image-2d-stacked; the skill shows the XUNITS/YUNITS hints and asks the user to confirm row order (wave, flux, err) and units before writing the loader.",
+      "files": ["evals/data/spex_stack.fits", "evals/data/metadata.csv"],
+      "expectations": [
+        "Layout identified as stacked rows, not treated as an image",
+        "The user is asked to confirm row roles (row0=wave, row1=flux, row2=err) rather than this being silently assumed",
+        "XUNITS='microns' and YUNITS='ergs s-1 cm-2 A-1' are surfaced as unit hints and confirmed",
+        "DATE_OBS (underscore) is recognised as the observation date keyword",
+        "Uncertainty from row 2 is written to the output uncertainty column",
+        "SPECBAND is filled even though wavelengths are in microns (wavelengths passed to add_wavelength_keywords in Angstrom)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Convert evals/data/bintable_desc.fits using evals/data/metadata.csv.",
+      "expected_output": "The skill notices the FLUX column has no unit and stops to ask the user for it instead of inferring one from the value range; it also sorts the descending wavelength axis.",
+      "files": ["evals/data/bintable_desc.fits", "evals/data/metadata.csv"],
+      "expectations": [
+        "The missing flux unit is detected and the user is asked for it",
+        "No flux unit is invented from the value magnitude (e.g. silently assuming Jy because values are ~1e-3)",
+        "After the user supplies 'Jy', the output wavelength axis is ascending",
+        "Wavelength unit Angstrom is taken from the WAVE column's TUNIT"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Convert evals/data/normalized.fits for ingestion.",
+      "expected_output": "The skill explains that the flux looks normalized/dimensionless, that check_spectrum_plottable rejects dimensionless flux, and offers options (flux-calibrated file, confirmed physical unit, or skip) without assigning a unit itself.",
+      "files": ["evals/data/normalized.fits", "evals/data/metadata.csv"],
+      "expectations": [
+        "The normalized/dimensionless flux is flagged before writing any output",
+        "The skill explains why it cannot be ingested as-is (check_spectrum_plottable requires spectral flux density units)",
+        "The user is offered choices and no physical unit is assigned without their decision",
+        "No *_SIMPLE.fits is produced for this file unless the user chose a unit"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Convert everything in evals/data/ using evals/data/metadata.csv. For bintable_desc.fits the flux is in Jy; for iraf_multispec.fits it's erg/s/cm2/A.",
+      "expected_output": "Batch run: 5 converted (img1d_wcs, spex_stack, bintable_desc, ascii_spectrum, iraf_multispec), normalized.fits failed missing_units/not_plottable, all_nan.fits failed all_nan; the batch does not stop on failures; QA plot and manifest are produced.",
+      "files": ["evals/data/"],
+      "expectations": [
+        "A pilot of one file per layout is run and reviewed before the full batch",
+        "all_nan.fits is reported as failed (all NaN) and does not stop other files",
+        "normalized.fits is reported as failed with a units/plottable reason",
+        "iraf_multispec.fits uses band 1 as flux and the 'sigma' band (band 4) as uncertainty, chosen from BANDIDn",
+        "ascii_spectrum.txt and iraf_multispec.fits are reported with header_ok=False and missing RA_TARG/DEC_TARG",
+        "conversion_manifest.csv and qa_converted_spectra.png are written",
+        "The script ends with a comment block of real counts (5 converted, 2 failed)",
+        "The completion message reproduces the checklist with evidence notes"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Convert evals/data/img1d_wcs.fits, but there's no metadata file. The header says DATE-OBS 04/05/2014.",
+      "expected_output": "The skill recognises the date is ambiguous (April 5 vs May 4) and asks the user rather than letting dateparser pick; it also asks for telescope/instrument/mode/regime/reference needed later for ingestion.",
+      "files": ["evals/data/img1d_wcs.fits"],
+      "expectations": [
+        "The ambiguity of '04/05/2014' is called out explicitly",
+        "No DATE-OBS is written until the user confirms the date",
+        "The user is asked for the metadata fields required for ingestion rather than these being invented"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I've converted my spectra. Now ingest them into my database.",
+      "expected_output": "The skill reminds the user the *_SIMPLE.fits files must be hosted at a stable URL first, then offers to run astrodb-ingest-spectra using conversion_manifest.csv.",
+      "files": [],
+      "expectations": [
+        "Hosting/permalink requirement is stated before ingestion",
+        "astrodb-ingest-spectra is offered with conversion_manifest.csv as its input",
+        "No bucket or URL pattern is assumed"
+      ]
+    }
+  ]
+}
