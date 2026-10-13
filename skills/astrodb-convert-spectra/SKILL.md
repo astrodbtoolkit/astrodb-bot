@@ -84,7 +84,7 @@ Clean data: drop rows where wave or flux is non-finite; sort by wavelength;
 replace negative/zero errors with NaN (don't delete flux). Report how many
 points were dropped per file.
 
-## Step 3: Determine units — infer, show evidence, confirm
+## Step 3: Determine units
 
 Evidence order:
 1. Header keywords: `CUNIT1`, `XUNITS`, `BUNIT`, `YUNITS`, `TUNITn`.
@@ -175,10 +175,10 @@ Before telling the user spectra are converted and ready for ingestion, do these 
 1. **Read the checklist file back.** Any unchecked box means you are not done.
 2. **Reproduce the checklist in your completion message**, each item with its evidence note.
 
-- [ ] Package versions checked (specutils >= 2.0 -> `Spectrium`, else `Spectrum1D`).
-- [ ] `scripts/inspect_spectrum.py` was run on every  input files, any warnings were resolved, and the layour summary was shown to the user.
+- [ ] Package versions checked (specutils >= 2.0 -> `Spectrum`, else `Spectrum1D`).
+- [ ] `scripts/inspect_spectrum.py` was run on every  input files, any warnings were resolved, and the layout summary was shown to the user.
 - [ ] Wavelength and flux measurements and units were confirmed with the user or with the data from the input file, never guess the value or unit.
-- [ ] Normalized/dimensionless-flix files were flagged and the user chose how to handle them.
+- [ ] Normalized/dimensionless-flux files were flagged and the user chose how to handle them.
 - [ ] Per-file metadata (source, obs_date ISO, telescope, instrument, mode, regime, reference, RA/DEC) was assembled; ambiguous dates were asked about, none invented.
 - [ ] The tailored script at `astrodb-convert-artifacts/convert_{REF}_spectra.py` contains only needed loaders and real values (no placeholders).
 - [ ] A pilot (one file per layout) was run and the QA plot and one output header were reviewed with the user.
