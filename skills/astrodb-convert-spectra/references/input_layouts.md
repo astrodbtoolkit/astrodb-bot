@@ -1,4 +1,4 @@
-# Input Layouts and How to Load Them
+# Input Raw Spectra Files Layouts and How To Load Them
 
 Each section matches a `layout` value printed by `scripts/inspect_spectrum.py`. Every loader must
 return plain arrays plus the unit strings found in the file (or None), so unit resolution happens in

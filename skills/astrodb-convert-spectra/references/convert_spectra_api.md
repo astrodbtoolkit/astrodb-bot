@@ -2,11 +2,11 @@
 
 # Conversion API Reference (astrodb_utils 1.1.0, specutils 2.0)
 
-Sources of truth (always use the installed package; do not copy these modules into the skill):
+Sources of truth:
 - https://github.com/astrodbtoolkit/astrodb_utils/blob/main/astrodb_utils/fits.py
 - https://github.com/astrodbtoolkit/astrodb_utils/blob/main/astrodb_utils/spectra.py
 - Docs: https://astrodb-utils.readthedocs.io/en/stable/pages/utilities/spectra/converting_spectra/converting_spectra.html
-
+DO NOT copy these modules into the skill. Always use the installed packages.
 ---
 
 ## `specutils.Spectrum` (specutils ≥ 2.0; `Spectrum1D` before)
@@ -99,7 +99,7 @@ Convert to degrees and set `RA_TARG`/`DEC_TARG` first.
 
 ---
 
-## Failure categories used by the template
+## Common failures and errors used by the template, sorted by category
 
 | Category | Meaning | What to tell the user |
 |---|---|---|
