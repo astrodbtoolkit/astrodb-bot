@@ -157,14 +157,29 @@ anything:
 
 ## Step 3: Deduplicate with `find_publication`
 
-For each resolved reference, check whether it is already in the database:
+For each resolved reference, check whether it is already in the database **by DOI or bibcode
+only**:
 
 ```python
 from astrodb_utils.publications import find_publication
-found, result = find_publication(db, doi=doi, bibcode=bibcode, reference=reference)
+found, result = find_publication(db, doi=doi)          # or bibcode=bibcode if there is no DOI
 ```
 
-Report already-present references as "already present" — do not re-ingest.
+**Never pass `reference=` to `find_publication`.** When the shortname has no exact match it
+falls back to a fuzzy "first 4 letters + 2-digit year" search, which returns the wrong paper:
+`reference="Shipp2020"` (and even `"Ship20"`) returns `Shipp2019`, because `"20"` appears in
+`"2019"`. The new paper is then wrongly skipped as "already present". Passing the DOI *and* the
+reference together does not help — the reference match still wins.
+
+Then check the shortname with an **exact** match (`Publications.reference == reference`):
+
+- Found by DOI/bibcode → report as "already present" and do not re-ingest.
+- Not found by DOI/bibcode, but the shortname is already used → it is a **different paper with
+  the same shortname**. Apply the DOI-suffix rule from the naming convention; do not skip it.
+- Only when there is no DOI or bibcode at all, an exact shortname match counts as "already
+  present".
+
+`scripts/ingest_publication.py` shows this as `find_existing()` and `reference_taken()`.
 
 ## Step 4: Write `astrodb-ingest-artifacts/ingest_{LABEL}_publications.py`
 
@@ -177,7 +192,8 @@ Read `scripts/ingest_publication.py` for the pattern, then write a **tailored** 
   never an unresolved bare shortname.
 - Set `IGNORE_ADS` correctly: `False` when a token is present and DOIs/bibcodes are
   available; `True` only as a genuine fallback (then supply `reference` and `description`).
-- Call `find_publication` before each `ingest_publication`.
+- Check for duplicates before each `ingest_publication` as in Step 3 — `find_publication` by
+  DOI/bibcode only, plus an exact shortname check (never `find_publication(reference=...)`).
 - Set `SAVE_DB = False`.
 
 `{LABEL}` is the input filename (batch) or the lead reference shortname (single paper).
@@ -240,7 +256,7 @@ evidence-annotated list in your final message, per `references/astrodb-ingest-in
 - [ ] You checked for an ADS token with `check_ads_token()`; if it was missing, you offered to set it up or proceeded with `ignore_ads=True` and hand-supplied metadata.
 - [ ] Every reference was resolved to the *specific, verified* paper (DOI or bibcode), disambiguated by context — a bare shortname or author+year was never passed to `ingest_publication`. When you had to look a paper up (rather than being given a DOI/bibcode directly), you showed the resolved table and waited for the user's confirmation before writing.
 - [ ] Every `reference` shortname follows the naming convention — first four letters of the first author's last name + two-digit year — and any collisions were disambiguated with a `.` + last-4-characters-of-DOI suffix applied to **every** colliding paper, never bare letter suffixes like `Bona20a`.
-- [ ] `find_publication` was called before each `ingest_publication`, and references already present were reported as such rather than re-ingested.
+- [ ] Before each `ingest_publication`, duplicates were checked with `find_publication` by DOI/bibcode only (never with `reference=`) plus an exact shortname match; references already present were reported as such rather than re-ingested, and a shortname already used by a different paper was treated as a collision, not a duplicate.
 - [ ] The tailored script at `astrodb-ingest-artifacts/ingest_{LABEL}_publications.py` contains only real resolved values (no placeholders), with `IGNORE_ADS` set correctly and `SAVE_DB = False`.
 - [ ] A dry run was executed, and you reported how many were added / already present / failed (with each failure's warning) and that nothing was saved.
 - [ ] `SAVE_DB = True` was set **only** after the user explicitly confirmed — never automatically.

@@ -43,6 +43,7 @@
         "Does NOT ask whether the user has a .bib file, ADS library export, or other reference compilation — the DOI already identifies the paper, so the question would be pure friction",
         "Recognizes that a DOI is provided and skips the Google Scholar/ADS/Crossref lookup step",
         "Calls ingest_publication with doi=\"10.1088/0004-637X/748/2/93\" after a find_publication dedup check",
+        "The dedup check calls find_publication with doi= (or bibcode=) only — never with reference=, which fuzzy-matches the wrong paper (e.g. Shipp2020 -> Shipp2019)",
         "Checks for an ADS token and explains the consequence if missing rather than failing silently",
         "SAVE_DB is False and the user is asked to confirm before saving",
         "A missing ADS token is not logged as a `gotcha` — the skill documents the check, so a condition it warned about is an environment issue (at most `one-off`), not a defect in the skill"
