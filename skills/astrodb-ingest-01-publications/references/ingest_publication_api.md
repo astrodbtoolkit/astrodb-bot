@@ -54,6 +54,21 @@ Return contract:
 Always call this **before** `ingest_publication` so a paper already in the database is
 reported as "already present" instead of being ingested again.
 
+**Search by `doi` or `bibcode` only — do not pass `reference`.** The arguments are combined
+with OR, and when the reference has no exact match the function falls back to a fuzzy search:
+the first 4 letters of the name plus a 2-digit year found anywhere in the stored shortname.
+That gives false matches:
+
+| Call | In the database | Returns |
+|------|-----------------|---------|
+| `find_publication(db, reference="Shipp2020")` | `Shipp2019` | `True, "Shipp2019"` (wrong paper) |
+| `find_publication(db, reference="Ship20")` | `Shipp2019` | `True, "Shipp2019"` (wrong paper) |
+| `find_publication(db, reference="Shipp2020", doi=<Shipp2020 DOI>)` | `Shipp2019` | `True, "Shipp2019"` (wrong paper) |
+| `find_publication(db, doi=<Shipp2020 DOI>)` | `Shipp2019` | `False, 0` (correct) |
+
+To check whether a shortname is taken, use an exact match instead:
+`db.query(db.Publications).filter(db.Publications.c.reference == reference).count()`.
+
 ## Supporting functions
 
 ```python
