@@ -44,3 +44,7 @@ To install this in another agent, you can copy the `skills/` directory to whatev
 ## License
 
 BSD 3-Clause. See [LICENSE](LICENSE).
+
+## Acknowledgements
+
+This work is supported by a NASA High Priority Open Source Software grant, award number 80NSSC25K7547.
